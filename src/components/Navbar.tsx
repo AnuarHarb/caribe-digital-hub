@@ -8,12 +8,17 @@ import { User } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import logoImage from "@/assets/costa-digital-logo.png";
+import { Menu } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Navbar() {
   const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -58,6 +63,36 @@ export function Navbar() {
     }
   };
 
+  const NavLinks = () => (
+    <>
+      <Link to="/eventos" onClick={() => setMobileMenuOpen(false)}>
+        <Button variant="ghost">{t("nav.events")}</Button>
+      </Link>
+      
+      {user ? (
+        <>
+          {isAdmin && (
+            <>
+              <Link to="/admin/eventos" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline">{t("nav.manageEvents")}</Button>
+              </Link>
+              <Link to="/admin/configuracion" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline">{t("nav.settings")}</Button>
+              </Link>
+            </>
+          )}
+          <Button variant="ghost" onClick={handleLogout}>
+            {t("nav.logout")}
+          </Button>
+        </>
+      ) : (
+        <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
+          <Button variant="default">{t("nav.login")}</Button>
+        </Link>
+      )}
+    </>
+  );
+
   return (
     <nav className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -68,36 +103,33 @@ export function Navbar() {
           </span>
         </Link>
 
-        <div className="flex items-center gap-4">
-          <Link to="/eventos">
-            <Button variant="ghost">{t("nav.events")}</Button>
-          </Link>
-          
-          {user ? (
-            <>
-              {isAdmin && (
-                <>
-                  <Link to="/admin/eventos">
-                    <Button variant="outline">{t("nav.manageEvents")}</Button>
-                  </Link>
-                  <Link to="/admin/configuracion">
-                    <Button variant="outline">{t("nav.settings")}</Button>
-                  </Link>
-                </>
-              )}
-              <Button variant="ghost" onClick={handleLogout}>
-                {t("nav.logout")}
-              </Button>
-            </>
-          ) : (
-            <Link to="/auth">
-              <Button variant="default">{t("nav.login")}</Button>
-            </Link>
-          )}
-
-          <LanguageToggle />
-          <ThemeToggle />
-        </div>
+        {/* Desktop Navigation */}
+        {!isMobile ? (
+          <div className="flex items-center gap-4">
+            <NavLinks />
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
+        ) : (
+          /* Mobile Navigation */
+          <div className="flex items-center gap-2">
+            <LanguageToggle />
+            <ThemeToggle />
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-64">
+                <div className="flex flex-col gap-4 mt-8">
+                  <NavLinks />
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        )}
       </div>
     </nav>
   );
