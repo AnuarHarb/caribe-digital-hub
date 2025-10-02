@@ -1,7 +1,8 @@
 import { useState } from "react";
-import logo from "@/assets/costa-digital-logo.png";
+import logoImage from "@/assets/costa-digital-logo.png";
 import { ChevronDown } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Navbar } from "@/components/Navbar";
+import { EventsSection } from "@/components/EventsSection";
 
 const Index = () => {
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0, 1, 2]));
@@ -129,10 +130,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-      {/* Theme Toggle */}
-      <div className="fixed top-6 right-6 z-50">
-        <ThemeToggle />
-      </div>
+      <Navbar />
 
       {/* Hero Section */}
       <header className="relative overflow-hidden">
@@ -140,7 +138,7 @@ const Index = () => {
         <div className="container mx-auto px-4 py-16 md:py-24 relative">
           <div className="max-w-4xl mx-auto text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <img 
-              src={logo} 
+              src={logoImage} 
               alt="Costa Digital Logo" 
               className="w-48 h-48 md:w-64 md:h-64 mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
             />
@@ -249,6 +247,9 @@ const Index = () => {
           </div>
         </div>
       </main>
+
+      {/* Events Section */}
+      <EventsSection />
 
       {/* Footer */}
       <footer className="border-t border-border bg-card">
