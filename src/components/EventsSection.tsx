@@ -14,6 +14,8 @@ interface Event {
   location: string;
   organizer: string;
   registration_link: string | null;
+  description: string | null;
+  image_url: string | null;
 }
 
 export function EventsSection() {
@@ -104,7 +106,16 @@ export function EventsSection() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {events.map((event) => (
-              <Card key={event.id} className="hover:shadow-lg transition-shadow">
+              <Card key={event.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+                {event.image_url && (
+                  <div className="w-full h-48 overflow-hidden">
+                    <img 
+                      src={event.image_url} 
+                      alt={event.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
                 <CardHeader>
                   <CardTitle className="text-xl">{event.name}</CardTitle>
                   <CardDescription className="flex items-center gap-2 text-base">
@@ -113,6 +124,11 @@ export function EventsSection() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
+                  {event.description && (
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {event.description}
+                    </p>
+                  )}
                   <div className="flex items-center gap-2 text-sm">
                     <Clock className="w-4 h-4 text-primary" />
                     <span>{event.time}</span>

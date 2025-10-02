@@ -66,7 +66,7 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center gap-4">
-          <Link to="/#eventos">
+          <Link to="/eventos">
             <Button variant="ghost">Eventos</Button>
           </Link>
           

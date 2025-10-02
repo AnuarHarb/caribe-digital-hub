@@ -2,7 +2,6 @@ import { useState } from "react";
 import logoImage from "@/assets/costa-digital-logo.png";
 import { ChevronDown } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
-import { EventsSection } from "@/components/EventsSection";
 
 const Index = () => {
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0, 1, 2]));
@@ -247,9 +246,6 @@ const Index = () => {
           </div>
         </div>
       </main>
-
-      {/* Events Section */}
-      <EventsSection />
 
       {/* Footer */}
       <footer className="border-t border-border bg-card">

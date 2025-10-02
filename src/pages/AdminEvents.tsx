@@ -19,6 +19,8 @@ const eventSchema = z.object({
   location: z.string().min(3, "El lugar debe tener al menos 3 caracteres"),
   organizer: z.string().min(2, "El organizador debe tener al menos 2 caracteres"),
   registration_link: z.string().url("Debe ser una URL válida").optional().or(z.literal("")),
+  description: z.string().optional().or(z.literal("")),
+  image_url: z.string().url("Debe ser una URL válida").optional().or(z.literal("")),
 });
 
 interface Event {
@@ -29,6 +31,8 @@ interface Event {
   location: string;
   organizer: string;
   registration_link: string | null;
+  description: string | null;
+  image_url: string | null;
 }
 
 export default function AdminEvents() {
@@ -44,6 +48,8 @@ export default function AdminEvents() {
     location: "",
     organizer: "",
     registration_link: "",
+    description: "",
+    image_url: "",
   });
   const navigate = useNavigate();
 
@@ -108,6 +114,8 @@ export default function AdminEvents() {
       const eventData = {
         ...formData,
         registration_link: formData.registration_link || null,
+        description: formData.description || null,
+        image_url: formData.image_url || null,
       };
 
       if (editingEvent) {
@@ -161,6 +169,8 @@ export default function AdminEvents() {
       location: event.location,
       organizer: event.organizer,
       registration_link: event.registration_link || "",
+      description: event.description || "",
+      image_url: event.image_url || "",
     });
     setDialogOpen(true);
   };
@@ -174,6 +184,8 @@ export default function AdminEvents() {
       location: "",
       organizer: "",
       registration_link: "",
+      description: "",
+      image_url: "",
     });
   };
 
@@ -260,6 +272,25 @@ export default function AdminEvents() {
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Descripción (opcional)</Label>
+                      <Input
+                        id="description"
+                        value={formData.description}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        placeholder="Descripción breve del evento"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="image_url">URL de Imagen (opcional)</Label>
+                      <Input
+                        id="image_url"
+                        type="url"
+                        placeholder="https://..."
+                        value={formData.image_url}
+                        onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                       />
                     </div>
                     <div className="space-y-2">
