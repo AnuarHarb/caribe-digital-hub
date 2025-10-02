@@ -73,9 +73,14 @@ export function Navbar() {
           {user ? (
             <>
               {isAdmin && (
-                <Link to="/admin/eventos">
-                  <Button variant="outline">Gestionar Eventos</Button>
-                </Link>
+                <>
+                  <Link to="/admin/eventos">
+                    <Button variant="outline">Gestionar Eventos</Button>
+                  </Link>
+                  <Link to="/admin/configuracion">
+                    <Button variant="outline">Configuración</Button>
+                  </Link>
+                </>
               )}
               <Button variant="ghost" onClick={handleLogout}>
                 Cerrar Sesión
