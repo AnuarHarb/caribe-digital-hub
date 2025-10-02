@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logo from "@/assets/costa-digital-logo.png";
 import { ChevronDown } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Index = () => {
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0, 1, 2]));
@@ -128,6 +129,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      {/* Theme Toggle */}
+      <div className="fixed top-6 right-6 z-50">
+        <ThemeToggle />
+      </div>
+
       {/* Hero Section */}
       <header className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent opacity-5"></div>
