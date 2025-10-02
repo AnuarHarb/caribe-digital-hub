@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Calendar, Clock, MapPin, User, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { es, enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 
 interface Event {
   id: string;
@@ -19,6 +20,7 @@ interface Event {
 }
 
 export function EventsSection() {
+  const { t, i18n } = useTranslation();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +67,9 @@ export function EventsSection() {
 
   const formatEventDate = (dateStr: string) => {
     const date = new Date(dateStr + "T00:00:00");
-    return format(date, "d 'de' MMMM, yyyy", { locale: es });
+    const locale = i18n.language === "es" ? es : enUS;
+    const formatStr = i18n.language === "es" ? "d 'de' MMMM, yyyy" : "MMMM d, yyyy";
+    return format(date, formatStr, { locale });
   };
 
   if (loading) {
@@ -73,9 +77,9 @@ export function EventsSection() {
       <section id="eventos" className="py-20 px-4">
         <div className="container mx-auto max-w-6xl">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-center mb-12 text-primary">
-            Próximos Eventos
+            {t("events.title")}
           </h2>
-          <div className="text-center text-muted-foreground">Cargando eventos...</div>
+          <div className="text-center text-muted-foreground">{t("common.loading")}</div>
         </div>
       </section>
     );
@@ -85,10 +89,10 @@ export function EventsSection() {
     <section id="eventos" className="py-20 px-4 bg-accent/5">
       <div className="container mx-auto max-w-6xl">
         <h2 className="font-display text-4xl md:text-5xl font-bold text-center mb-4 text-primary">
-          Próximos Eventos
+          {t("events.title")}
         </h2>
         <p className="text-center text-muted-foreground mb-12 text-lg">
-          Únete a nuestra comunidad en los próximos encuentros
+          {t("events.description")}
         </p>
 
         {events.length === 0 ? (
@@ -96,10 +100,7 @@ export function EventsSection() {
             <CardContent className="py-12 text-center">
               <Calendar className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
               <p className="text-lg text-muted-foreground">
-                No hay eventos programados por el momento.
-              </p>
-              <p className="text-sm text-muted-foreground mt-2">
-                ¡Mantente atento a futuras actualizaciones!
+                {t("events.noEvents")}
               </p>
             </CardContent>
           </Card>
@@ -151,7 +152,7 @@ export function EventsSection() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Registrarse
+                        {t("events.register")}
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>

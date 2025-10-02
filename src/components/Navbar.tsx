@@ -1,13 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import logoImage from "@/assets/costa-digital-logo.png";
 
 export function Navbar() {
+  const { t } = useTranslation();
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
@@ -48,9 +51,9 @@ export function Navbar() {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      toast.error("Error al cerrar sesión");
+      toast.error(t("nav.logout") + " error");
     } else {
-      toast.success("Sesión cerrada");
+      toast.success(t("nav.logout"));
       navigate("/");
     }
   };
@@ -67,7 +70,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-4">
           <Link to="/eventos">
-            <Button variant="ghost">Eventos</Button>
+            <Button variant="ghost">{t("nav.events")}</Button>
           </Link>
           
           {user ? (
@@ -75,23 +78,24 @@ export function Navbar() {
               {isAdmin && (
                 <>
                   <Link to="/admin/eventos">
-                    <Button variant="outline">Gestionar Eventos</Button>
+                    <Button variant="outline">{t("nav.manageEvents")}</Button>
                   </Link>
                   <Link to="/admin/configuracion">
-                    <Button variant="outline">Configuración</Button>
+                    <Button variant="outline">{t("nav.settings")}</Button>
                   </Link>
                 </>
               )}
               <Button variant="ghost" onClick={handleLogout}>
-                Cerrar Sesión
+                {t("nav.logout")}
               </Button>
             </>
           ) : (
             <Link to="/auth">
-              <Button variant="default">Iniciar Sesión</Button>
+              <Button variant="default">{t("nav.login")}</Button>
             </Link>
           )}
 
+          <LanguageToggle />
           <ThemeToggle />
         </div>
       </div>
