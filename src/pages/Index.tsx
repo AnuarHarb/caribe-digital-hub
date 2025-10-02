@@ -147,7 +147,7 @@ const Index = () => {
             <h1 className="font-display text-5xl md:text-7xl font-bold text-primary tracking-tight">
               COSTA DIGITAL
             </h1>
-            <p className="text-xl md:text-2xl text-secondary font-medium">
+            <p className="text-xl md:text-2xl text-secondary font-medium dark:text-primary">
               El futuro se construye desde el Caribe
             </p>
             <div className="inline-block px-6 py-3 bg-accent/10 border-2 border-accent rounded-full">
@@ -168,7 +168,7 @@ const Index = () => {
               CÓDIGO COSTA DIGITAL
             </h2>
             <p className="text-muted-foreground text-lg italic">
-              Estilo Jedi • Orden del Caribe Tecnológico
+              Orden del Caribe Tech
             </p>
           </div>
 
