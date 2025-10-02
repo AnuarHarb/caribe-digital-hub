@@ -9,7 +9,129 @@
   "home": {
     "welcome": "Bienvenido a Costa Digital",
     "description": "Tu comunidad tech en Costa Rica",
-    "subtitle": "Conecta con emprendedores, desarrolladores y tecnólogos de toda Costa Rica"
+    "subtitle": "Conecta con emprendedores, desarrolladores y tecnólogos de toda Costa Rica",
+    "title": "COSTA DIGITAL",
+    "tagline": "El futuro se construye desde el Caribe",
+    "values": "CÓDIGO • COMUNIDAD • IMPACTO",
+    "manifestoTitle": "CÓDIGO COSTA DIGITAL",
+    "manifestoSubtitle": "Orden del Caribe Tech",
+    "footer": {
+      "copyright": "© 2025 Costa Digital • Movimiento Tecnológico del Caribe",
+      "cities": "Barranquilla • Cartagena • Santa Marta"
+    },
+    "finalMessage": {
+      "title": "FIN DEL CÓDIGO",
+      "content": "Si lo lees, actúa. Si actúas, mide. Si mides, lidera.",
+      "closing": "Costa Digital: el futuro se construye desde aquí."
+    }
+  },
+  "manifesto": {
+    "preamble": {
+      "title": "PREÁMBULO",
+      "content": [
+        "Somos la Orden del Caribe que elige la tecnología para transformar realidades.",
+        "No esperamos el futuro: lo construimos desde aquí."
+      ]
+    },
+    "principles": {
+      "title": "I. PRINCIPIOS FUNDACIONALES",
+      "items": [
+        "Identidad antes que imitación.",
+        "Comunidad antes que ego.",
+        "Educación antes que opinión.",
+        "Acción antes que excusa.",
+        "Impacto medible antes que ruido.",
+        "Ética antes que atajo.",
+        "Caribe antes que frontera."
+      ]
+    },
+    "mission": {
+      "title": "II. MISIÓN CENTRAL",
+      "content": ["Convertir al Caribe en el nuevo epicentro tech de Colombia:"],
+      "items": [
+        "formando talento de clase mundial,",
+        "creando startups de alto impacto,",
+        "atrayendo inversión y empleos dignos,",
+        "exportando innovación con sello Caribe."
+      ]
+    },
+    "practice": {
+      "title": "III. PRECEPTOS DE PRÁCTICA",
+      "items": [
+        "Compartir conocimiento es ley: documenta, abre, enseña.",
+        "La colaboración es el camino: gana quien suma.",
+        "El rigor nos distingue: medimos, iteramos, mejoramos.",
+        "La diversidad es ventaja: más perspectivas = mejores soluciones.",
+        "La cultura es motor: creamos tecnología con sabor a Caribe.",
+        "La coherencia es poder: lo que decimos, lo hacemos."
+      ]
+    },
+    "mastery": {
+      "title": "IV. MAESTRÍA DEL OFICIO",
+      "items": [
+        "Aprender continuamente.",
+        "Construir productos reales.",
+        "Mostrar el trabajo sin miedo.",
+        "Buscar retroalimentación dura y honesta.",
+        "Elevar el estándar en cada entrega."
+      ]
+    },
+    "leadership": {
+      "title": "V. LIDERAZGO (DEL LÍDER AL VOLUNTARIO)",
+      "items": [
+        "Servir primero, mandar después.",
+        "Dar crédito en público; corregir en privado.",
+        "Delegar con claridad; exigir con respeto.",
+        "Cuidar la marca común sobre el brillo personal.",
+        "Formar a quien te pueda reemplazar."
+      ]
+    },
+    "rules": {
+      "title": "VI. REGLAS DE LA CASA",
+      "items": [
+        "Todo evento tiene propósito, métricas y aprendizaje publicado.",
+        "Ningún patrocinio se negocia sin mandato común.",
+        "El calendario es sagrado: coordinación antes de difusión.",
+        "La marca Costa Digital se usa con honor o no se usa."
+      ]
+    },
+    "prohibited": {
+      "title": "VII. CONDUCTAS PROHIBIDAS",
+      "items": [
+        "✗ Protagonismo que reste a la comunidad.",
+        "✗ Promesas sin entrega.",
+        "✗ Apropiarse de trabajo ajeno.",
+        "✗ Faltar a la palabra dada.",
+        "✗ Atajos que comprometan ética o seguridad."
+      ]
+    },
+    "pact": {
+      "title": "VIII. PACTO CON LAS CIUDADES",
+      "content": [
+        "Barranquilla, Cartagena, Santa Marta y todo el Caribe:",
+        "llevamos conocimiento, oportunidades y redes;",
+        "regresamos con talento formado y proyectos vivos."
+      ]
+    },
+    "oath": {
+      "title": "IX. JURAMENTO DEL MIEMBRO",
+      "content": [
+        "\"Desde el Caribe y para el mundo,",
+        "juro aprender, construir y compartir.",
+        "Juro honrar la ética, la comunidad y la excelencia.",
+        "Juro convertir nuestro Caribe en epicentro tecnológico.\""
+      ]
+    },
+    "callAndResponse": {
+      "title": "X. LLAMADO Y RESPUESTA",
+      "subtitle": "(para abrir eventos)",
+      "content": [
+        "— \"¿Desde dónde se construye el futuro?\"",
+        "— \"¡Desde el Caribe!\"",
+        "— \"¿Cuál es nuestro código?\"",
+        "— \"¡Identidad, comunidad, impacto!\""
+      ]
+    }
   },
   "auth": {
     "login": "Iniciar Sesión",

@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import logoImage from "@/assets/costa-digital-logo.png";
 import { ChevronDown } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 
 const Index = () => {
+  const { t } = useTranslation();
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set([0, 1, 2]));
 
   const toggleSection = (index: number) => {
@@ -18,112 +20,50 @@ const Index = () => {
 
   const manifestoSections = [
     {
-      title: "PREÁMBULO",
-      content: [
-        "Somos la Orden del Caribe que elige la tecnología para transformar realidades.",
-        "No esperamos el futuro: lo construimos desde aquí."
-      ]
+      title: t("manifesto.preamble.title"),
+      content: t("manifesto.preamble.content", { returnObjects: true }) as string[]
     },
     {
-      title: "I. PRINCIPIOS FUNDACIONALES",
-      items: [
-        "Identidad antes que imitación.",
-        "Comunidad antes que ego.",
-        "Educación antes que opinión.",
-        "Acción antes que excusa.",
-        "Impacto medible antes que ruido.",
-        "Ética antes que atajo.",
-        "Caribe antes que frontera."
-      ]
+      title: t("manifesto.principles.title"),
+      items: t("manifesto.principles.items", { returnObjects: true }) as string[]
     },
     {
-      title: "II. MISIÓN CENTRAL",
-      content: [
-        "Convertir al Caribe en el nuevo epicentro tech de Colombia:"
-      ],
-      items: [
-        "formando talento de clase mundial,",
-        "creando startups de alto impacto,",
-        "atrayendo inversión y empleos dignos,",
-        "exportando innovación con sello Caribe."
-      ]
+      title: t("manifesto.mission.title"),
+      content: t("manifesto.mission.content", { returnObjects: true }) as string[],
+      items: t("manifesto.mission.items", { returnObjects: true }) as string[]
     },
     {
-      title: "III. PRECEPTOS DE PRÁCTICA",
-      items: [
-        "Compartir conocimiento es ley: documenta, abre, enseña.",
-        "La colaboración es el camino: gana quien suma.",
-        "El rigor nos distingue: medimos, iteramos, mejoramos.",
-        "La diversidad es ventaja: más perspectivas = mejores soluciones.",
-        "La cultura es motor: creamos tecnología con sabor a Caribe.",
-        "La coherencia es poder: lo que decimos, lo hacemos."
-      ]
+      title: t("manifesto.practice.title"),
+      items: t("manifesto.practice.items", { returnObjects: true }) as string[]
     },
     {
-      title: "IV. MAESTRÍA DEL OFICIO",
-      items: [
-        "Aprender continuamente.",
-        "Construir productos reales.",
-        "Mostrar el trabajo sin miedo.",
-        "Buscar retroalimentación dura y honesta.",
-        "Elevar el estándar en cada entrega."
-      ]
+      title: t("manifesto.mastery.title"),
+      items: t("manifesto.mastery.items", { returnObjects: true }) as string[]
     },
     {
-      title: "V. LIDERAZGO (DEL LÍDER AL VOLUNTARIO)",
-      items: [
-        "Servir primero, mandar después.",
-        "Dar crédito en público; corregir en privado.",
-        "Delegar con claridad; exigir con respeto.",
-        "Cuidar la marca común sobre el brillo personal.",
-        "Formar a quien te pueda reemplazar."
-      ]
+      title: t("manifesto.leadership.title"),
+      items: t("manifesto.leadership.items", { returnObjects: true }) as string[]
     },
     {
-      title: "VI. REGLAS DE LA CASA",
-      items: [
-        "Todo evento tiene propósito, métricas y aprendizaje publicado.",
-        "Ningún patrocinio se negocia sin mandato común.",
-        "El calendario es sagrado: coordinación antes de difusión.",
-        "La marca Costa Digital se usa con honor o no se usa."
-      ]
+      title: t("manifesto.rules.title"),
+      items: t("manifesto.rules.items", { returnObjects: true }) as string[]
     },
     {
-      title: "VII. CONDUCTAS PROHIBIDAS",
-      items: [
-        "✗ Protagonismo que reste a la comunidad.",
-        "✗ Promesas sin entrega.",
-        "✗ Apropiarse de trabajo ajeno.",
-        "✗ Faltar a la palabra dada.",
-        "✗ Atajos que comprometan ética o seguridad."
-      ]
+      title: t("manifesto.prohibited.title"),
+      items: t("manifesto.prohibited.items", { returnObjects: true }) as string[]
     },
     {
-      title: "VIII. PACTO CON LAS CIUDADES",
-      content: [
-        "Barranquilla, Cartagena, Santa Marta y todo el Caribe:",
-        "llevamos conocimiento, oportunidades y redes;",
-        "regresamos con talento formado y proyectos vivos."
-      ]
+      title: t("manifesto.pact.title"),
+      content: t("manifesto.pact.content", { returnObjects: true }) as string[]
     },
     {
-      title: "IX. JURAMENTO DEL MIEMBRO",
-      content: [
-        '"Desde el Caribe y para el mundo,',
-        'juro aprender, construir y compartir.',
-        'Juro honrar la ética, la comunidad y la excelencia.',
-        'Juro convertir nuestro Caribe en epicentro tecnológico."'
-      ]
+      title: t("manifesto.oath.title"),
+      content: t("manifesto.oath.content", { returnObjects: true }) as string[]
     },
     {
-      title: "X. LLAMADO Y RESPUESTA",
-      subtitle: "(para abrir eventos)",
-      content: [
-        '— "¿Desde dónde se construye el futuro?"',
-        '— "¡Desde el Caribe!"',
-        '— "¿Cuál es nuestro código?"',
-        '— "¡Identidad, comunidad, impacto!"'
-      ]
+      title: t("manifesto.callAndResponse.title"),
+      subtitle: t("manifesto.callAndResponse.subtitle"),
+      content: t("manifesto.callAndResponse.content", { returnObjects: true }) as string[]
     }
   ];
 
@@ -142,14 +82,14 @@ const Index = () => {
               className="w-48 h-48 md:w-64 md:h-64 mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
             />
             <h1 className="font-display text-5xl md:text-7xl font-bold text-primary tracking-tight">
-              COSTA DIGITAL
+              {t("home.title")}
             </h1>
             <p className="text-xl md:text-2xl text-secondary font-medium dark:text-primary">
-              El futuro se construye desde el Caribe
+              {t("home.tagline")}
             </p>
             <div className="inline-block px-6 py-3 bg-accent/10 border-2 border-accent rounded-full">
               <p className="text-accent font-semibold tracking-wide">
-                CÓDIGO • COMUNIDAD • IMPACTO
+                {t("home.values")}
               </p>
             </div>
           </div>
@@ -162,10 +102,10 @@ const Index = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16 space-y-4">
             <h2 className="font-display text-4xl md:text-5xl font-bold text-primary">
-              CÓDIGO COSTA DIGITAL
+              {t("home.manifestoTitle")}
             </h2>
             <p className="text-muted-foreground text-lg italic">
-              Orden del Caribe Tech
+              {t("home.manifestoSubtitle")}
             </p>
           </div>
 
@@ -235,13 +175,13 @@ const Index = () => {
           {/* Final Message */}
           <div className="mt-16 p-8 md:p-12 bg-gradient-to-br from-primary to-secondary rounded-2xl text-center space-y-6 shadow-2xl border-4 border-accent/30">
             <h3 className="font-display text-3xl md:text-4xl font-bold text-primary-foreground">
-              FIN DEL CÓDIGO
+              {t("home.finalMessage.title")}
             </h3>
             <p className="text-primary-foreground/90 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
-              Si lo lees, actúa. Si actúas, mide. Si mides, lidera.
+              {t("home.finalMessage.content")}
             </p>
             <p className="text-primary-foreground font-bold text-xl md:text-2xl">
-              Costa Digital: el futuro se construye desde aquí.
+              {t("home.finalMessage.closing")}
             </p>
           </div>
         </div>
@@ -252,10 +192,10 @@ const Index = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="text-center space-y-2">
             <p className="text-muted-foreground text-sm">
-              © 2025 Costa Digital • Movimiento Tecnológico del Caribe
+              {t("home.footer.copyright")}
             </p>
             <p className="text-accent font-semibold text-sm">
-              Barranquilla • Cartagena • Santa Marta
+              {t("home.footer.cities")}
             </p>
           </div>
         </div>

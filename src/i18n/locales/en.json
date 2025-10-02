@@ -9,7 +9,129 @@
   "home": {
     "welcome": "Welcome to Costa Digital",
     "description": "Your tech community in Costa Rica",
-    "subtitle": "Connect with entrepreneurs, developers and technologists from all over Costa Rica"
+    "subtitle": "Connect with entrepreneurs, developers and technologists from all over Costa Rica",
+    "title": "COSTA DIGITAL",
+    "tagline": "The future is built from the Caribbean",
+    "values": "CODE • COMMUNITY • IMPACT",
+    "manifestoTitle": "COSTA DIGITAL CODE",
+    "manifestoSubtitle": "Caribbean Tech Order",
+    "footer": {
+      "copyright": "© 2025 Costa Digital • Caribbean Technology Movement",
+      "cities": "Barranquilla • Cartagena • Santa Marta"
+    },
+    "finalMessage": {
+      "title": "END OF CODE",
+      "content": "If you read it, act. If you act, measure. If you measure, lead.",
+      "closing": "Costa Digital: the future is built from here."
+    }
+  },
+  "manifesto": {
+    "preamble": {
+      "title": "PREAMBLE",
+      "content": [
+        "We are the Caribbean Order that chooses technology to transform realities.",
+        "We don't wait for the future: we build it from here."
+      ]
+    },
+    "principles": {
+      "title": "I. FOUNDATIONAL PRINCIPLES",
+      "items": [
+        "Identity before imitation.",
+        "Community before ego.",
+        "Education before opinion.",
+        "Action before excuse.",
+        "Measurable impact before noise.",
+        "Ethics before shortcuts.",
+        "Caribbean before borders."
+      ]
+    },
+    "mission": {
+      "title": "II. CENTRAL MISSION",
+      "content": ["Turn the Caribbean into Colombia's new tech epicenter:"],
+      "items": [
+        "training world-class talent,",
+        "creating high-impact startups,",
+        "attracting investment and decent jobs,",
+        "exporting innovation with Caribbean seal."
+      ]
+    },
+    "practice": {
+      "title": "III. PRACTICE PRECEPTS",
+      "items": [
+        "Sharing knowledge is law: document, open, teach.",
+        "Collaboration is the way: those who add up win.",
+        "Rigor distinguishes us: we measure, iterate, improve.",
+        "Diversity is advantage: more perspectives = better solutions.",
+        "Culture is the engine: we create technology with Caribbean flavor.",
+        "Coherence is power: what we say, we do."
+      ]
+    },
+    "mastery": {
+      "title": "IV. CRAFT MASTERY",
+      "items": [
+        "Learn continuously.",
+        "Build real products.",
+        "Show work without fear.",
+        "Seek hard and honest feedback.",
+        "Raise the standard with every delivery."
+      ]
+    },
+    "leadership": {
+      "title": "V. LEADERSHIP (FROM LEADER TO VOLUNTEER)",
+      "items": [
+        "Serve first, command later.",
+        "Give credit in public; correct in private.",
+        "Delegate with clarity; demand with respect.",
+        "Care for the common brand over personal shine.",
+        "Train someone who can replace you."
+      ]
+    },
+    "rules": {
+      "title": "VI. HOUSE RULES",
+      "items": [
+        "Every event has purpose, metrics, and published learning.",
+        "No sponsorship is negotiated without common mandate.",
+        "The calendar is sacred: coordination before broadcast.",
+        "The Costa Digital brand is used with honor or not used."
+      ]
+    },
+    "prohibited": {
+      "title": "VII. PROHIBITED CONDUCT",
+      "items": [
+        "✗ Protagonism that detracts from the community.",
+        "✗ Promises without delivery.",
+        "✗ Appropriating others' work.",
+        "✗ Breaking one's word.",
+        "✗ Shortcuts that compromise ethics or security."
+      ]
+    },
+    "pact": {
+      "title": "VIII. PACT WITH THE CITIES",
+      "content": [
+        "Barranquilla, Cartagena, Santa Marta and the entire Caribbean:",
+        "we bring knowledge, opportunities and networks;",
+        "we return with trained talent and living projects."
+      ]
+    },
+    "oath": {
+      "title": "IX. MEMBER'S OATH",
+      "content": [
+        "\"From the Caribbean and for the world,",
+        "I swear to learn, build and share.",
+        "I swear to honor ethics, community and excellence.",
+        "I swear to turn our Caribbean into a technology epicenter.\""
+      ]
+    },
+    "callAndResponse": {
+      "title": "X. CALL AND RESPONSE",
+      "subtitle": "(to open events)",
+      "content": [
+        "— \"Where is the future built from?\"",
+        "— \"From the Caribbean!\"",
+        "— \"What is our code?\"",
+        "— \"Identity, community, impact!\""
+      ]
+    }
   },
   "auth": {
     "login": "Login",
