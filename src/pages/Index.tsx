@@ -85,7 +85,7 @@ const Index = () => {
               {t("home.title")}
             </h1>
             <p className="text-xl md:text-2xl text-secondary font-medium dark:text-primary">
-               Hola desde la clase
+              {t("home.tagline")}
             </p>
             <div className="inline-block px-6 py-3 bg-accent/10 border-2 border-accent rounded-full">
               <p className="text-accent font-semibold tracking-wide">
