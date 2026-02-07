@@ -1,0 +1,21 @@
+{
+  "name": "Costa Digital",
+  "short_name": "Costa Digital",
+  "description": "El ecosistema tech del Caribe colombiano",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f7ff",
+  "theme_color": "#0d2240",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

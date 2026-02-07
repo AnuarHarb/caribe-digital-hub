@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import Events from "./pages/Events";
 import AdminEvents from "./pages/AdminEvents";
 import AdminSettings from "./pages/AdminSettings";
+import Membresia from "./pages/Membresia";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,7 +23,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Membresia />} />
+            <Route path="/manifesto" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/eventos" element={<Events />} />
             <Route path="/admin/eventos" element={<AdminEvents />} />

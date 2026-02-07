@@ -215,5 +215,190 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success"
+  },
+  "membresia": {
+    "nav": {
+      "queEs": "What is it?",
+      "paraQuien": "For whom?",
+      "beneficios": "Benefits",
+      "planes": "Plans",
+      "impacto": "Impact",
+      "faq": "FAQ",
+      "unete": "Join"
+    },
+    "hero": {
+      "title": "The tech ecosystem of the Colombian Caribbean",
+      "subtitle": "Connect talent, startups, companies and institutions to learn, build and scale in technology. One membership. Many opportunities. A living ecosystem.",
+      "ctaPrimary": "Join Costa Digital",
+      "ctaSecondary": "View plans"
+    },
+    "whatIs": {
+      "title": "What is Costa Digital?",
+      "description": "Costa Digital is the technology cluster of the Colombian Caribbean. An ecosystem that brings together communities, startups, education, innovation and investment.",
+      "footnote": "Operated by Ciudad Inmersiva SAS, in partnership with Fundación Código Abierto and ecosystem organizations."
+    },
+    "forWho": {
+      "title": "For whom?",
+      "developers": {
+        "title": "Developers and tech talent",
+        "description": "Technical professionals seeking community, learning and opportunities."
+      },
+      "founders": {
+        "title": "Entrepreneurs and founders",
+        "description": "Founders who want to scale their startups and connect with the ecosystem."
+      },
+      "companies": {
+        "title": "Startups and digital companies",
+        "description": "Organizations seeking visibility, talent and access to programs."
+      },
+      "transition": {
+        "title": "Professionals in transition",
+        "description": "People migrating to the tech world who need support."
+      }
+    },
+    "benefits": {
+      "title": "What does membership unlock?",
+      "community": {
+        "title": "Community access",
+        "description": "Connect with professionals, founders and companies in the Caribbean tech ecosystem."
+      },
+      "events": {
+        "title": "Presale and preferential pricing",
+        "description": "Early access and discounts on events, conferences and workshops."
+      },
+      "allies": {
+        "title": "Benefits with allies",
+        "description": "Exclusive discounts and advantages with ecosystem partners."
+      },
+      "spaces": {
+        "title": "Spaces and meetings",
+        "description": "Access to Café 404 and partner venues for networking and collaborative work."
+      },
+      "opportunities": {
+        "title": "Calls and opportunities",
+        "description": "Priority access to programs, scholarships, events and job opportunities."
+      },
+      "visibility": {
+        "title": "Visibility and connections",
+        "description": "Greater exposure in the ecosystem and real strategic connections."
+      },
+      "disclaimer": "Costa Digital does not promise results. It connects the right people at the right time."
+    },
+    "plans": {
+      "title": "Membership Plans",
+      "subtitle": "Choose the plan that best suits your needs",
+      "community": {
+        "name": "Community",
+        "price": "$50.000",
+        "period": "/ month",
+        "for": "Developers, non-technical talent, early founders, transition",
+        "benefits": [
+          "Community access",
+          "Meetups and open events",
+          "Presale and preferential pricing on events",
+          "Benefits with allies",
+          "Café 404 as meeting point",
+          "Calls and opportunities",
+          "Basic access to map (Shelv)"
+        ],
+        "cta": "Choose Community"
+      },
+      "builder": {
+        "name": "Builder",
+        "price": "$150.000",
+        "period": "/ month",
+        "for": "Active entrepreneurs and growing startups",
+        "popular": "Most popular",
+        "benefits": [
+          "Everything above",
+          "Preferential access to paid events",
+          "Closed dynamics",
+          "Basic visibility as active member",
+          "Early access to programs (Tech Centre, Ciudad Inmersiva)",
+          "Preferential pricing on Parla Startupera",
+          "Eligibility for premium programs (Synergy)"
+        ],
+        "cta": "Choose Builder"
+      },
+      "company": {
+        "name": "Company",
+        "price": "$750.000",
+        "period": "/ month",
+        "subtitle": "from $500.000",
+        "for": "Companies and organizations",
+        "benefits": [
+          "Everything above",
+          "Featured profile as affiliated company",
+          "Visibility (web / Shelv)",
+          "Access to talent and community",
+          "B2B / private events",
+          "Activations with anchor communities",
+          "Access to dealflow / Caribe Ventures (when applicable)"
+        ],
+        "cta": "Talk to us"
+      },
+      "enterprise": {
+        "title": "Enterprise / Innovation",
+        "description": "Not a membership. Open innovation programs, corporate challenges, labs with Ciudad Inmersiva and FCA, demo days and pilots.",
+        "cta": "Explore innovation"
+      }
+    },
+    "impact": {
+      "title": "Your membership also builds impact",
+      "description": "Part of the revenue supports scholarships, accessible training and open events executed by Fundación Código Abierto."
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": {
+        "question": "Is Costa Digital a company?",
+        "answer": "Costa Digital is the technology cluster of the Colombian Caribbean, a brand that represents the ecosystem. Membership is operated by Ciudad Inmersiva SAS, in partnership with Fundación Código Abierto and ecosystem organizations. Part of the revenue goes to impact programs executed by FCA."
+      },
+      "q2": {
+        "question": "Does membership guarantee discounts/benefits?",
+        "answer": "Benefits and discounts are offered by ecosystem allies and are subject to availability. Costa Digital facilitates access to these benefits, but does not guarantee specific results. We connect the right people at the right time."
+      },
+      "q3": {
+        "question": "Can I cancel at any time?",
+        "answer": "Yes, you can cancel your membership at any time. Cancellation is monthly and does not require a long-term commitment."
+      },
+      "q4": {
+        "question": "What's the difference between Community and Builder?",
+        "answer": "Builder includes everything from Community, plus preferential access to paid events, closed dynamics, basic visibility as an active member, early access to programs (Tech Centre, Ciudad Inmersiva), preferential pricing on Parla Startupera, and eligibility for premium programs like Synergy."
+      },
+      "q5": {
+        "question": "How does it work for companies?",
+        "answer": "The Company plan is designed for companies and organizations seeking visibility, access to talent, private B2B events and activations with communities. It includes featured profile, access to dealflow and Caribe Ventures when applicable. For more complex open innovation programs, there is the Enterprise/Innovation option that includes corporate challenges, labs and demo days."
+      }
+    },
+    "finalCta": {
+      "title": "It's not a club. It's an ecosystem.",
+      "ctaPrimary": "Join now",
+      "ctaSecondary": "View plans"
+    },
+    "signup": {
+      "title": "Join Costa Digital",
+      "description": "Complete the form and we'll contact you soon.",
+      "name": "Full name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "memberType": "Membership type",
+      "selectPlan": "Select a plan",
+      "companyName": "Company name (optional)",
+      "companyPlaceholder": "Your company name",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "submitting": "Submitting...",
+      "success": "Thank you for your interest! We'll contact you soon.",
+      "error": "There was an error sending your information. Please try again.",
+      "validation": {
+        "nameMin": "Name must be at least 2 characters",
+        "emailInvalid": "Enter a valid email",
+        "memberTypeRequired": "Select a membership type"
+      }
+    },
+    "floatingCta": {
+      "text": "Join Costa Digital"
+    }
   }
 }

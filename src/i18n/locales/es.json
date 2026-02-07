@@ -215,5 +215,190 @@
     "loading": "Cargando...",
     "error": "Error",
     "success": "Éxito"
+  },
+  "membresia": {
+    "nav": {
+      "queEs": "¿Qué es?",
+      "paraQuien": "¿Para quién?",
+      "beneficios": "Beneficios",
+      "planes": "Planes",
+      "impacto": "Impacto",
+      "faq": "FAQ",
+      "unete": "Únete"
+    },
+    "hero": {
+      "title": "El ecosistema tech del Caribe colombiano",
+      "subtitle": "Conecta talento, startups, empresas e instituciones para aprender, construir y escalar en tecnología. Una sola membresía. Muchas oportunidades. Un ecosistema vivo.",
+      "ctaPrimary": "Únete a Costa Digital",
+      "ctaSecondary": "Ver planes"
+    },
+    "whatIs": {
+      "title": "¿Qué es Costa Digital?",
+      "description": "Costa Digital es el cluster tecnológico del Caribe colombiano. Un ecosistema que articula comunidades, startups, educación, innovación e inversión.",
+      "footnote": "Operado por Ciudad Inmersiva SAS, en articulación con Fundación Código Abierto y organizaciones del ecosistema."
+    },
+    "forWho": {
+      "title": "¿Para quién es?",
+      "developers": {
+        "title": "Developers y talento tech",
+        "description": "Profesionales técnicos que buscan comunidad, aprendizaje y oportunidades."
+      },
+      "founders": {
+        "title": "Emprendedores y founders",
+        "description": "Fundadores que quieren escalar sus startups y conectar con el ecosistema."
+      },
+      "companies": {
+        "title": "Startups y empresas digitales",
+        "description": "Organizaciones que buscan visibilidad, talento y acceso a programas."
+      },
+      "transition": {
+        "title": "Profesionales en transición",
+        "description": "Personas que están migrando al mundo tech y necesitan apoyo."
+      }
+    },
+    "benefits": {
+      "title": "¿Qué desbloquea la membresía?",
+      "community": {
+        "title": "Acceso a la comunidad",
+        "description": "Conecta con profesionales, founders y empresas del ecosistema tech del Caribe."
+      },
+      "events": {
+        "title": "Preventa y precios preferenciales",
+        "description": "Acceso anticipado y descuentos en eventos, conferencias y workshops."
+      },
+      "allies": {
+        "title": "Beneficios con aliados",
+        "description": "Descuentos y ventajas exclusivas con partners del ecosistema."
+      },
+      "spaces": {
+        "title": "Espacios y encuentros",
+        "description": "Acceso a Café 404 y sedes aliadas para networking y trabajo colaborativo."
+      },
+      "opportunities": {
+        "title": "Convocatorias y oportunidades",
+        "description": "Acceso prioritario a programas, becas, eventos y oportunidades laborales."
+      },
+      "visibility": {
+        "title": "Visibilidad y conexiones",
+        "description": "Mayor exposición en el ecosistema y conexiones estratégicas reales."
+      },
+      "disclaimer": "Costa Digital no promete resultados. Conecta a las personas correctas en el momento correcto."
+    },
+    "plans": {
+      "title": "Planes de Membresía",
+      "subtitle": "Elige el plan que mejor se adapte a tus necesidades",
+      "community": {
+        "name": "Community",
+        "price": "$50.000",
+        "period": "/ mes",
+        "for": "Developers, talento no técnico, early founders, transición",
+        "benefits": [
+          "Acceso a comunidad",
+          "Meetups y eventos abiertos",
+          "Preventa y precio preferencial en eventos",
+          "Beneficios con aliados",
+          "Café 404 como punto de encuentro",
+          "Convocatorias y oportunidades",
+          "Acceso básico al mapa (Shelv)"
+        ],
+        "cta": "Elegir Community"
+      },
+      "builder": {
+        "name": "Builder",
+        "price": "$150.000",
+        "period": "/ mes",
+        "for": "Emprendedores activos y startups en crecimiento",
+        "popular": "Más popular",
+        "benefits": [
+          "Todo lo anterior",
+          "Acceso preferencial a eventos pagos",
+          "Dinámicas cerradas",
+          "Visibilidad básica como miembro activo",
+          "Acceso temprano a programas (Tech Centre, Ciudad Inmersiva)",
+          "Precio preferencial en Parla Startupera",
+          "Elegibilidad para programas premium (Synergy)"
+        ],
+        "cta": "Elegir Builder"
+      },
+      "company": {
+        "name": "Company",
+        "price": "$750.000",
+        "period": "/ mes",
+        "subtitle": "desde $500.000",
+        "for": "Empresas y organizaciones",
+        "benefits": [
+          "Todo lo anterior",
+          "Perfil destacado como empresa afiliada",
+          "Visibilidad (web / Shelv)",
+          "Acceso a talento y comunidad",
+          "Eventos B2B / privados",
+          "Activaciones con comunidades ancla",
+          "Acceso a dealflow / Caribe Ventures (cuando aplique)"
+        ],
+        "cta": "Hablar con nosotros"
+      },
+      "enterprise": {
+        "title": "Enterprise / Innovation",
+        "description": "No es membresía. Programas de innovación abierta, retos empresariales, laboratorios con Ciudad Inmersiva y FCA, demo days y pilotos.",
+        "cta": "Explorar innovación"
+      }
+    },
+    "impact": {
+      "title": "Tu membresía también construye impacto",
+      "description": "Parte de los ingresos apoyan becas, formación accesible y eventos abiertos ejecutados por Fundación Código Abierto."
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "q1": {
+        "question": "¿Costa Digital es una empresa?",
+        "answer": "Costa Digital es el cluster tecnológico del Caribe colombiano, una marca que representa el ecosistema. La membresía es operada por Ciudad Inmersiva SAS, en articulación con Fundación Código Abierto y organizaciones del ecosistema. Parte de los ingresos se destinan a programas de impacto ejecutados por FCA."
+      },
+      "q2": {
+        "question": "¿La membresía garantiza descuentos/beneficios?",
+        "answer": "Los beneficios y descuentos son ofrecidos por aliados del ecosistema y están sujetos a disponibilidad. Costa Digital facilita el acceso a estos beneficios, pero no garantiza resultados específicos. Conectamos a las personas correctas en el momento correcto."
+      },
+      "q3": {
+        "question": "¿Puedo cancelar en cualquier momento?",
+        "answer": "Sí, puedes cancelar tu membresía en cualquier momento. La cancelación es mensual y no requiere compromiso a largo plazo."
+      },
+      "q4": {
+        "question": "¿Qué diferencia hay entre Community y Builder?",
+        "answer": "Builder incluye todo lo de Community, más acceso preferencial a eventos pagos, dinámicas cerradas, visibilidad básica como miembro activo, acceso temprano a programas (Tech Centre, Ciudad Inmersiva), precio preferencial en Parla Startupera, y elegibilidad para programas premium como Synergy."
+      },
+      "q5": {
+        "question": "¿Cómo funciona para empresas?",
+        "answer": "El plan Company está diseñado para empresas y organizaciones que buscan visibilidad, acceso a talento, eventos B2B privados y activaciones con comunidades. Incluye perfil destacado, acceso a dealflow y Caribe Ventures cuando aplique. Para programas de innovación abierta más complejos, existe la opción Enterprise/Innovation que incluye retos empresariales, laboratorios y demo days."
+      }
+    },
+    "finalCta": {
+      "title": "No es un club. Es un ecosistema.",
+      "ctaPrimary": "Unirme ahora",
+      "ctaSecondary": "Ver planes"
+    },
+    "signup": {
+      "title": "Únete a Costa Digital",
+      "description": "Completa el formulario y nos pondremos en contacto contigo pronto.",
+      "name": "Nombre completo",
+      "namePlaceholder": "Tu nombre",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "memberType": "Tipo de membresía",
+      "selectPlan": "Selecciona un plan",
+      "companyName": "Nombre de la empresa (opcional)",
+      "companyPlaceholder": "Nombre de tu empresa",
+      "cancel": "Cancelar",
+      "submit": "Enviar",
+      "submitting": "Enviando...",
+      "success": "¡Gracias por tu interés! Te contactaremos pronto.",
+      "error": "Hubo un error al enviar tu información. Por favor intenta de nuevo.",
+      "validation": {
+        "nameMin": "El nombre debe tener al menos 2 caracteres",
+        "emailInvalid": "Ingresa un email válido",
+        "memberTypeRequired": "Selecciona un tipo de membresía"
+      }
+    },
+    "floatingCta": {
+      "text": "Únete a Costa Digital"
+    }
   }
 }
