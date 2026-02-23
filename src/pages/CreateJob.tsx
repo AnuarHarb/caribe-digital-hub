@@ -1,31 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { JobForm } from "@/components/jobs/JobForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useActiveCompany } from "@/contexts/ActiveCompanyContext";
 
 export default function CreateJob() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const { data: companyProfile } = useQuery({
-    queryKey: ["company-profile-for-create"],
-    queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
-      const { data, error } = await supabase
-        .from("company_profiles")
-        .select("id")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
-    },
-  });
+  const { activeCompany } = useActiveCompany();
 
   const handleSubmit = async (formData: {
     title: string;
@@ -37,15 +23,19 @@ export default function CreateJob() {
     salary_max?: number;
     salary_currency?: string;
     status: string;
+    responsibilities?: string;
+    skills_tools?: string;
+    requirements?: string;
+    benefits?: string;
   }) => {
-    if (!companyProfile?.id) {
+    if (!activeCompany?.id) {
       toast.error(t("dashboard.completeProfileDescription"));
       return;
     }
     setIsSubmitting(true);
     try {
       const { error } = await supabase.from("job_postings").insert({
-        company_id: companyProfile.id,
+        company_id: activeCompany.id,
         title: formData.title,
         description: formData.description,
         location: formData.location || null,
@@ -55,6 +45,10 @@ export default function CreateJob() {
         salary_max: formData.salary_max ?? null,
         salary_currency: formData.salary_currency || null,
         status: formData.status as "draft" | "active" | "closed",
+        responsibilities: formData.responsibilities || null,
+        skills_tools: formData.skills_tools || null,
+        requirements: formData.requirements || null,
+        benefits: formData.benefits || null,
       });
       if (error) throw error;
       toast.success(t("common.success"));
@@ -66,7 +60,7 @@ export default function CreateJob() {
     }
   };
 
-  if (!companyProfile) {
+  if (!activeCompany) {
     return (
       <Card>
         <CardHeader>
@@ -88,7 +82,7 @@ export default function CreateJob() {
         </CardHeader>
         <CardContent>
           <JobForm
-            companyId={companyProfile.id}
+            companyId={activeCompany.id}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />

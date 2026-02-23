@@ -2,8 +2,10 @@
   "nav": {
     "jobs": "Jobs",
     "talent": "Talent",
+    "blog": "News",
     "dashboard": "Dashboard",
     "settings": "Settings",
+    "admin": "Admin",
     "login": "Login",
     "logout": "Logout"
   },
@@ -146,6 +148,9 @@
     "accountTypeProfessional": "Professional",
     "accountTypeCompany": "Company",
     "accountTypeDescription": "Are you a professional looking for jobs or a company looking for talent?",
+    "companyName": "Company name",
+    "companyNamePlaceholder": "e.g. My Tech Startup",
+    "companyNameRequired": "Company name is required",
     "processing": "Processing...",
     "invalidCredentials": "Invalid credentials",
     "welcome": "Welcome!",
@@ -190,6 +195,7 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
+    "unknown": "Unknown",
     "workMode": {
       "remote": "Remote",
       "hybrid": "Hybrid",
@@ -407,10 +413,34 @@
     "location": "Location",
     "locationPlaceholder": "e.g. Barranquilla, Colombia",
     "yearsExperience": "Years of experience",
+    "yearsShort": "years",
     "availability": "Availability",
     "selectAvailability": "Select your availability",
     "portfolio": "Portfolio",
-    "editDescription": "Complete your profile so companies can find you."
+    "editDescription": "Complete your profile so companies can find you.",
+    "tabPersonal": "Personal profile",
+    "tabProfessional": "Professional profile",
+    "completionTitle": "Profile completion",
+    "completionDescription": "Complete your information to improve your visibility.",
+    "completeProfile": "Complete profile",
+    "fullName": "Full name",
+    "fullNamePlaceholder": "Your name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "addressPlaceholder": "Street, number, neighborhood",
+    "city": "City",
+    "cityPlaceholder": "e.g. Barranquilla",
+    "dateOfBirth": "Date of birth",
+    "documentSection": "Identity document",
+    "documentType": "Document type",
+    "selectDocumentType": "Select type",
+    "documentNumber": "Document number",
+    "personalDisclaimer": "This information is important for hiring and verification processes. Your personal data is protected and only shared when you apply to an opportunity.",
+    "changePhoto": "Change photo",
+    "avatarUpdated": "Photo updated",
+    "documentUploaded": "Document uploaded",
+    "documentUploadHint": "Drag or click to upload (JPG, PNG, WebP or PDF)"
   },
   "talent": {
     "filters": "Filters",
@@ -422,7 +452,37 @@
     "experience": "Experience",
     "education": "Education",
     "present": "Present",
-    "viewJobs": "View job openings"
+    "viewJobs": "View job openings",
+    "contact": "Contact",
+    "contactSuccess": "Interest registered! The talent will see your contact intent.",
+    "contactAlreadyExpressed": "You have already expressed interest in this profile.",
+    "contactLoginRequired": "Log in to contact this talent."
+  },
+  "admin": {
+    "blog": {
+      "title": "Blog management",
+      "description": "Create and edit Costa Digital News articles",
+      "newPost": "New article",
+      "editPost": "Edit article",
+      "slug": "URL (slug)",
+      "excerpt": "Excerpt",
+      "coverImage": "Cover image",
+      "content": "Content",
+      "status": "Status",
+      "draft": "Draft",
+      "published": "Published",
+      "save": "Save",
+      "delete": "Delete",
+      "confirmDelete": "Delete this article?",
+      "noPosts": "No articles yet",
+      "createFirst": "Create the first article"
+    }
+  },
+  "blog": {
+    "title": "Costa Digital News",
+    "backToBlog": "Back to blog",
+    "publishedOn": "Published on",
+    "by": "by"
   },
   "applications": {
     "empty": "You haven't applied to any jobs yet.",
@@ -431,6 +491,8 @@
     "noCandidates": "No candidates for this job yet."
   },
   "dashboard": {
+    "sectionPersonal": "Personal",
+    "sectionCompany": "Company",
     "profile": "My profile",
     "applications": "My applications",
     "jobs": "My jobs",
@@ -450,6 +512,41 @@
   "company": {
     "name": "Company name",
     "namePlaceholder": "My Company Inc",
+    "nameRequired": "Company name is required",
+    "selectCompany": "Select company",
+    "createNew": "Create new company",
+    "createFirst": "Create your first company",
+    "createDescription": "Register a new company to post job openings.",
+    "created": "Company created successfully",
+    "invitationsTitle": "You have pending invitations",
+    "unknownCompany": "Company",
+    "accept": "Accept",
+    "decline": "Decline",
+    "role": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "inviteMember": "Invite member",
+    "inviteEmailPlaceholder": "email@example.com",
+    "inviteSuccess": "Invitation sent",
+    "inviteError": "Error sending invitation",
+    "members": "Members",
+    "removeMember": "Remove",
+    "removeMemberConfirm": "Remove this member?",
+    "removeMemberDescription": "{{name}} will lose access to this company.",
+    "removeMemberDescriptionGeneric": "This member will lose access to the company.",
+    "settingsTitle": "Company settings",
+    "myCompanies": "My companies",
+    "myCompaniesDescription": "Manage the companies you belong to and create new ones.",
+    "noCompanies": "You don't have any companies yet",
+    "noCompaniesDescription": "Create your first company to post job offers and manage candidates.",
+    "companyDetails": "Company details",
+    "selectCompanyFirst": "Select a company from the sidebar.",
+    "profile": "Company profile",
+    "roleLabel": "Role",
+    "inviteDescription": "Send an invitation by email. The person must have an account on the platform.",
+    "membersDescription": "People with access to this company.",
     "descriptionPlaceholder": "Company description...",
     "industry": "Industry",
     "industryPlaceholder": "e.g. Technology, Fintech",
@@ -462,7 +559,14 @@
     "enterprise": "Enterprise (1000+)",
     "editDescription": "Complete your company profile to post job openings.",
     "openPositions": "Open positions",
-    "viewProfile": "View company profile"
+    "noOpenPositions": "No active positions at the moment",
+    "aboutUs": "About us",
+    "viewProfile": "View company profile",
+    "startup": "Startup",
+    "logo": "Logo",
+    "changeLogo": "Change logo",
+    "logoUpdated": "Logo updated successfully",
+    "logoHint": "JPG, PNG or WebP. Max 5MB."
   },
   "jobs": {
     "browse": "Browse jobs",
@@ -473,6 +577,17 @@
     "employmentType": "Employment type",
     "salary": "Salary",
     "skills": "Required skills",
+    "responsibilities": "Responsibilities",
+    "skillsTools": "Skills and Tools",
+    "requirements": "Requirements",
+    "benefits": "Benefits",
+    "responsibilitiesPlaceholder": "One per line: e.g. Develop new features, Code review",
+    "skillsToolsPlaceholder": "One per line or comma-separated: e.g. React, TypeScript, Figma",
+    "requirementsPlaceholder": "One per line: e.g. 2+ years experience, Intermediate English",
+    "benefitsPlaceholder": "One per line: e.g. Remote work, Health insurance, Bonuses",
+    "quickApply": "Apply Now",
+    "addMessage": "Add a message",
+    "applied": "Already applied",
     "apply": "Apply",
     "applications": "Applications",
     "searchPlaceholder": "Title, company...",
@@ -482,6 +597,9 @@
     "alreadyApplied": "You already applied to this job",
     "coverLetterDescription": "Optional: write a cover letter",
     "coverLetterPlaceholder": "Why are you interested in this position?",
+    "coverLetterTip": "Adding a cover letter increases your chances of being contacted",
+    "sendWithoutMessage": "Send without message",
+    "sendWithMessage": "Send with message",
     "titlePlaceholder": "e.g. Full Stack Developer",
     "descriptionPlaceholder": "Detailed job description...",
     "salaryMin": "Min salary",
@@ -491,7 +609,51 @@
     "statusDraft": "Draft",
     "statusActive": "Active",
     "statusClosed": "Closed",
-    "createDescription": "Post a new job opening."
+    "createDescription": "Post a new job opening.",
+    "notFound": "Job not found"
+  },
+  "forCompanies": {
+    "badge": "For companies",
+    "heroTitle": "Find the tech talent you need",
+    "heroSubtitle": "Post job offers, manage candidates, and connect with professionals from the Caribbean tech ecosystem. All in one platform.",
+    "ctaCreateCompany": "Create my company",
+    "ctaPostJob": "Post a job offer",
+    "stepsTitle": "How does it work?",
+    "stepsSubtitle": "In four simple steps you can start receiving qualified candidates.",
+    "steps": [
+      {
+        "title": "Create your company",
+        "description": "Register your company with a name, logo, and description. You can manage multiple companies from a single account."
+      },
+      {
+        "title": "Post job offers",
+        "description": "Describe the position, requirements, work mode, and salary range. Your offer will be visible to the entire community."
+      },
+      {
+        "title": "Receive candidates",
+        "description": "Professionals apply directly to your offers. Review profiles, experience, and skills of each candidate."
+      },
+      {
+        "title": "Manage and hire",
+        "description": "Filter applications, compare candidates, and find the ideal professional for your team."
+      }
+    ],
+    "benefits": {
+      "title": "Why Costa Digital?",
+      "subtitle": "Advantages of posting your job offers on the platform.",
+      "items": [
+        "Access to specialized Caribbean tech talent",
+        "Post unlimited job offers for free",
+        "Easy-to-use candidate management dashboard",
+        "Public company profile visible in the directory",
+        "Manage multiple companies from a single account",
+        "Invite team members to collaborate"
+      ]
+    },
+    "bottomCta": {
+      "title": "Ready to find talent?",
+      "subtitle": "Create your company and post your first job offer in minutes."
+    }
   },
   "landing": {
     "hero": {
@@ -500,6 +662,8 @@
       "subtitle": "Connect professionals with companies. Create your profile, apply to jobs, or find the talent you need. Free.",
       "ctaProfessional": "I'm a professional",
       "ctaCompany": "I'm a company",
+      "exploreJobs": "Explore job offers",
+      "createCompany": "Create a company",
       "browseJobs": "Browse jobs",
       "browseTalent": "Browse talent"
     },
@@ -542,6 +706,14 @@
       "viewAll": "View all jobs",
       "empty": "No jobs posted yet",
       "emptyInvite": "Be the first to post a job"
+    },
+    "news": {
+      "title": "Costa Digital News",
+      "subtitle": "Stories, news and what's happening in the Caribbean tech ecosystem",
+      "readMore": "Read more",
+      "viewAll": "See all news",
+      "empty": "No news published yet",
+      "emptyInvite": "Come back soon for stories from the ecosystem"
     },
     "featuredTalent": {
       "title": "Featured talent",

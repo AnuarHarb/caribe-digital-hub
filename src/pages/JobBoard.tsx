@@ -37,6 +37,7 @@ export default function JobBoard() {
                   <JobCard
                     key={job.id}
                     id={job.id}
+                    slug={job.slug}
                     title={job.title}
                     companyName={(job.company_profiles as { company_name?: string })?.company_name}
                     location={job.location}

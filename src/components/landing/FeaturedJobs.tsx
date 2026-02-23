@@ -18,6 +18,7 @@ export function FeaturedJobs() {
         .from("job_postings")
         .select(`
           id,
+          slug,
           title,
           location,
           work_mode,
@@ -109,7 +110,7 @@ export function FeaturedJobs() {
                       </Badge>
                     )}
                   </div>
-                  <Link to={`/empleos/${job.id}`} className="mt-4 block">
+                  <Link to={`/empleos/${job.slug}`} className="mt-4 block">
                     <Button
                       variant="outline"
                       size="sm"

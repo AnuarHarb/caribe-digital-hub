@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 export function DashboardLayout() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dashboard-layout min-h-screen bg-background">
       <Navbar />
       <SidebarProvider>
         <DashboardSidebar />

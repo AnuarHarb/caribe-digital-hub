@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCompanyProfile } from "@/hooks/useProfile";
+import { CompanyLogoUpload } from "@/components/company/CompanyLogoUpload";
 import { toast } from "sonner";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -37,9 +38,13 @@ const companySchema = z.object({
 
 type CompanyFormValues = z.infer<typeof companySchema>;
 
-export function CompanyProfileForm() {
+type CompanyProfileFormProps = {
+  companyId?: string;
+};
+
+export function CompanyProfileForm({ companyId }: CompanyProfileFormProps) {
   const { t } = useTranslation();
-  const { companyProfile, upsertCompanyProfile, isUpserting } = useCompanyProfile();
+  const { companyProfile, upsertCompanyProfile, isUpserting } = useCompanyProfile(companyId);
 
   const form = useForm<CompanyFormValues>({
     resolver: zodResolver(companySchema),
@@ -82,6 +87,14 @@ export function CompanyProfileForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">{t("company.logo")}</label>
+          <CompanyLogoUpload
+            companyId={companyId}
+            currentUrl={companyProfile?.logo_url}
+            companyName={companyProfile?.company_name}
+          />
+        </div>
         <FormField
           control={form.control}
           name="company_name"

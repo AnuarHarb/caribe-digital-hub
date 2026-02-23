@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useActiveCompanyOptional } from "@/contexts/ActiveCompanyContext";
 import type { Database } from "@/integrations/supabase/types";
 
 type JobPostingInsert = Database["public"]["Tables"]["job_postings"]["Insert"];
@@ -76,26 +77,36 @@ export function useJob(jobId: string | undefined, options?: { enabled?: boolean 
   };
 }
 
-export function useCompanyJobs(companyId?: string) {
-  const queryClient = useQueryClient();
-
-  const { data: companyProfile } = useQuery({
-    queryKey: ["company-profile-for-jobs"],
+export function useJobBySlug(slug: string | undefined, options?: { enabled?: boolean }) {
+  const { data: job, isLoading } = useQuery({
+    queryKey: ["job", "slug", slug],
     queryFn: async () => {
-      if (companyId) return { id: companyId };
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return null;
-      const { data } = await supabase
-        .from("company_profiles")
-        .select("id")
-        .eq("user_id", user.id)
-        .maybeSingle();
+      if (!slug) return null;
+      const { data, error } = await supabase
+        .from("job_postings")
+        .select(`
+          *,
+          company_profiles(*),
+          job_required_skills(*)
+        `)
+        .eq("slug", slug)
+        .single();
+      if (error) throw error;
       return data;
     },
-    enabled: !companyId,
+    enabled: !!slug && (options?.enabled ?? true),
   });
 
-  const effectiveCompanyId = companyId ?? companyProfile?.id;
+  return {
+    job,
+    isLoading,
+  };
+}
+
+export function useCompanyJobs(companyId?: string) {
+  const queryClient = useQueryClient();
+  const activeCompany = useActiveCompanyOptional()?.activeCompany;
+  const effectiveCompanyId = companyId ?? activeCompany?.id;
 
   const { data: jobs, isLoading } = useQuery({
     queryKey: ["company-jobs", effectiveCompanyId],

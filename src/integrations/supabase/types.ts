@@ -62,26 +62,47 @@ export type Database = {
       profiles: {
         Row: {
           account_type: Database["public"]["Enums"]["account_type"] | null
+          address: string | null
           avatar_url: string | null
+          city: string | null
           created_at: string | null
+          date_of_birth: string | null
+          document_number: string | null
+          document_type: string | null
+          document_url: string | null
           full_name: string | null
           id: string
+          phone: string | null
           updated_at: string | null
         }
         Insert: {
           account_type?: Database["public"]["Enums"]["account_type"] | null
+          address?: string | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string | null
+          date_of_birth?: string | null
+          document_number?: string | null
+          document_type?: string | null
+          document_url?: string | null
           full_name?: string | null
           id: string
+          phone?: string | null
           updated_at?: string | null
         }
         Update: {
           account_type?: Database["public"]["Enums"]["account_type"] | null
+          address?: string | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string | null
+          date_of_birth?: string | null
+          document_number?: string | null
+          document_type?: string | null
+          document_url?: string | null
           full_name?: string | null
           id?: string
+          phone?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -131,6 +152,69 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           years_experience?: number | null
+        }
+        Relationships: []
+      }
+      contact_interests: {
+        Row: {
+          id: string
+          requester_id: string
+          professional_profile_id: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          requester_id: string
+          professional_profile_id: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          requester_id?: string
+          professional_profile_id?: string
+          created_at?: string | null
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          id: string
+          slug: string
+          title: string
+          excerpt: string | null
+          content: string
+          cover_image_url: string | null
+          author_id: string
+          status: Database["public"]["Enums"]["blog_status"]
+          published_at: string | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          slug: string
+          title: string
+          excerpt?: string | null
+          content: string
+          cover_image_url?: string | null
+          author_id: string
+          status?: Database["public"]["Enums"]["blog_status"]
+          published_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          slug?: string
+          title?: string
+          excerpt?: string | null
+          content?: string
+          cover_image_url?: string | null
+          author_id?: string
+          status?: Database["public"]["Enums"]["blog_status"]
+          published_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -266,6 +350,66 @@ export type Database = {
         }
         Relationships: []
       }
+      company_members: {
+        Row: {
+          id: string
+          company_id: string
+          user_id: string
+          role: Database["public"]["Enums"]["company_member_role"]
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          company_id: string
+          user_id: string
+          role?: Database["public"]["Enums"]["company_member_role"]
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          company_id?: string
+          user_id?: string
+          role?: Database["public"]["Enums"]["company_member_role"]
+          created_at?: string | null
+        }
+        Relationships: []
+      }
+      company_invitations: {
+        Row: {
+          id: string
+          company_id: string
+          invited_email: string
+          invited_by: string
+          role: Database["public"]["Enums"]["company_member_role"]
+          status: Database["public"]["Enums"]["invitation_status"]
+          token: string
+          created_at: string | null
+          expires_at: string | null
+        }
+        Insert: {
+          id?: string
+          company_id: string
+          invited_email: string
+          invited_by: string
+          role?: Database["public"]["Enums"]["company_member_role"]
+          status?: Database["public"]["Enums"]["invitation_status"]
+          token?: string
+          created_at?: string | null
+          expires_at?: string | null
+        }
+        Update: {
+          id?: string
+          company_id?: string
+          invited_email?: string
+          invited_by?: string
+          role?: Database["public"]["Enums"]["company_member_role"]
+          status?: Database["public"]["Enums"]["invitation_status"]
+          token?: string
+          created_at?: string | null
+          expires_at?: string | null
+        }
+        Relationships: []
+      }
       job_postings: {
         Row: {
           company_id: string
@@ -278,10 +422,15 @@ export type Database = {
           salary_currency: string | null
           salary_max: number | null
           salary_min: number | null
+          slug: string
           status: Database["public"]["Enums"]["job_status"]
           title: string
           updated_at: string | null
           work_mode: Database["public"]["Enums"]["work_mode"] | null
+          responsibilities: string | null
+          skills_tools: string | null
+          requirements: string | null
+          benefits: string | null
         }
         Insert: {
           company_id: string
@@ -294,10 +443,15 @@ export type Database = {
           salary_currency?: string | null
           salary_max?: number | null
           salary_min?: number | null
+          slug?: string
           status?: Database["public"]["Enums"]["job_status"]
           title: string
           updated_at?: string | null
           work_mode?: Database["public"]["Enums"]["work_mode"] | null
+          responsibilities?: string | null
+          skills_tools?: string | null
+          requirements?: string | null
+          benefits?: string | null
         }
         Update: {
           company_id?: string
@@ -310,10 +464,15 @@ export type Database = {
           salary_currency?: string | null
           salary_max?: number | null
           salary_min?: number | null
+          slug?: string
           status?: Database["public"]["Enums"]["job_status"]
           title?: string
           updated_at?: string | null
           work_mode?: Database["public"]["Enums"]["work_mode"] | null
+          responsibilities?: string | null
+          skills_tools?: string | null
+          requirements?: string | null
+          benefits?: string | null
         }
         Relationships: []
       }
@@ -405,6 +564,9 @@ export type Database = {
     Enums: {
       account_type: "professional" | "company"
       app_role: "admin" | "user"
+      company_member_role: "owner" | "admin" | "member"
+      invitation_status: "pending" | "accepted" | "declined"
+      blog_status: "draft" | "published"
       application_status: "pending" | "reviewed" | "interview" | "accepted" | "rejected"
       availability_status: "available" | "open_to_offers" | "not_looking"
       company_size: "startup" | "small" | "medium" | "large" | "enterprise"
@@ -541,6 +703,9 @@ export const Constants = {
     Enums: {
       account_type: ["professional", "company"],
       app_role: ["admin", "user"],
+      company_member_role: ["owner", "admin", "member"],
+      invitation_status: ["pending", "accepted", "declined"],
+      blog_status: ["draft", "published"],
       application_status: ["pending", "reviewed", "interview", "accepted", "rejected"],
       availability_status: ["available", "open_to_offers", "not_looking"],
       company_size: ["startup", "small", "medium", "large", "enterprise"],

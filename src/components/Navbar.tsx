@@ -1,57 +1,60 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
-import { User } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import logoImage from "@/assets/costa-digital-logo.png";
-import { Menu } from "lucide-react";
+import { Menu, ChevronDown, LayoutDashboard, Settings, LogOut, Newspaper } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth, useProfile } from "@/hooks/useAuth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+function getInitials(name: string | null | undefined): string {
+  if (!name?.trim()) return "?";
+  const parts = name.split(/\s+/);
+  if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  return name.slice(0, 2).toUpperCase();
+}
 
 export function Navbar() {
   const { t } = useTranslation();
-  const [user, setUser] = useState<User | null>(null);
+  const { user } = useAuth();
+  const { profile } = useProfile();
   const [isAdmin, setIsAdmin] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useIsMobile();
 
+  const authUrl = `/auth?redirect=${encodeURIComponent(location.pathname + location.search)}`;
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
-      }
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
-      } else {
-        setIsAdmin(false);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const checkAdminStatus = async (userId: string) => {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-
-    setIsAdmin(!!data);
-  };
+    if (!user?.id) {
+      setIsAdmin(false);
+      return;
+    }
+    const checkAdminStatus = async () => {
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      setIsAdmin(!!data);
+    };
+    checkAdminStatus();
+  }, [user?.id]);
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -63,6 +66,68 @@ export function Navbar() {
     }
   };
 
+  const UserMenu = ({ onItemClick }: { onItemClick?: () => void }) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="gap-2 px-2">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={profile?.avatar_url ?? undefined} alt="" />
+            <AvatarFallback className="bg-accent/20 text-accent-foreground text-sm">
+              {getInitials(profile?.full_name)}
+            </AvatarFallback>
+          </Avatar>
+          <span className="hidden sm:inline truncate max-w-[120px]">
+            {profile?.full_name || user?.email || t("nav.dashboard")}
+          </span>
+          <ChevronDown className="h-4 w-4 shrink-0 opacity-50" aria-hidden />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard" onClick={onItemClick} className="flex items-center gap-2 cursor-pointer">
+            <LayoutDashboard className="h-4 w-4" />
+            {t("nav.dashboard")}
+          </Link>
+        </DropdownMenuItem>
+        {isAdmin && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link
+                to="/admin/configuracion"
+                onClick={onItemClick}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Settings className="h-4 w-4" />
+                {t("nav.admin")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link
+                to="/admin/blog"
+                onClick={onItemClick}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <Newspaper className="h-4 w-4" />
+                {t("nav.blog")}
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => {
+            onItemClick?.();
+            handleLogout();
+          }}
+          className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
+        >
+          <LogOut className="h-4 w-4" />
+          {t("nav.logout")}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   const NavLinks = () => (
     <>
       <Link to="/empleos" onClick={() => setMobileMenuOpen(false)}>
@@ -71,22 +136,13 @@ export function Navbar() {
       <Link to="/talento" onClick={() => setMobileMenuOpen(false)}>
         <Button variant="ghost">{t("nav.talent")}</Button>
       </Link>
+      <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>
+        <Button variant="ghost">{t("nav.blog")}</Button>
+      </Link>
       {user ? (
-        <>
-          <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-            <Button variant="ghost">{t("nav.dashboard")}</Button>
-          </Link>
-          {isAdmin && (
-            <Link to="/admin/configuracion" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline">{t("nav.settings")}</Button>
-            </Link>
-          )}
-          <Button variant="ghost" onClick={handleLogout}>
-            {t("nav.logout")}
-          </Button>
-        </>
+        <UserMenu onItemClick={() => setMobileMenuOpen(false)} />
       ) : (
-        <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
+        <Link to={authUrl} onClick={() => setMobileMenuOpen(false)}>
           <Button variant="default">{t("nav.login")}</Button>
         </Link>
       )}

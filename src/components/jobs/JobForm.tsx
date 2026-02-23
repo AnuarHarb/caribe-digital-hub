@@ -36,6 +36,10 @@ const jobSchema = z.object({
   salary_max: z.coerce.number().min(0).optional(),
   salary_currency: z.string().optional(),
   status: z.enum(["draft", "active", "closed"]),
+  responsibilities: z.string().optional(),
+  skills_tools: z.string().optional(),
+  requirements: z.string().optional(),
+  benefits: z.string().optional(),
 });
 
 type JobFormValues = z.infer<typeof jobSchema>;
@@ -67,6 +71,10 @@ export function JobForm({
       salary_max: undefined,
       salary_currency: "USD",
       status: "draft",
+      responsibilities: "",
+      skills_tools: "",
+      requirements: "",
+      benefits: "",
       ...defaultValues,
     },
   });
@@ -95,6 +103,74 @@ export function JobForm({
               <FormLabel>{t("jobs.description")}</FormLabel>
               <FormControl>
                 <Textarea placeholder={t("jobs.descriptionPlaceholder")} rows={6} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="responsibilities"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("jobs.responsibilities")}</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder={t("jobs.responsibilitiesPlaceholder")}
+                  rows={4}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="skills_tools"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("jobs.skillsTools")}</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder={t("jobs.skillsToolsPlaceholder")}
+                  rows={3}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="requirements"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("jobs.requirements")}</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder={t("jobs.requirementsPlaceholder")}
+                  rows={4}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="benefits"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("jobs.benefits")}</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder={t("jobs.benefitsPlaceholder")}
+                  rows={3}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

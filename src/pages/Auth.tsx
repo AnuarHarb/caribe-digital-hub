@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +17,7 @@ type AccountType = Database["public"]["Enums"]["account_type"];
 export default function Auth() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const preselectedType = searchParams.get("type") as AccountType | null;
   const [mode, setMode] = useState<"login" | "signup">(preselectedType ? "signup" : "login");
   const [email, setEmail] = useState("");
@@ -25,6 +26,7 @@ export default function Auth() {
   const [accountType, setAccountType] = useState<AccountType>(
     preselectedType === "company" ? "company" : "professional"
   );
+  const [companyName, setCompanyName] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -52,7 +54,15 @@ export default function Auth() {
         return;
       }
       toast.success(t("auth.welcome"));
-      navigate("/dashboard");
+      const redirectParam = searchParams.get("redirect");
+      const fromState = (location.state as { from?: { pathname?: string; search?: string } })?.from;
+      const redirectTo =
+        redirectParam && redirectParam.startsWith("/") && redirectParam !== "/auth"
+          ? redirectParam
+          : fromState?.pathname
+            ? fromState.pathname + (fromState.search ?? "")
+            : "/";
+      navigate(redirectTo);
     } catch {
       toast.error(t("common.error"));
     } finally {
@@ -70,6 +80,11 @@ export default function Auth() {
         setLoading(false);
         return;
       }
+      if (accountType === "company" && !companyName?.trim()) {
+        toast.error(t("auth.companyNameRequired"));
+        setLoading(false);
+        return;
+      }
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -77,6 +92,9 @@ export default function Auth() {
           data: {
             full_name: fullName || undefined,
             account_type: accountType,
+            ...(accountType === "company" && companyName?.trim()
+              ? { company_name: companyName.trim() }
+              : {}),
           },
         },
       });
@@ -174,6 +192,19 @@ export default function Auth() {
                     </label>
                   </RadioGroup>
                 </div>
+                {accountType === "company" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-company-name">{t("auth.companyName")}</Label>
+                    <Input
+                      id="signup-company-name"
+                      type="text"
+                      placeholder={t("auth.companyNamePlaceholder")}
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      required={accountType === "company"}
+                    />
+                  </div>
+                )}
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">{t("auth.email")}</Label>
                   <Input

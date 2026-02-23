@@ -26,7 +26,7 @@ export default function MyApplications() {
       ) : (
         <div className="space-y-4">
           {applications.map((app) => {
-            const job = app.job_postings as { id?: string; title?: string; company_profiles?: { company_name?: string } } | null;
+            const job = app.job_postings as { id?: string; slug?: string; title?: string; company_profiles?: { company_name?: string } } | null;
             return (
               <Card key={app.id}>
                 <CardHeader className="flex flex-row items-center justify-between">
@@ -39,8 +39,8 @@ export default function MyApplications() {
                       {t(`common.applicationStatus.${app.status}`)}
                     </p>
                   </div>
-                  {job?.id && (
-                    <Link to={`/empleos/${job.id}`}>
+                  {job?.slug && (
+                    <Link to={`/empleos/${job.slug}`}>
                       <Button variant="outline" size="sm">
                         {t("landing.featuredJobs.viewJob")}
                       </Button>

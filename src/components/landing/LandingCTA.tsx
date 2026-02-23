@@ -34,7 +34,7 @@ export function LandingCTA() {
             <Button
               variant="outline"
               size="lg"
-              className="w-full border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 sm:w-auto"
+              className="w-full border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground sm:w-auto"
             >
               {t("landing.cta.ctaCompany")}
             </Button>

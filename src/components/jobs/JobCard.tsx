@@ -6,6 +6,7 @@ import { Briefcase } from "lucide-react";
 
 interface JobCardProps {
   id: string;
+  slug: string;
   title: string;
   companyName?: string;
   location?: string | null;
@@ -15,6 +16,7 @@ interface JobCardProps {
 
 export function JobCard({
   id,
+  slug,
   title,
   companyName,
   location,
@@ -42,7 +44,7 @@ export function JobCard({
           {workMode && <span>• {t(`common.workMode.${workMode}`)}</span>}
           {employmentType && <span>• {t(`common.employmentType.${employmentType}`)}</span>}
         </div>
-        <Link to={`/empleos/${id}`} className="mt-4 block">
+        <Link to={`/empleos/${slug}`} className="mt-4 block">
           <Button variant="outline" size="sm" className="w-full">
             {t("landing.featuredJobs.viewJob")}
           </Button>

@@ -58,7 +58,18 @@ export function useProfile() {
 
   const accountType = profile?.account_type ?? null;
 
-  const updateProfile = async (updates: { full_name?: string; account_type?: AccountType; avatar_url?: string }) => {
+  const updateProfile = async (updates: {
+    full_name?: string;
+    account_type?: AccountType;
+    avatar_url?: string;
+    phone?: string;
+    address?: string;
+    city?: string;
+    date_of_birth?: string;
+    document_type?: string;
+    document_number?: string;
+    document_url?: string;
+  }) => {
     if (!user?.id) throw new Error("Not authenticated");
     const { error } = await supabase
       .from("profiles")
@@ -69,6 +80,7 @@ export function useProfile() {
   };
 
   return {
+    user,
     profile,
     accountType,
     isLoading,

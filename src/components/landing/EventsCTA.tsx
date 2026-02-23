@@ -33,10 +33,17 @@ export function EventsCTA() {
           {/* CTA Card with FCA logo */}
           <article className="rounded-xl border border-border bg-card p-8 text-center shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg lg:text-left">
             <div className="flex justify-center lg:justify-start">
+              {/* Light mode: dark logo for contrast on light background */}
+              <img
+                src="/logos/fca-black.png"
+                alt="Fundación Código Abierto"
+                className="h-14 w-auto object-contain dark:hidden"
+              />
+              {/* Dark mode: light/colored logo for contrast on dark background */}
               <img
                 src="/logos/logo-fca.webp"
                 alt="Fundación Código Abierto"
-                className="h-14 w-auto object-contain"
+                className="hidden h-14 w-auto object-contain dark:block"
               />
             </div>
             <h2

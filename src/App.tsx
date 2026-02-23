@@ -19,9 +19,15 @@ import MyApplications from "./pages/MyApplications";
 import ManageJobs from "./pages/ManageJobs";
 import CreateJob from "./pages/CreateJob";
 import ViewApplicants from "./pages/ViewApplicants";
+import CompanySettings from "./pages/CompanySettings";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
+import AdminBlog from "./pages/AdminBlog";
+import ForCompanies from "./pages/ForCompanies";
 import NotFound from "./pages/NotFound";
 import { DashboardLayout } from "./components/shared/DashboardLayout";
 import { ProtectedRoute } from "./components/shared/ProtectedRoute";
+import { ActiveCompanyProvider } from "./contexts/ActiveCompanyContext";
 
 const queryClient = new QueryClient();
 
@@ -36,15 +42,20 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/empleos" element={<JobBoard />} />
-            <Route path="/empleos/:id" element={<JobDetail />} />
+            <Route path="/empleos/:slug" element={<JobDetail />} />
             <Route path="/talento" element={<TalentDirectory />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/perfil/:id" element={<PublicProfile />} />
+            <Route path="/para-empresas" element={<ForCompanies />} />
             <Route path="/empresa/:id" element={<CompanyPublicProfile />} />
             <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <DashboardLayout />
+                  <ActiveCompanyProvider>
+                    <DashboardLayout />
+                  </ActiveCompanyProvider>
                 </ProtectedRoute>
               }
             >
@@ -54,8 +65,10 @@ const App = () => (
               <Route path="empleos" element={<ManageJobs />} />
               <Route path="empleos/nuevo" element={<CreateJob />} />
               <Route path="candidatos" element={<ViewApplicants />} />
+              <Route path="empresa" element={<CompanySettings />} />
             </Route>
             <Route path="/admin/configuracion" element={<AdminSettings />} />
+            <Route path="/admin/blog" element={<AdminBlog />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -1,16 +1,23 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { User, MapPin, Briefcase, GraduationCap, ExternalLink } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
+import { useContactInterest } from "@/hooks/useContactInterest";
 
 export default function PublicProfile() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const { expressInterest, isSubmitting, isAuthenticated } = useContactInterest();
 
+  // Query only fetches professional info; contact data (phone, email, address) is intentionally excluded
   const { data: professional, isLoading } = useQuery({
     queryKey: ["professional-profile", id],
     queryFn: async () => {
@@ -175,10 +182,32 @@ export default function PublicProfile() {
         </Card>
       )}
 
-      <div className="flex justify-center">
+      <div className="flex flex-wrap justify-center gap-2">
         <Link to="/empleos">
-          <Button>{t("talent.viewJobs")}</Button>
+          <Button variant="outline">{t("talent.viewJobs")}</Button>
         </Link>
+        {professional.user_id !== user?.id && (
+          <Button
+            onClick={async () => {
+              if (!isAuthenticated) {
+                navigate(`/auth?redirect=/perfil/${id}`);
+                toast.info(t("talent.contactLoginRequired"));
+                return;
+              }
+              const result = await expressInterest(professional.id);
+              if (result.success) {
+                toast.success(t("talent.contactSuccess"));
+              } else if (result.error === "already_expressed") {
+                toast.info(t("talent.contactAlreadyExpressed"));
+              } else {
+                toast.error(result.error);
+              }
+            }}
+            disabled={isSubmitting}
+          >
+            {t("talent.contact")}
+          </Button>
+        )}
       </div>
     </article>
       </main>

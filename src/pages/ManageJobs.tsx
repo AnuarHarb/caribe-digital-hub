@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useCompanyJobs } from "@/hooks/useJobs";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { Briefcase, Plus } from "lucide-react";
@@ -43,7 +43,7 @@ export default function ManageJobs() {
                       {t("dashboard.candidates")}
                     </Button>
                   </Link>
-                  <Link to={`/empleos/${job.id}`}>
+                  <Link to={`/empleos/${job.slug}`}>
                     <Button variant="ghost" size="sm">
                       {t("landing.featuredJobs.viewJob")}
                     </Button>

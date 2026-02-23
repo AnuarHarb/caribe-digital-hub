@@ -29,6 +29,7 @@ export function useMyApplications() {
           *,
           job_postings(
             id,
+            slug,
             title,
             status,
             company_profiles(company_name)

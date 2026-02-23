@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 import logoImage from "@/assets/costa-digital-logo.png";
 
 export function HeroTalent() {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="hero-bg relative overflow-hidden py-20 md:py-32">
@@ -29,23 +31,47 @@ export function HeroTalent() {
           {t("landing.hero.subtitle")}
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link to="/auth?type=professional">
-            <Button
-              size="lg"
-              className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"
-            >
-              {t("landing.hero.ctaProfessional")}
-            </Button>
-          </Link>
-          <Link to="/auth?type=company">
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full transition-all duration-300 hover:border-accent/50 sm:w-auto"
-            >
-              {t("landing.hero.ctaCompany")}
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/empleos">
+                <Button
+                  size="lg"
+                  className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"
+                >
+                  {t("landing.hero.exploreJobs")}
+                </Button>
+              </Link>
+              <Link to="/para-empresas">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full transition-all duration-300 hover:border-accent/50 sm:w-auto"
+                >
+                  {t("landing.hero.ctaCompany")}
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/auth?type=professional">
+                <Button
+                  size="lg"
+                  className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"
+                >
+                  {t("landing.hero.ctaProfessional")}
+                </Button>
+              </Link>
+              <Link to="/auth?type=company">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full transition-all duration-300 hover:border-accent/50 sm:w-auto"
+                >
+                  {t("landing.hero.ctaCompany")}
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Link to="/empleos">
