@@ -1,7 +1,8 @@
 {
   "nav": {
-    "events": "Eventos",
-    "manageEvents": "Gestionar Eventos",
+    "jobs": "Empleos",
+    "talent": "Talento",
+    "dashboard": "Panel",
     "settings": "Configuración",
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión"
@@ -135,51 +136,25 @@
   },
   "auth": {
     "login": "Iniciar Sesión",
+    "signup": "Registrarse",
     "loginDescription": "Ingresa tus credenciales para continuar",
+    "signupDescription": "Crea tu cuenta para unirte a la red de talento",
     "email": "Email",
     "password": "Contraseña",
+    "fullName": "Nombre completo",
+    "accountType": "Tipo de cuenta",
+    "accountTypeProfessional": "Profesional",
+    "accountTypeCompany": "Empresa",
+    "accountTypeDescription": "¿Eres un profesional buscando empleo o una empresa buscando talento?",
     "processing": "Procesando...",
     "invalidCredentials": "Credenciales inválidas",
     "welcome": "¡Bienvenido!",
     "invalidEmail": "Email inválido",
-    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
-  },
-  "events": {
-    "title": "Próximos Eventos",
-    "description": "Descubre los eventos de tecnología en Costa Rica",
-    "noEvents": "No hay eventos programados",
-    "register": "Registrarse",
-    "date": "Fecha",
-    "time": "Hora",
-    "location": "Lugar",
-    "organizer": "Organizador"
-  },
-  "adminEvents": {
-    "title": "Gestión de Eventos",
-    "description": "Administra los eventos de la comunidad",
-    "createEvent": "Crear Evento",
-    "editEvent": "Editar Evento",
-    "name": "Nombre del Evento",
-    "date": "Fecha",
-    "time": "Hora",
-    "location": "Lugar",
-    "organizer": "Organizador",
-    "registrationLink": "Link de Registro",
-    "description": "Descripción",
-    "imageUrl": "URL de Imagen",
-    "save": "Guardar",
-    "cancel": "Cancelar",
-    "loading": "Cargando...",
-    "noPermission": "No tienes permisos para acceder a esta página",
-    "eventCreated": "Evento creado exitosamente",
-    "eventUpdated": "Evento actualizado exitosamente",
-    "eventDeleted": "Evento eliminado exitosamente",
-    "nameMinLength": "El nombre debe tener al menos 3 caracteres",
-    "dateRequired": "La fecha es requerida",
-    "timeRequired": "La hora es requerida",
-    "locationMinLength": "El lugar debe tener al menos 3 caracteres",
-    "organizerMinLength": "El organizador debe tener al menos 2 caracteres",
-    "validUrl": "Debe ser una URL válida"
+    "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+    "signupSuccess": "¡Cuenta creada! Revisa tu email para confirmar.",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "noAccount": "¿No tienes cuenta?",
+    "networkError": "Error de conexión (Failed to fetch). Verifica: 1) Internet activo, 2) Proyecto Supabase activo en dashboard, 3) Prueba otra red o DNS (ej. 8.8.8.8)."
   },
   "adminSettings": {
     "title": "Gestión de Usuarios",
@@ -214,7 +189,30 @@
     "create": "Crear",
     "loading": "Cargando...",
     "error": "Error",
-    "success": "Éxito"
+    "success": "Éxito",
+    "workMode": {
+      "remote": "Remoto",
+      "hybrid": "Híbrido",
+      "onsite": "Presencial"
+    },
+    "employmentType": {
+      "full_time": "Tiempo completo",
+      "part_time": "Medio tiempo",
+      "contract": "Contrato",
+      "freelance": "Freelance"
+    },
+    "availability": {
+      "available": "Disponible",
+      "open_to_offers": "Abierto a ofertas",
+      "not_looking": "No buscando"
+    },
+    "applicationStatus": {
+      "pending": "Pendiente",
+      "reviewed": "Revisado",
+      "interview": "Entrevista",
+      "accepted": "Aceptado",
+      "rejected": "Rechazado"
+    }
   },
   "membresia": {
     "nav": {
@@ -399,6 +397,177 @@
     },
     "floatingCta": {
       "text": "Únete a Costa Digital"
+    }
+  },
+  "profile": {
+    "title": "Título profesional",
+    "titlePlaceholder": "ej. Desarrollador Full Stack",
+    "bio": "Biografía",
+    "bioPlaceholder": "Cuéntanos sobre ti y tu experiencia...",
+    "location": "Ubicación",
+    "locationPlaceholder": "ej. Barranquilla, Colombia",
+    "yearsExperience": "Años de experiencia",
+    "availability": "Disponibilidad",
+    "selectAvailability": "Selecciona tu disponibilidad",
+    "portfolio": "Portafolio",
+    "editDescription": "Completa tu perfil para que las empresas te encuentren."
+  },
+  "talent": {
+    "filters": "Filtros",
+    "search": "Buscar",
+    "searchPlaceholder": "Nombre, habilidades...",
+    "all": "Todos",
+    "clearFilters": "Limpiar filtros",
+    "skills": "Habilidades",
+    "experience": "Experiencia",
+    "education": "Educación",
+    "present": "Presente",
+    "viewJobs": "Ver ofertas de empleo"
+  },
+  "applications": {
+    "empty": "Aún no has aplicado a ninguna oferta.",
+    "viewCandidates": "Revisa los candidatos que aplicaron a tus ofertas.",
+    "noJobs": "Publica una oferta para recibir candidatos.",
+    "noCandidates": "Aún no hay candidatos para esta oferta."
+  },
+  "dashboard": {
+    "profile": "Mi perfil",
+    "applications": "Mis aplicaciones",
+    "jobs": "Mis ofertas",
+    "newJob": "Nueva oferta",
+    "candidates": "Candidatos",
+    "welcomeProfessional": "Completa tu perfil para empezar",
+    "welcomeCompany": "Configura tu empresa para publicar ofertas",
+    "activeJobs": "ofertas activas",
+    "manageJobs": "Gestionar ofertas",
+    "viewCandidates": "Ver candidatos",
+    "applicationsCount": "aplicaciones enviadas",
+    "viewApplications": "Ver mis aplicaciones",
+    "createProfile": "Crear perfil",
+    "completeProfile": "Completa tu perfil",
+    "completeProfileDescription": "Añade tu información para que las empresas te encuentren."
+  },
+  "company": {
+    "name": "Nombre de la empresa",
+    "namePlaceholder": "Mi Empresa SAS",
+    "descriptionPlaceholder": "Descripción de la empresa...",
+    "industry": "Industria",
+    "industryPlaceholder": "ej. Tecnología, Fintech",
+    "website": "Sitio web",
+    "size": "Tamaño",
+    "selectSize": "Selecciona el tamaño",
+    "small": "Pequeña (1-50)",
+    "medium": "Mediana (51-200)",
+    "large": "Grande (201-1000)",
+    "enterprise": "Enterprise (1000+)",
+    "editDescription": "Completa el perfil de tu empresa para publicar ofertas.",
+    "openPositions": "Ofertas abiertas",
+    "viewProfile": "Ver perfil de la empresa"
+  },
+  "jobs": {
+    "browse": "Ver empleos",
+    "title": "Título",
+    "description": "Descripción",
+    "location": "Ubicación",
+    "workMode": "Modalidad",
+    "employmentType": "Tipo de empleo",
+    "salary": "Salario",
+    "skills": "Habilidades requeridas",
+    "apply": "Aplicar",
+    "applications": "Aplicaciones",
+    "searchPlaceholder": "Título, empresa...",
+    "selectJob": "Selecciona una oferta",
+    "needProfile": "Completa tu perfil profesional para aplicar",
+    "applySuccess": "¡Aplicación enviada!",
+    "alreadyApplied": "Ya aplicaste a esta oferta",
+    "coverLetterDescription": "Opcional: escribe una carta de presentación",
+    "coverLetterPlaceholder": "¿Por qué te interesa esta posición?",
+    "titlePlaceholder": "ej. Desarrollador Full Stack",
+    "descriptionPlaceholder": "Descripción detallada del puesto...",
+    "salaryMin": "Salario mínimo",
+    "salaryMax": "Salario máximo",
+    "currency": "Moneda",
+    "status": "Estado",
+    "statusDraft": "Borrador",
+    "statusActive": "Activa",
+    "statusClosed": "Cerrada",
+    "createDescription": "Publica una nueva oferta de trabajo."
+  },
+  "landing": {
+    "hero": {
+      "badge": "",
+      "title": "La red de talento tech del Caribe",
+      "subtitle": "Conecta profesionales con empresas. Crea tu perfil, aplica a empleos o encuentra el talento que necesitas.",
+      "ctaProfessional": "Soy profesional",
+      "ctaCompany": "Soy empresa",
+      "browseJobs": "Ver empleos",
+      "browseTalent": "Ver talento"
+    },
+    "eventsCta": {
+      "title": "Eventos de comunidad",
+      "description": "Asiste a los eventos de comunidad para hacer contactos y networking",
+      "cta": "Ver eventos"
+    },
+    "ecosystemMapCta": {
+      "title": "Mapa del ecosistema",
+      "description": "Conoce quiénes están haciendo tecnología en la región",
+      "cta": "Explorar mapa"
+    },
+    "howItWorks": {
+      "title": "¿Cómo funciona?",
+      "subtitle": "Una plataforma para profesionales y empresas del Caribe.",
+      "professionals": {
+        "title": "Para profesionales",
+        "steps": [
+          "Crea tu perfil y sube tu CV",
+          "Completa tu experiencia y habilidades",
+          "Aplica a ofertas de trabajo",
+          "Recibe recomendaciones de empresas"
+        ]
+      },
+      "companies": {
+        "title": "Para empresas",
+        "steps": [
+          "Regístrate como empresa",
+          "Publica tus ofertas de trabajo",
+          "Recibe candidatos recomendados",
+          "Encuentra el talento que necesitas"
+        ]
+      }
+    },
+    "featuredJobs": {
+      "title": "Ofertas destacadas",
+      "subtitle": "Últimas oportunidades en la región",
+      "viewJob": "Ver oferta",
+      "viewAll": "Ver todas las ofertas",
+      "empty": "Aún no hay ofertas publicadas",
+      "emptyInvite": "Sé el primero en publicar una oferta"
+    },
+    "featuredTalent": {
+      "title": "Talento destacado",
+      "subtitle": "Profesionales disponibles en la región",
+      "viewProfile": "Ver perfil",
+      "viewAll": "Ver todo el talento",
+      "years": "{{count}} años de experiencia",
+      "empty": "Aún no hay profesionales registrados",
+      "emptyInvite": "Crea tu perfil y sé parte del directorio"
+    },
+    "stats": {
+      "title": "La red en números",
+      "professionals": "Profesionales",
+      "companies": "Empresas",
+      "jobs": "Ofertas activas"
+    },
+    "cta": {
+      "title": "Únete a la red",
+      "subtitle": "Regístrate y empieza a conectar con el ecosistema tech del Caribe.",
+      "ctaProfessional": "Crear perfil profesional",
+      "ctaCompany": "Registrar empresa"
+    },
+    "footer": {
+      "externalLinks": "Enlaces externos",
+      "events": "Eventos de comunidad",
+      "ecosystemMap": "Mapa del ecosistema"
     }
   }
 }

@@ -5,13 +5,23 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
-import Index from "./pages/Index";
+import Landing from "./pages/Landing";
 import Auth from "./pages/Auth";
-import Events from "./pages/Events";
-import AdminEvents from "./pages/AdminEvents";
 import AdminSettings from "./pages/AdminSettings";
-import Membresia from "./pages/Membresia";
+import JobBoard from "./pages/JobBoard";
+import JobDetail from "./pages/JobDetail";
+import TalentDirectory from "./pages/TalentDirectory";
+import PublicProfile from "./pages/PublicProfile";
+import CompanyPublicProfile from "./pages/CompanyPublicProfile";
+import Dashboard from "./pages/Dashboard";
+import EditProfile from "./pages/EditProfile";
+import MyApplications from "./pages/MyApplications";
+import ManageJobs from "./pages/ManageJobs";
+import CreateJob from "./pages/CreateJob";
+import ViewApplicants from "./pages/ViewApplicants";
 import NotFound from "./pages/NotFound";
+import { DashboardLayout } from "./components/shared/DashboardLayout";
+import { ProtectedRoute } from "./components/shared/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -23,13 +33,29 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Membresia />} />
-            <Route path="/manifesto" element={<Index />} />
+            <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/eventos" element={<Events />} />
-            <Route path="/admin/eventos" element={<AdminEvents />} />
+            <Route path="/empleos" element={<JobBoard />} />
+            <Route path="/empleos/:id" element={<JobDetail />} />
+            <Route path="/talento" element={<TalentDirectory />} />
+            <Route path="/perfil/:id" element={<PublicProfile />} />
+            <Route path="/empresa/:id" element={<CompanyPublicProfile />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="perfil" element={<EditProfile />} />
+              <Route path="aplicaciones" element={<MyApplications />} />
+              <Route path="empleos" element={<ManageJobs />} />
+              <Route path="empleos/nuevo" element={<CreateJob />} />
+              <Route path="candidatos" element={<ViewApplicants />} />
+            </Route>
             <Route path="/admin/configuracion" element={<AdminSettings />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

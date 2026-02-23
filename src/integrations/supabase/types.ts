@@ -61,19 +61,313 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_type: Database["public"]["Enums"]["account_type"] | null
+          avatar_url: string | null
           created_at: string | null
           full_name: string | null
           id: string
+          updated_at: string | null
         }
         Insert: {
+          account_type?: Database["public"]["Enums"]["account_type"] | null
+          avatar_url?: string | null
           created_at?: string | null
           full_name?: string | null
           id: string
+          updated_at?: string | null
         }
         Update: {
+          account_type?: Database["public"]["Enums"]["account_type"] | null
+          avatar_url?: string | null
           created_at?: string | null
           full_name?: string | null
           id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      professional_profiles: {
+        Row: {
+          availability: Database["public"]["Enums"]["availability_status"]
+          bio: string | null
+          created_at: string | null
+          github_url: string | null
+          id: string
+          linkedin_url: string | null
+          location: string | null
+          portfolio_url: string | null
+          resume_url: string | null
+          title: string | null
+          updated_at: string | null
+          user_id: string
+          years_experience: number | null
+        }
+        Insert: {
+          availability?: Database["public"]["Enums"]["availability_status"]
+          bio?: string | null
+          created_at?: string | null
+          github_url?: string | null
+          id?: string
+          linkedin_url?: string | null
+          location?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id: string
+          years_experience?: number | null
+        }
+        Update: {
+          availability?: Database["public"]["Enums"]["availability_status"]
+          bio?: string | null
+          created_at?: string | null
+          github_url?: string | null
+          id?: string
+          linkedin_url?: string | null
+          location?: string | null
+          portfolio_url?: string | null
+          resume_url?: string | null
+          title?: string | null
+          updated_at?: string | null
+          user_id?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      professional_skills: {
+        Row: {
+          created_at: string | null
+          id: string
+          professional_id: string
+          skill_level: Database["public"]["Enums"]["skill_level"]
+          skill_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          professional_id: string
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          skill_name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          professional_id?: string
+          skill_level?: Database["public"]["Enums"]["skill_level"]
+          skill_name?: string
+        }
+        Relationships: []
+      }
+      professional_experience: {
+        Row: {
+          company_name: string
+          created_at: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          position: string
+          professional_id: string
+          start_date: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          position: string
+          professional_id: string
+          start_date: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          position?: string
+          professional_id?: string
+          start_date?: string
+        }
+        Relationships: []
+      }
+      professional_education: {
+        Row: {
+          created_at: string | null
+          degree: string | null
+          end_date: string | null
+          field_of_study: string | null
+          id: string
+          institution: string
+          professional_id: string
+          start_date: string
+        }
+        Insert: {
+          created_at?: string | null
+          degree?: string | null
+          end_date?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution: string
+          professional_id: string
+          start_date: string
+        }
+        Update: {
+          created_at?: string | null
+          degree?: string | null
+          end_date?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution?: string
+          professional_id?: string
+          start_date?: string
+        }
+        Relationships: []
+      }
+      company_profiles: {
+        Row: {
+          company_name: string
+          company_size: Database["public"]["Enums"]["company_size"] | null
+          created_at: string | null
+          description: string | null
+          id: string
+          industry: string | null
+          location: string | null
+          logo_url: string | null
+          updated_at: string | null
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          company_name: string
+          company_size?: Database["public"]["Enums"]["company_size"] | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          updated_at?: string | null
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          company_name?: string
+          company_size?: Database["public"]["Enums"]["company_size"] | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          updated_at?: string | null
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      job_postings: {
+        Row: {
+          company_id: string
+          created_at: string | null
+          description: string
+          employment_type: Database["public"]["Enums"]["employment_type"] | null
+          expires_at: string | null
+          id: string
+          location: string | null
+          salary_currency: string | null
+          salary_max: number | null
+          salary_min: number | null
+          status: Database["public"]["Enums"]["job_status"]
+          title: string
+          updated_at: string | null
+          work_mode: Database["public"]["Enums"]["work_mode"] | null
+        }
+        Insert: {
+          company_id: string
+          created_at?: string | null
+          description: string
+          employment_type?: Database["public"]["Enums"]["employment_type"] | null
+          expires_at?: string | null
+          id?: string
+          location?: string | null
+          salary_currency?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          status?: Database["public"]["Enums"]["job_status"]
+          title: string
+          updated_at?: string | null
+          work_mode?: Database["public"]["Enums"]["work_mode"] | null
+        }
+        Update: {
+          company_id?: string
+          created_at?: string | null
+          description?: string
+          employment_type?: Database["public"]["Enums"]["employment_type"] | null
+          expires_at?: string | null
+          id?: string
+          location?: string | null
+          salary_currency?: string | null
+          salary_max?: number | null
+          salary_min?: number | null
+          status?: Database["public"]["Enums"]["job_status"]
+          title?: string
+          updated_at?: string | null
+          work_mode?: Database["public"]["Enums"]["work_mode"] | null
+        }
+        Relationships: []
+      }
+      job_required_skills: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_required: boolean
+          job_id: string
+          skill_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_required?: boolean
+          job_id: string
+          skill_name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_required?: boolean
+          job_id?: string
+          skill_name?: string
+        }
+        Relationships: []
+      }
+      job_applications: {
+        Row: {
+          cover_letter: string | null
+          created_at: string | null
+          id: string
+          job_id: string
+          professional_id: string
+          status: Database["public"]["Enums"]["application_status"]
+          updated_at: string | null
+        }
+        Insert: {
+          cover_letter?: string | null
+          created_at?: string | null
+          id?: string
+          job_id: string
+          professional_id: string
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string | null
+        }
+        Update: {
+          cover_letter?: string | null
+          created_at?: string | null
+          id?: string
+          job_id?: string
+          professional_id?: string
+          status?: Database["public"]["Enums"]["application_status"]
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -109,7 +403,15 @@ export type Database = {
       }
     }
     Enums: {
+      account_type: "professional" | "company"
       app_role: "admin" | "user"
+      application_status: "pending" | "reviewed" | "interview" | "accepted" | "rejected"
+      availability_status: "available" | "open_to_offers" | "not_looking"
+      company_size: "startup" | "small" | "medium" | "large" | "enterprise"
+      employment_type: "full_time" | "part_time" | "contract" | "freelance"
+      job_status: "draft" | "active" | "closed"
+      skill_level: "beginner" | "intermediate" | "advanced" | "expert"
+      work_mode: "remote" | "hybrid" | "onsite"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -237,7 +539,15 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      account_type: ["professional", "company"],
       app_role: ["admin", "user"],
+      application_status: ["pending", "reviewed", "interview", "accepted", "rejected"],
+      availability_status: ["available", "open_to_offers", "not_looking"],
+      company_size: ["startup", "small", "medium", "large", "enterprise"],
+      employment_type: ["full_time", "part_time", "contract", "freelance"],
+      job_status: ["draft", "active", "closed"],
+      skill_level: ["beginner", "intermediate", "advanced", "expert"],
+      work_mode: ["remote", "hybrid", "onsite"],
     },
   },
 } as const

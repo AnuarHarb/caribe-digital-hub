@@ -65,21 +65,21 @@ export function Navbar() {
 
   const NavLinks = () => (
     <>
-      <Link to="/eventos" onClick={() => setMobileMenuOpen(false)}>
-        <Button variant="ghost">{t("nav.events")}</Button>
+      <Link to="/empleos" onClick={() => setMobileMenuOpen(false)}>
+        <Button variant="ghost">{t("nav.jobs")}</Button>
       </Link>
-      
+      <Link to="/talento" onClick={() => setMobileMenuOpen(false)}>
+        <Button variant="ghost">{t("nav.talent")}</Button>
+      </Link>
       {user ? (
         <>
+          <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+            <Button variant="ghost">{t("nav.dashboard")}</Button>
+          </Link>
           {isAdmin && (
-            <>
-              <Link to="/admin/eventos" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline">{t("nav.manageEvents")}</Button>
-              </Link>
-              <Link to="/admin/configuracion" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/admin/configuracion" onClick={() => setMobileMenuOpen(false)}>
                 <Button variant="outline">{t("nav.settings")}</Button>
-              </Link>
-            </>
+            </Link>
           )}
           <Button variant="ghost" onClick={handleLogout}>
             {t("nav.logout")}
@@ -103,7 +103,6 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         {!isMobile ? (
           <div className="flex items-center gap-4">
             <NavLinks />
@@ -111,7 +110,6 @@ export function Navbar() {
             <ThemeToggle />
           </div>
         ) : (
-          /* Mobile Navigation */
           <div className="flex items-center gap-2">
             <LanguageToggle />
             <ThemeToggle />

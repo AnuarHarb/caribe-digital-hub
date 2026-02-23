@@ -1,7 +1,8 @@
 {
   "nav": {
-    "events": "Events",
-    "manageEvents": "Manage Events",
+    "jobs": "Jobs",
+    "talent": "Talent",
+    "dashboard": "Dashboard",
     "settings": "Settings",
     "login": "Login",
     "logout": "Logout"
@@ -135,51 +136,25 @@
   },
   "auth": {
     "login": "Login",
+    "signup": "Sign up",
     "loginDescription": "Enter your credentials to continue",
+    "signupDescription": "Create your account to join the talent network",
     "email": "Email",
     "password": "Password",
+    "fullName": "Full name",
+    "accountType": "Account type",
+    "accountTypeProfessional": "Professional",
+    "accountTypeCompany": "Company",
+    "accountTypeDescription": "Are you a professional looking for jobs or a company looking for talent?",
     "processing": "Processing...",
     "invalidCredentials": "Invalid credentials",
     "welcome": "Welcome!",
     "invalidEmail": "Invalid email",
-    "passwordMinLength": "Password must be at least 6 characters"
-  },
-  "events": {
-    "title": "Upcoming Events",
-    "description": "Discover technology events in Costa Rica",
-    "noEvents": "No scheduled events",
-    "register": "Register",
-    "date": "Date",
-    "time": "Time",
-    "location": "Location",
-    "organizer": "Organizer"
-  },
-  "adminEvents": {
-    "title": "Event Management",
-    "description": "Manage community events",
-    "createEvent": "Create Event",
-    "editEvent": "Edit Event",
-    "name": "Event Name",
-    "date": "Date",
-    "time": "Time",
-    "location": "Location",
-    "organizer": "Organizer",
-    "registrationLink": "Registration Link",
-    "description": "Description",
-    "imageUrl": "Image URL",
-    "save": "Save",
-    "cancel": "Cancel",
-    "loading": "Loading...",
-    "noPermission": "You don't have permission to access this page",
-    "eventCreated": "Event created successfully",
-    "eventUpdated": "Event updated successfully",
-    "eventDeleted": "Event deleted successfully",
-    "nameMinLength": "Name must be at least 3 characters",
-    "dateRequired": "Date is required",
-    "timeRequired": "Time is required",
-    "locationMinLength": "Location must be at least 3 characters",
-    "organizerMinLength": "Organizer must be at least 2 characters",
-    "validUrl": "Must be a valid URL"
+    "passwordMinLength": "Password must be at least 6 characters",
+    "signupSuccess": "Account created! Check your email to confirm.",
+    "alreadyHaveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "networkError": "Connection error (Failed to fetch). Check: 1) Internet, 2) Supabase project active in dashboard, 3) Try different network or DNS (e.g. 8.8.8.8)."
   },
   "adminSettings": {
     "title": "User Management",
@@ -214,7 +189,30 @@
     "create": "Create",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "workMode": {
+      "remote": "Remote",
+      "hybrid": "Hybrid",
+      "onsite": "On-site"
+    },
+    "employmentType": {
+      "full_time": "Full-time",
+      "part_time": "Part-time",
+      "contract": "Contract",
+      "freelance": "Freelance"
+    },
+    "availability": {
+      "available": "Available",
+      "open_to_offers": "Open to offers",
+      "not_looking": "Not looking"
+    },
+    "applicationStatus": {
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "interview": "Interview",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    }
   },
   "membresia": {
     "nav": {
@@ -399,6 +397,177 @@
     },
     "floatingCta": {
       "text": "Join Costa Digital"
+    }
+  },
+  "profile": {
+    "title": "Professional title",
+    "titlePlaceholder": "e.g. Full Stack Developer",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself and your experience...",
+    "location": "Location",
+    "locationPlaceholder": "e.g. Barranquilla, Colombia",
+    "yearsExperience": "Years of experience",
+    "availability": "Availability",
+    "selectAvailability": "Select your availability",
+    "portfolio": "Portfolio",
+    "editDescription": "Complete your profile so companies can find you."
+  },
+  "talent": {
+    "filters": "Filters",
+    "search": "Search",
+    "searchPlaceholder": "Name, skills...",
+    "all": "All",
+    "clearFilters": "Clear filters",
+    "skills": "Skills",
+    "experience": "Experience",
+    "education": "Education",
+    "present": "Present",
+    "viewJobs": "View job openings"
+  },
+  "applications": {
+    "empty": "You haven't applied to any jobs yet.",
+    "viewCandidates": "Review candidates who applied to your jobs.",
+    "noJobs": "Post a job to receive candidates.",
+    "noCandidates": "No candidates for this job yet."
+  },
+  "dashboard": {
+    "profile": "My profile",
+    "applications": "My applications",
+    "jobs": "My jobs",
+    "newJob": "New job",
+    "candidates": "Candidates",
+    "welcomeProfessional": "Complete your profile to get started",
+    "welcomeCompany": "Set up your company to post jobs",
+    "activeJobs": "active jobs",
+    "manageJobs": "Manage jobs",
+    "viewCandidates": "View candidates",
+    "applicationsCount": "applications sent",
+    "viewApplications": "View my applications",
+    "createProfile": "Create profile",
+    "completeProfile": "Complete your profile",
+    "completeProfileDescription": "Add your information so companies can find you."
+  },
+  "company": {
+    "name": "Company name",
+    "namePlaceholder": "My Company Inc",
+    "descriptionPlaceholder": "Company description...",
+    "industry": "Industry",
+    "industryPlaceholder": "e.g. Technology, Fintech",
+    "website": "Website",
+    "size": "Size",
+    "selectSize": "Select size",
+    "small": "Small (1-50)",
+    "medium": "Medium (51-200)",
+    "large": "Large (201-1000)",
+    "enterprise": "Enterprise (1000+)",
+    "editDescription": "Complete your company profile to post job openings.",
+    "openPositions": "Open positions",
+    "viewProfile": "View company profile"
+  },
+  "jobs": {
+    "browse": "Browse jobs",
+    "title": "Title",
+    "description": "Description",
+    "location": "Location",
+    "workMode": "Work mode",
+    "employmentType": "Employment type",
+    "salary": "Salary",
+    "skills": "Required skills",
+    "apply": "Apply",
+    "applications": "Applications",
+    "searchPlaceholder": "Title, company...",
+    "selectJob": "Select a job",
+    "needProfile": "Complete your professional profile to apply",
+    "applySuccess": "Application sent!",
+    "alreadyApplied": "You already applied to this job",
+    "coverLetterDescription": "Optional: write a cover letter",
+    "coverLetterPlaceholder": "Why are you interested in this position?",
+    "titlePlaceholder": "e.g. Full Stack Developer",
+    "descriptionPlaceholder": "Detailed job description...",
+    "salaryMin": "Min salary",
+    "salaryMax": "Max salary",
+    "currency": "Currency",
+    "status": "Status",
+    "statusDraft": "Draft",
+    "statusActive": "Active",
+    "statusClosed": "Closed",
+    "createDescription": "Post a new job opening."
+  },
+  "landing": {
+    "hero": {
+      "badge": "Free",
+      "title": "The Caribbean tech talent network",
+      "subtitle": "Connect professionals with companies. Create your profile, apply to jobs, or find the talent you need. Free.",
+      "ctaProfessional": "I'm a professional",
+      "ctaCompany": "I'm a company",
+      "browseJobs": "Browse jobs",
+      "browseTalent": "Browse talent"
+    },
+    "eventsCta": {
+      "title": "Community events",
+      "description": "Attend community events to network and make connections",
+      "cta": "View events"
+    },
+    "ecosystemMapCta": {
+      "title": "Ecosystem map",
+      "description": "Discover who is building technology in the region",
+      "cta": "Explore map"
+    },
+    "howItWorks": {
+      "title": "How does it work?",
+      "subtitle": "A platform for professionals and companies in the Caribbean.",
+      "professionals": {
+        "title": "For professionals",
+        "steps": [
+          "Create your profile and upload your CV",
+          "Complete your experience and skills",
+          "Apply to job openings",
+          "Receive recommendations from companies"
+        ]
+      },
+      "companies": {
+        "title": "For companies",
+        "steps": [
+          "Register as a company",
+          "Post your job openings",
+          "Receive recommended candidates",
+          "Find the talent you need"
+        ]
+      }
+    },
+    "featuredJobs": {
+      "title": "Featured jobs",
+      "subtitle": "Latest opportunities in the region",
+      "viewJob": "View job",
+      "viewAll": "View all jobs",
+      "empty": "No jobs posted yet",
+      "emptyInvite": "Be the first to post a job"
+    },
+    "featuredTalent": {
+      "title": "Featured talent",
+      "subtitle": "Available professionals in the region",
+      "viewProfile": "View profile",
+      "viewAll": "View all talent",
+      "years": "{{count}} years of experience",
+      "empty": "No professionals registered yet",
+      "emptyInvite": "Create your profile and join the directory"
+    },
+    "stats": {
+      "title": "The network in numbers",
+      "professionals": "Professionals",
+      "companies": "Companies",
+      "jobs": "Active jobs"
+    },
+    "cta": {
+      "title": "Join the network",
+      "subtitle": "Sign up for free and start connecting with the Caribbean tech ecosystem.",
+      "ctaProfessional": "Create professional profile",
+      "ctaCompany": "Register company"
+    },
+    "footer": {
+      "externalLinks": "External links",
+      "events": "Community events",
+      "ecosystemMap": "Ecosystem map"
     }
   }
 }
