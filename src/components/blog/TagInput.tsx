@@ -50,7 +50,7 @@ export function TagInput({ value, onChange, placeholder, className }: TagInputPr
 
   return (
     <div
-      className={`flex flex-wrap gap-2 rounded-lg border border-input bg-background px-3 py-2 ${className ?? ""}`}
+      className={`flex flex-wrap gap-2 rounded-lg border border-input bg-muted/50 px-3 py-2 ${className ?? ""}`}
     >
       {value.map((tag, i) => (
         <Badge key={i} variant="secondary" className="gap-1 pr-1">

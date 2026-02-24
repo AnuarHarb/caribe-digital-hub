@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -19,14 +19,16 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { Plus, Pencil, Trash2, ImageIcon, ArrowLeft, Eye, EyeOff, Newspaper } from "lucide-react";
+import { Plus, Pencil, Trash2, ImageIcon, ArrowLeft, Eye, X, Newspaper } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { TipTapEditor } from "@/components/blog/TipTapEditor";
 import { TagInput } from "@/components/blog/TagInput";
 import { useAuth, useProfile } from "@/hooks/useAuth";
 import { useBlogImageUpload } from "@/hooks/useBlogImageUpload";
+import { useDraftAutoSave } from "@/hooks/useDraftAutoSave";
 import { format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
 import type { Database } from "@/integrations/supabase/types";
@@ -50,6 +52,11 @@ function getInitials(name: string | null | undefined): string {
   return name.slice(0, 2).toUpperCase();
 }
 
+function countWords(html: string): number {
+  const text = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  return text ? text.split(/\s+/).length : 0;
+}
+
 type ViewMode = "list" | "editor";
 
 export default function AdminBlog() {
@@ -69,6 +76,11 @@ export default function AdminBlog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "draft" | "published">("all");
   const [showPreview, setShowPreview] = useState(false);
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+  const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
+  const [pendingPublish, setPendingPublish] = useState(false);
+  const initialFormDataRef = useRef<string>("");
+  const submitActionRef = useRef<"draft" | "publish" | null>(null);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -79,6 +91,35 @@ export default function AdminBlog() {
     status: "draft" as BlogStatus,
     tags: [] as string[],
   });
+
+  const draftAutoSave = useDraftAutoSave(
+    user?.id,
+    editingId,
+    {
+      title: formData.title,
+      slug: formData.slug,
+      excerpt: formData.excerpt,
+      content: formData.content,
+      cover_image_url: formData.cover_image_url,
+      status: formData.status,
+      tags: formData.tags,
+    },
+    { enabled: viewMode === "editor" }
+  );
+
+  const hasUnsavedChanges = useMemo(() => {
+    const current = JSON.stringify({ title: formData.title, slug: formData.slug, excerpt: formData.excerpt, content: formData.content, cover_image_url: formData.cover_image_url, tags: formData.tags });
+    return current !== initialFormDataRef.current;
+  }, [formData]);
+
+  const editingPost = editingId ? posts.find((p) => p.id === editingId) : null;
+  const showRestoreBanner = useMemo(() => {
+    const draft = draftAutoSave.storedDraft;
+    if (!draft || viewMode !== "editor") return false;
+    if (!editingId) return true;
+    if (!editingPost?.updated_at) return true;
+    return new Date(draft.savedAt) > new Date(editingPost.updated_at);
+  }, [draftAutoSave.storedDraft, viewMode, editingId, editingPost?.updated_at]);
 
   const loadPosts = useCallback(async () => {
     try {
@@ -156,26 +197,21 @@ export default function AdminBlog() {
   };
 
   const resetForm = () => {
-    setFormData({
-      title: "",
-      slug: "",
-      excerpt: "",
-      content: "<p></p>",
-      cover_image_url: "",
-      status: "draft",
-      tags: [],
-    });
+    const empty = { title: "", slug: "", excerpt: "", content: "<p></p>", cover_image_url: "", status: "draft" as BlogStatus, tags: [] as string[] };
+    setFormData(empty);
     setEditingId(null);
     setShowPreview(false);
+    initialFormDataRef.current = JSON.stringify({ ...empty, status: undefined });
   };
 
   const openCreate = () => {
     resetForm();
+    initialFormDataRef.current = JSON.stringify({ title: "", slug: "", excerpt: "", content: "<p></p>", cover_image_url: "", tags: [] });
     setViewMode("editor");
   };
 
   const openEdit = (post: BlogPostRow) => {
-    setFormData({
+    const data = {
       title: post.title,
       slug: post.slug,
       excerpt: post.excerpt ?? "",
@@ -183,20 +219,35 @@ export default function AdminBlog() {
       cover_image_url: post.cover_image_url ?? "",
       status: post.status as BlogStatus,
       tags: post.tags ?? [],
-    });
+    };
+    setFormData(data);
     setEditingId(post.id);
+    initialFormDataRef.current = JSON.stringify({ title: data.title, slug: data.slug, excerpt: data.excerpt, content: data.content, cover_image_url: data.cover_image_url, tags: data.tags });
     setViewMode("editor");
   };
 
-  const handleBackToList = () => {
+  const doBackToList = () => {
+    draftAutoSave.clearDraft();
     setViewMode("list");
     resetForm();
     loadPosts();
+    setLeaveConfirmOpen(false);
+  };
+
+  const handleBackToList = () => {
+    if (hasUnsavedChanges) {
+      setLeaveConfirmOpen(true);
+    } else {
+      doBackToList();
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user?.id) return;
+
+    const status = submitActionRef.current === "draft" ? "draft" : submitActionRef.current === "publish" ? "published" : formData.status;
+    submitActionRef.current = null;
 
     const basePayload = {
       title: formData.title,
@@ -204,13 +255,13 @@ export default function AdminBlog() {
       excerpt: formData.excerpt || null,
       content: formData.content,
       cover_image_url: formData.cover_image_url || null,
-      status: formData.status,
+      status: status as BlogStatus,
       tags: formData.tags.length > 0 ? formData.tags : [],
     };
 
     if (editingId) {
       const updatePayload: Record<string, unknown> = { ...basePayload };
-      if (formData.status === "published") {
+      if (status === "published") {
         const existing = posts.find((p) => p.id === editingId);
         if (existing && !existing.published_at) {
           updatePayload.published_at = new Date().toISOString();
@@ -229,7 +280,7 @@ export default function AdminBlog() {
       const insertPayload = {
         ...basePayload,
         author_id: user.id,
-        published_at: formData.status === "published" ? new Date().toISOString() : null,
+        published_at: status === "published" ? new Date().toISOString() : null,
       };
       const { error } = await supabase.from("blog_posts").insert(insertPayload);
       if (error) {
@@ -238,7 +289,8 @@ export default function AdminBlog() {
       }
       toast.success(t("admin.blog.created"));
     }
-    handleBackToList();
+    draftAutoSave.clearDraft();
+    doBackToList();
   };
 
   const handleDelete = async (id: string) => {
@@ -257,29 +309,102 @@ export default function AdminBlog() {
 
   if (!isAdmin) return null;
 
+  const handleRestoreDraft = () => {
+    const draft = draftAutoSave.restoreDraft();
+    if (draft) {
+      setFormData({
+        title: draft.title,
+        slug: draft.slug,
+        excerpt: draft.excerpt,
+        content: draft.content,
+        cover_image_url: draft.cover_image_url,
+        status: draft.status as BlogStatus,
+        tags: draft.tags,
+      });
+      initialFormDataRef.current = JSON.stringify({ title: draft.title, slug: draft.slug, excerpt: draft.excerpt, content: draft.content, cover_image_url: draft.cover_image_url, tags: draft.tags });
+      toast.success(t("admin.blog.autoSaveRestored"));
+    }
+  };
+
+  const handlePublishClick = () => {
+    if (formData.status === "draft") {
+      setPublishConfirmOpen(true);
+      setPendingPublish(true);
+    } else {
+      submitActionRef.current = "publish";
+      const form = document.querySelector("form");
+      if (form) form.requestSubmit();
+    }
+  };
+
+  const confirmPublish = () => {
+    setPublishConfirmOpen(false);
+    setPendingPublish(false);
+    submitActionRef.current = "publish";
+    const form = document.querySelector("form");
+    if (form) form.requestSubmit();
+  };
+
+  const handleSaveDraft = () => {
+    submitActionRef.current = "draft";
+    const form = document.querySelector("form");
+    if (form) form.requestSubmit();
+  };
+
   if (viewMode === "editor") {
+    const wordCount = countWords(formData.content);
+    const charCount = formData.content.replace(/<[^>]*>/g, "").length;
+
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
         <div className="container mx-auto px-4 py-6">
-          <div className="mb-6 flex items-center justify-between">
-            <Button variant="ghost" onClick={handleBackToList} className="gap-2">
-              <ArrowLeft className="h-4 w-4" aria-hidden />
-              {t("admin.blog.backToList")}
-            </Button>
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" onClick={handleBackToList} className="gap-2">
+                <ArrowLeft className="h-4 w-4" aria-hidden />
+                {t("admin.blog.backToList")}
+              </Button>
+              {draftAutoSave.lastSavedAt && (
+                <Badge variant="secondary" className="text-xs font-normal">
+                  {t("admin.blog.autoSaved")}
+                </Badge>
+              )}
+              {hasUnsavedChanges && !draftAutoSave.lastSavedAt && (
+                <Badge variant="outline" className="text-xs font-normal">
+                  {t("admin.blog.unsavedChanges")}
+                </Badge>
+              )}
+            </div>
           </div>
+
+          {showRestoreBanner && draftAutoSave.storedDraft && (
+            <Card className="mb-6 border-accent/50 bg-accent/5">
+              <CardContent className="flex flex-wrap items-center justify-between gap-4 py-4">
+                <p className="text-sm text-foreground">
+                  {t("admin.blog.autoSaveBanner", { date: format(new Date(draftAutoSave.storedDraft.savedAt), "d MMM yyyy HH:mm", { locale }) })}
+                </p>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => { draftAutoSave.discardDraft(); }}>
+                    {t("admin.blog.autoSaveDiscard")}
+                  </Button>
+                  <Button size="sm" onClick={handleRestoreDraft}>
+                    {t("admin.blog.autoSaveRestore")}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6 lg:flex-row">
             <div className="flex-1 space-y-6 lg:max-w-[66%]">
-              <div className="space-y-2">
-                <Label htmlFor="title">{t("admin.blog.titleLabel")}</Label>
+              <div className="space-y-1">
                 <Input
-                  id="title"
                   value={formData.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
                   placeholder={t("admin.blog.titlePlaceholder")}
                   required
-                  className="text-lg"
+                  className="min-h-[3rem] border border-input bg-muted/50 text-2xl font-semibold placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring md:text-3xl"
                 />
               </div>
               <div className="space-y-2">
@@ -290,6 +415,10 @@ export default function AdminBlog() {
                   placeholder={t("admin.blog.contentPlaceholder")}
                   className="min-h-[300px]"
                 />
+                <div className="flex gap-4 text-xs text-muted-foreground">
+                  <span>{t("admin.blog.wordCount", { count: wordCount })}</span>
+                  <span>{t("admin.blog.charCount", { count: charCount })}</span>
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="excerpt">{t("admin.blog.excerpt")}</Label>
@@ -299,11 +428,12 @@ export default function AdminBlog() {
                   onChange={(e) => setFormData((p) => ({ ...p, excerpt: e.target.value }))}
                   placeholder={t("admin.blog.excerptPlaceholder")}
                   rows={3}
+                  className="bg-muted/50"
                 />
               </div>
             </div>
 
-            <aside className="w-full space-y-6 lg:w-[33%] lg:min-w-[280px]">
+            <aside className="w-full space-y-6 lg:w-[33%] lg:min-w-[280px] lg:sticky lg:top-24 lg:self-start">
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">{editingId ? t("admin.blog.editPost") : t("admin.blog.newPost")}</CardTitle>
@@ -332,32 +462,47 @@ export default function AdminBlog() {
                       onChange={(e) => setFormData((p) => ({ ...p, slug: e.target.value }))}
                       placeholder={t("admin.blog.slugPlaceholder")}
                       required
+                      className="bg-muted/50"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>{t("admin.blog.coverImage")}</Label>
                     <div className="space-y-2">
-                      <input
-                        type="file"
-                        accept="image/jpeg,image/png,image/webp"
-                        onChange={handleCoverUpload}
-                        className="hidden"
-                        id="cover-upload"
-                      />
-                      <label htmlFor="cover-upload">
-                        <Button type="button" variant="outline" size="sm" className="w-full gap-2" asChild>
-                          <span className="cursor-pointer flex items-center justify-center gap-2">
-                            <ImageIcon className="h-4 w-4" />
-                            {t("admin.blog.uploadImage")}
-                          </span>
-                        </Button>
-                      </label>
-                      {formData.cover_image_url && (
-                        <img
-                          src={formData.cover_image_url}
-                          alt=""
-                          className="mt-2 aspect-video w-full rounded-lg object-cover"
-                        />
+                      {formData.cover_image_url ? (
+                        <div className="relative">
+                          <img
+                            src={formData.cover_image_url}
+                            alt=""
+                            className="aspect-video w-full rounded-lg object-cover"
+                          />
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            size="icon"
+                            className="absolute right-2 top-2 h-8 w-8"
+                            onClick={() => setFormData((p) => ({ ...p, cover_image_url: "" }))}
+                            aria-label={t("admin.blog.removeCoverImage")}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <>
+                          <input
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={handleCoverUpload}
+                            className="hidden"
+                            id="cover-upload"
+                          />
+                          <label
+                            htmlFor="cover-upload"
+                            className="flex aspect-video w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/30 transition-colors hover:border-muted-foreground/40 hover:bg-muted/50"
+                          >
+                            <ImageIcon className="h-10 w-10 text-muted-foreground" aria-hidden />
+                            <span className="mt-2 text-sm text-muted-foreground">{t("admin.blog.uploadImage")}</span>
+                          </label>
+                        </>
                       )}
                     </div>
                   </div>
@@ -369,40 +514,31 @@ export default function AdminBlog() {
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setShowPreview((v) => !v)}
-                      className="gap-2"
-                    >
-                      {showPreview ? (
-                        <>
-                          <EyeOff className="h-4 w-4" aria-hidden />
-                          {t("admin.blog.preview")} (off)
-                        </>
-                      ) : (
-                        <>
-                          <Eye className="h-4 w-4" aria-hidden />
-                          {t("admin.blog.preview")}
-                        </>
-                      )}
+                    <Button type="button" variant="outline" onClick={() => setShowPreview(true)} className="gap-2">
+                      <Eye className="h-4 w-4" aria-hidden />
+                      {t("admin.blog.preview")}
                     </Button>
-                    <Button type="submit">{t("admin.blog.save")}</Button>
+                    <Button type="button" variant="outline" onClick={handleSaveDraft}>
+                      {t("admin.blog.saveDraft")}
+                    </Button>
+                    <Button type="button" onClick={handlePublishClick}>
+                      {t("admin.blog.publish")}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             </aside>
           </form>
 
-          {showPreview && (
-            <Card className="mt-8">
-              <CardHeader>
-                <CardTitle className="text-lg">{t("admin.blog.preview")}</CardTitle>
-                <CardDescription>
+          <Sheet open={showPreview} onOpenChange={setShowPreview}>
+            <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-2xl">
+              <SheetHeader>
+                <SheetTitle>{t("admin.blog.preview")}</SheetTitle>
+                <p className="text-sm text-muted-foreground">
                   {t("blog.publishedOn")} {formData.status === "published" ? format(new Date(), "d 'de' MMMM yyyy", { locale }) : "-"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+                </p>
+              </SheetHeader>
+              <div className="mt-6">
                 <article>
                   <header className="space-y-6">
                     <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl leading-tight">
@@ -446,9 +582,35 @@ export default function AdminBlog() {
                     dangerouslySetInnerHTML={{ __html: formData.content || "<p></p>" }}
                   />
                 </article>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          <AlertDialog open={leaveConfirmOpen} onOpenChange={setLeaveConfirmOpen}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t("admin.blog.leaveConfirm")}</AlertDialogTitle>
+                <AlertDialogDescription>{t("admin.blog.leaveConfirmDescription")}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                <AlertDialogAction onClick={doBackToList}>{t("admin.blog.backToList")}</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <AlertDialog open={publishConfirmOpen} onOpenChange={(open) => { setPublishConfirmOpen(open); if (!open) setPendingPublish(false); }}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t("admin.blog.publishConfirm")}</AlertDialogTitle>
+                <AlertDialogDescription>{t("admin.blog.publishConfirmDescription")}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                <AlertDialogAction onClick={confirmPublish}>{t("admin.blog.publish")}</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     );

@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { JobCard } from "@/components/jobs/JobCard";
 import { Briefcase } from "lucide-react";
 
 export function FeaturedJobs() {
@@ -20,10 +20,15 @@ export function FeaturedJobs() {
           id,
           slug,
           title,
+          description,
           location,
           work_mode,
           employment_type,
-          company_profiles(company_name)
+          salary_min,
+          salary_max,
+          salary_currency,
+          created_at,
+          company_profiles(company_name, logo_url)
         `)
         .eq("status", "active")
         .order("created_at", { ascending: false })
@@ -71,57 +76,27 @@ export function FeaturedJobs() {
               </Card>
             ))
           ) : jobs && jobs.length > 0 ? (
-            jobs.map((job) => (
-              <Card
-                key={job.id}
-                className="overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-              >
-                <CardHeader className="pb-2">
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/20 text-accent">
-                      <Briefcase className="h-5 w-5" aria-hidden />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-semibold text-foreground truncate">
-                        {job.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        {(job.company_profiles as { company_name?: string })
-                          ?.company_name ?? "-"}
-                      </p>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {job.location && (
-                      <span className="text-xs text-muted-foreground">
-                        {job.location}
-                      </span>
-                    )}
-                    {job.work_mode && (
-                      <Badge variant="secondary" className="text-xs">
-                        {t(`common.workMode.${job.work_mode}`)}
-                      </Badge>
-                    )}
-                    {job.employment_type && (
-                      <Badge variant="outline" className="text-xs">
-                        {t(`common.employmentType.${job.employment_type}`)}
-                      </Badge>
-                    )}
-                  </div>
-                  <Link to={`/empleos/${job.slug}`} className="mt-4 block">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full transition-colors"
-                    >
-                      {t("landing.featuredJobs.viewJob")}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))
+            jobs.map((job) => {
+              const company = job.company_profiles as { company_name?: string; logo_url?: string | null } | null;
+              return (
+                <JobCard
+                  key={job.id}
+                  id={job.id}
+                  slug={job.slug}
+                  title={job.title}
+                  companyName={company?.company_name}
+                  companyLogoUrl={company?.logo_url}
+                  location={job.location}
+                  workMode={job.work_mode}
+                  employmentType={job.employment_type}
+                  description={job.description}
+                  salaryMin={job.salary_min}
+                  salaryMax={job.salary_max}
+                  salaryCurrency={job.salary_currency}
+                  createdAt={job.created_at}
+                />
+              );
+            })
           ) : (
             <div className="col-span-full flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 py-16 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">

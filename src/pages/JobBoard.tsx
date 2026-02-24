@@ -33,18 +33,27 @@ export default function JobBoard() {
               </div>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {jobs.map((job) => (
-                  <JobCard
-                    key={job.id}
-                    id={job.id}
-                    slug={job.slug}
-                    title={job.title}
-                    companyName={(job.company_profiles as { company_name?: string })?.company_name}
-                    location={job.location}
-                    workMode={job.work_mode}
-                    employmentType={job.employment_type}
-                  />
-                ))}
+                {jobs.map((job) => {
+                  const company = job.company_profiles as { company_name?: string; logo_url?: string | null } | null;
+                  return (
+                    <JobCard
+                      key={job.id}
+                      id={job.id}
+                      slug={job.slug}
+                      title={job.title}
+                      companyName={company?.company_name}
+                      companyLogoUrl={company?.logo_url}
+                      location={job.location}
+                      workMode={job.work_mode}
+                      employmentType={job.employment_type}
+                      description={job.description}
+                      salaryMin={job.salary_min}
+                      salaryMax={job.salary_max}
+                      salaryCurrency={job.salary_currency}
+                      createdAt={job.created_at}
+                    />
+                  );
+                })}
               </div>
             )}
             {jobs.length === 0 && !isLoading && (

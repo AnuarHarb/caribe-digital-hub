@@ -505,7 +505,38 @@
       "preview": "Preview",
       "backToList": "Back to list",
       "scheduledAt": "Schedule publication",
-      "noResults": "No articles found"
+      "noResults": "No articles found",
+      "autoSaveBanner": "You have a locally saved draft from {{date}}.",
+      "autoSaveRestore": "Restore",
+      "autoSaveRestored": "Draft restored",
+      "autoSaveDiscard": "Discard",
+      "autoSaved": "Draft saved locally",
+      "unsavedChanges": "Unsaved changes",
+      "leaveConfirm": "Leave without saving?",
+      "leaveConfirmDescription": "You have unsaved changes. If you leave, you can restore the local draft next time.",
+      "publishConfirm": "Publish this article?",
+      "publishConfirmDescription": "The article will be visible to all visitors.",
+      "saveDraft": "Save draft",
+      "publish": "Publish",
+      "wordCount": "{{count}} words",
+      "charCount": "{{count}} characters",
+      "removeCoverImage": "Remove image",
+      "toolbarBold": "Bold (Ctrl+B)",
+      "toolbarItalic": "Italic (Ctrl+I)",
+      "toolbarStrike": "Strikethrough (Ctrl+Shift+S)",
+      "toolbarH2": "Heading 2",
+      "toolbarH3": "Heading 3",
+      "toolbarLink": "Link",
+      "toolbarImage": "Insert image",
+      "toolbarBulletList": "Bullet list",
+      "toolbarOrderedList": "Ordered list",
+      "toolbarBlockquote": "Quote",
+      "toolbarCode": "Inline code",
+      "toolbarCodeBlock": "Code block",
+      "toolbarHorizontalRule": "Horizontal rule",
+      "toolbarUndo": "Undo (Ctrl+Z)",
+      "toolbarRedo": "Redo (Ctrl+Shift+Z)",
+      "removeLink": "Remove link"
     }
   },
   "blog": {
@@ -690,6 +721,7 @@
   "landing": {
     "hero": {
       "badge": "Free",
+      "betaBanner": "We're in beta until May 4th. After that date, paid plans for companies will be enabled.",
       "title": "The Caribbean tech talent network",
       "subtitle": "Connect professionals with companies. Create your profile, apply to jobs, or find the talent you need. Free.",
       "ctaProfessional": "I'm a professional",
@@ -766,7 +798,9 @@
       "title": "Join the network",
       "subtitle": "Sign up for free and start connecting with the Caribbean tech ecosystem.",
       "ctaProfessional": "Create professional profile",
-      "ctaCompany": "Register company"
+      "ctaCompany": "Register company",
+      "ctaDashboard": "Go to dashboard",
+      "ctaMyCompanies": "My companies"
     },
     "footer": {
       "externalLinks": "External links",

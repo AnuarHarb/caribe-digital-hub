@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 
 export function LandingCTA() {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
 
   return (
     <section
@@ -21,24 +23,49 @@ export function LandingCTA() {
           {t("landing.cta.subtitle")}
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link to="/auth?type=professional">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 sm:w-auto"
-            >
-              {t("landing.cta.ctaProfessional")}
-            </Button>
-          </Link>
-          <Link to="/auth?type=company">
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground sm:w-auto"
-            >
-              {t("landing.cta.ctaCompany")}
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 sm:w-auto"
+                >
+                  {t("landing.cta.ctaDashboard")}
+                </Button>
+              </Link>
+              <Link to="/dashboard/empresa">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground sm:w-auto"
+                >
+                  {t("landing.cta.ctaMyCompanies")}
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/auth?type=professional">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 sm:w-auto"
+                >
+                  {t("landing.cta.ctaProfessional")}
+                </Button>
+              </Link>
+              <Link to="/auth?type=company">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-primary-foreground bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground sm:w-auto"
+                >
+                  {t("landing.cta.ctaCompany")}
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </section>

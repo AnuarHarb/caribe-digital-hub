@@ -8,6 +8,7 @@ import { useCompanyJobs } from "@/hooks/useJobs";
 import { useActiveCompany } from "@/contexts/ActiveCompanyContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Building2, Briefcase, FileText, ArrowRight, Plus } from "lucide-react";
@@ -43,8 +44,11 @@ export default function Dashboard() {
       <article className="space-y-8">
         <PendingInvitations />
         <header>
-          <h1 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+          <h1 className="flex items-center gap-2 font-display text-2xl font-bold text-foreground md:text-3xl">
             {t("nav.dashboard")}
+            <Badge variant="secondary" className="text-xs font-medium uppercase tracking-wide">
+              Beta
+            </Badge>
           </h1>
           <p className="mt-1 text-muted-foreground">
             {activeCompany?.company_name
@@ -130,8 +134,11 @@ export default function Dashboard() {
       <article className="space-y-6">
         <PendingInvitations />
         <header>
-          <h1 className="font-display text-2xl font-bold text-foreground md:text-3xl">
+          <h1 className="flex items-center gap-2 font-display text-2xl font-bold text-foreground md:text-3xl">
             {t("nav.dashboard")}
+            <Badge variant="secondary" className="text-xs font-medium uppercase tracking-wide">
+              Beta
+            </Badge>
           </h1>
           <p className="mt-1 text-muted-foreground">{t("dashboard.welcomeCompany")}</p>
         </header>

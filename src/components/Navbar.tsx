@@ -4,6 +4,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import logoImage from "@/assets/costa-digital-logo.png";
@@ -19,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 function getInitials(name: string | null | undefined): string {
   if (!name?.trim()) return "?";
@@ -29,6 +31,7 @@ function getInitials(name: string | null | undefined): string {
 
 export function Navbar() {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { user } = useAuth();
   const { profile } = useProfile();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -61,6 +64,8 @@ export function Navbar() {
     if (error) {
       toast.error(t("nav.logout") + " error");
     } else {
+      queryClient.removeQueries({ queryKey: ["profile"] });
+      queryClient.setQueryData(["auth-session"], null);
       toast.success(t("nav.logout"));
       navigate("/");
     }
@@ -157,6 +162,9 @@ export function Navbar() {
           <span className="font-display text-xl font-bold text-primary">
             COSTA DIGITAL
           </span>
+          <Badge variant="secondary" className="text-xs font-medium uppercase tracking-wide">
+            Beta
+          </Badge>
         </Link>
 
         {!isMobile ? (

@@ -505,7 +505,38 @@
       "preview": "Vista previa",
       "backToList": "Volver al listado",
       "scheduledAt": "Programar publicación",
-      "noResults": "No se encontraron artículos"
+      "noResults": "No se encontraron artículos",
+      "autoSaveBanner": "Tienes un borrador guardado localmente del {{date}}.",
+      "autoSaveRestore": "Restaurar",
+      "autoSaveRestored": "Borrador restaurado",
+      "autoSaveDiscard": "Descartar",
+      "autoSaved": "Borrador guardado localmente",
+      "unsavedChanges": "Cambios sin guardar",
+      "leaveConfirm": "¿Salir sin guardar?",
+      "leaveConfirmDescription": "Tienes cambios sin guardar. Si sales, podrás recuperar el borrador local la próxima vez.",
+      "publishConfirm": "¿Publicar este artículo?",
+      "publishConfirmDescription": "El artículo será visible para todos los visitantes.",
+      "saveDraft": "Guardar borrador",
+      "publish": "Publicar",
+      "wordCount": "{{count}} palabras",
+      "charCount": "{{count}} caracteres",
+      "removeCoverImage": "Quitar imagen",
+      "toolbarBold": "Negrita (Ctrl+B)",
+      "toolbarItalic": "Cursiva (Ctrl+I)",
+      "toolbarStrike": "Tachado (Ctrl+Shift+S)",
+      "toolbarH2": "Título 2",
+      "toolbarH3": "Título 3",
+      "toolbarLink": "Enlace",
+      "toolbarImage": "Insertar imagen",
+      "toolbarBulletList": "Lista con viñetas",
+      "toolbarOrderedList": "Lista numerada",
+      "toolbarBlockquote": "Cita",
+      "toolbarCode": "Código en línea",
+      "toolbarCodeBlock": "Bloque de código",
+      "toolbarHorizontalRule": "Línea horizontal",
+      "toolbarUndo": "Deshacer (Ctrl+Z)",
+      "toolbarRedo": "Rehacer (Ctrl+Shift+Z)",
+      "removeLink": "Quitar enlace"
     }
   },
   "blog": {
@@ -690,6 +721,7 @@
   "landing": {
     "hero": {
       "badge": "",
+      "betaBanner": "Estamos en beta hasta el 4 de mayo. Después de esa fecha se habilitarán los planes pagos para empresas.",
       "title": "La red de talento tech del Caribe",
       "subtitle": "Conecta profesionales con empresas. Crea tu perfil, aplica a empleos o encuentra el talento que necesitas.",
       "ctaProfessional": "Soy profesional",
@@ -766,7 +798,9 @@
       "title": "Únete a la red",
       "subtitle": "Regístrate y empieza a conectar con el ecosistema tech del Caribe.",
       "ctaProfessional": "Crear perfil profesional",
-      "ctaCompany": "Registrar empresa"
+      "ctaCompany": "Registrar empresa",
+      "ctaDashboard": "Ir al panel",
+      "ctaMyCompanies": "Mis empresas"
     },
     "footer": {
       "externalLinks": "Enlaces externos",
