@@ -1,6 +1,8 @@
 # Allow all search engines and AI crawlers
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
 
 # AI Search Engine Bots
 User-agent: GPTBot

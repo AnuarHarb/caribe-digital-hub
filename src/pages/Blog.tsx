@@ -1,10 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
 import { BlogCard, type BlogPostCardData } from "@/components/blog/BlogCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Newspaper } from "lucide-react";
+
+const SITE_URL = "https://costadigital.org";
 
 export default function Blog() {
   const { t } = useTranslation();
@@ -21,6 +25,7 @@ export default function Blog() {
           excerpt,
           cover_image_url,
           published_at,
+          tags,
           profiles(full_name, avatar_url)
         `)
         .eq("status", "published")
@@ -39,11 +44,35 @@ export default function Blog() {
       excerpt: p.excerpt,
       cover_image_url: p.cover_image_url,
       published_at: p.published_at,
+      tags: (p as { tags?: string[] }).tags ?? [],
       author: p.profiles as { full_name?: string; avatar_url?: string } | null,
     })) ?? [];
 
+  const collectionPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: t("blog.title"),
+    description: t("landing.news.subtitle"),
+    url: `${SITE_URL}/blog`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Costa Digital",
+      url: SITE_URL,
+    },
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title={t("blog.title")}
+        description={t("landing.news.subtitle")}
+        canonical="/blog"
+      />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify(collectionPageJsonLd)}
+        </script>
+      </Helmet>
       <Navbar />
       <main className="container mx-auto px-4 py-12">
         <header className="mb-12 text-center">

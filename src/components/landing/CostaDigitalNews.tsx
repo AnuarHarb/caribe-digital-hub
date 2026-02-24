@@ -22,6 +22,7 @@ export function CostaDigitalNews() {
           excerpt,
           cover_image_url,
           published_at,
+          tags,
           profiles(full_name, avatar_url)
         `)
         .eq("status", "published")
@@ -40,6 +41,7 @@ export function CostaDigitalNews() {
       excerpt: p.excerpt,
       cover_image_url: p.cover_image_url,
       published_at: p.published_at,
+      tags: (p as { tags?: string[] }).tags ?? [],
       author: p.profiles as { full_name?: string; avatar_url?: string } | null,
     })) ?? [];
 

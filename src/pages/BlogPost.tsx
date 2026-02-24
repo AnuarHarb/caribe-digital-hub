@@ -3,11 +3,20 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
+import { ArticleJsonLd } from "@/components/ArticleJsonLd";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
-import { ArrowLeft, Newspaper } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+
+function estimateReadingTime(html: string): number {
+  const text = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  return Math.max(1, Math.ceil(words / 200));
+}
 
 function getInitials(name: string | null | undefined): string {
   if (!name?.trim()) return "?";
@@ -35,6 +44,7 @@ export default function BlogPost() {
           content,
           cover_image_url,
           published_at,
+          tags,
           profiles(full_name, avatar_url)
         `)
         .eq("slug", slug)
@@ -61,9 +71,29 @@ export default function BlogPost() {
   const dateStr = post.published_at
     ? format(new Date(post.published_at), "d 'de' MMMM yyyy", { locale })
     : null;
+  const readingMinutes = estimateReadingTime(post.content);
+  const tags = (post as { tags?: string[] }).tags ?? [];
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title={post.title}
+        description={post.excerpt || post.title}
+        canonical={`/blog/${post.slug}`}
+        image={post.cover_image_url ?? undefined}
+        imageAlt={post.title}
+        type="article"
+        publishedTime={post.published_at ?? undefined}
+        author={author?.full_name}
+      />
+      <ArticleJsonLd
+        title={post.title}
+        description={post.excerpt || post.title}
+        slug={post.slug}
+        coverImageUrl={post.cover_image_url}
+        publishedAt={post.published_at ?? new Date().toISOString()}
+        authorName={author?.full_name ?? "Costa Digital"}
+      />
       <Navbar />
       <main className="container mx-auto px-4 py-8 max-w-3xl">
         <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8">
@@ -85,9 +115,12 @@ export default function BlogPost() {
                 {author?.full_name && (
                   <p className="font-medium text-foreground">{author.full_name}</p>
                 )}
-                {dateStr && (
+                {dateStr && post.published_at && (
                   <p className="text-sm">
-                    {t("blog.publishedOn")} {dateStr}
+                    {t("blog.publishedOn")}{" "}
+                    <time dateTime={post.published_at}>{dateStr}</time>
+                    {" · "}
+                    <span>{readingMinutes} {t("blog.readingTime")}</span>
                   </p>
                 )}
               </div>
@@ -96,9 +129,18 @@ export default function BlogPost() {
               <div className="aspect-video w-full rounded-lg overflow-hidden bg-muted">
                 <img
                   src={post.cover_image_url}
-                  alt=""
+                  alt={post.title}
                   className="h-full w-full object-cover"
                 />
+              </div>
+            )}
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <Badge key={tag} variant="secondary">
+                    {tag}
+                  </Badge>
+                ))}
               </div>
             )}
           </header>

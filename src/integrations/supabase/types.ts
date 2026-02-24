@@ -187,6 +187,7 @@ export type Database = {
           author_id: string
           status: Database["public"]["Enums"]["blog_status"]
           published_at: string | null
+          tags: string[]
           created_at: string | null
           updated_at: string | null
         }
@@ -200,6 +201,7 @@ export type Database = {
           author_id: string
           status?: Database["public"]["Enums"]["blog_status"]
           published_at?: string | null
+          tags?: string[]
           created_at?: string | null
           updated_at?: string | null
         }
@@ -213,6 +215,7 @@ export type Database = {
           author_id?: string
           status?: Database["public"]["Enums"]["blog_status"]
           published_at?: string | null
+          tags?: string[]
           created_at?: string | null
           updated_at?: string | null
         }

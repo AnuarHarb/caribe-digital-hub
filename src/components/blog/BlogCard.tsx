@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
 import { Newspaper } from "lucide-react";
@@ -14,6 +15,7 @@ export interface BlogPostCardData {
   excerpt: string | null;
   cover_image_url: string | null;
   published_at: string | null;
+  tags?: string[];
   author?: { full_name?: string; avatar_url?: string } | null;
 }
 
@@ -58,6 +60,15 @@ export function BlogCard({ post, variant = "full" }: BlogCardProps) {
             {post.excerpt && (
               <p className="text-sm text-muted-foreground line-clamp-2 mt-1">{post.excerpt}</p>
             )}
+            {(post.tags ?? []).length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1">
+                {(post.tags ?? []).slice(0, 3).map((tag) => (
+                  <Badge key={tag} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </CardHeader>
           <CardContent className="pt-0">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
@@ -95,6 +106,15 @@ export function BlogCard({ post, variant = "full" }: BlogCardProps) {
           <h3 className="font-semibold text-foreground line-clamp-2">{post.title}</h3>
           {post.excerpt && (
             <p className="text-sm text-muted-foreground line-clamp-3 mt-1">{post.excerpt}</p>
+          )}
+          {(post.tags ?? []).length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1">
+              {(post.tags ?? []).slice(0, 3).map((tag) => (
+                <Badge key={tag} variant="secondary" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
           )}
         </CardHeader>
         <CardContent className="pt-0">

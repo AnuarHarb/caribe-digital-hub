@@ -33,4 +33,12 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/auth" />
     <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/auth?lang=en" />
   </url>
+  <url>
+    <loc>https://costadigital.org/blog</loc>
+    <lastmod>2025-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/blog" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/blog?lang=en" />
+  </url>
 </urlset>
