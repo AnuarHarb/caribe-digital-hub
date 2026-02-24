@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { useProfessionalProfile } from "@/hooks/useProfile";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -38,6 +39,7 @@ const profileSchema = z.object({
   linkedin_url: z.string().url().optional().or(z.literal("")),
   github_url: z.string().url().optional().or(z.literal("")),
   portfolio_url: z.string().url().optional().or(z.literal("")),
+  is_public: z.boolean().default(true),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -62,6 +64,7 @@ export function ProfileForm({ onSuccess }: ProfileFormProps) {
       linkedin_url: professionalProfile?.linkedin_url ?? "",
       github_url: professionalProfile?.github_url ?? "",
       portfolio_url: professionalProfile?.portfolio_url ?? "",
+      is_public: professionalProfile?.is_public ?? true,
     },
     values: professionalProfile
       ? {
@@ -73,6 +76,7 @@ export function ProfileForm({ onSuccess }: ProfileFormProps) {
           linkedin_url: professionalProfile.linkedin_url ?? "",
           github_url: professionalProfile.github_url ?? "",
           portfolio_url: professionalProfile.portfolio_url ?? "",
+          is_public: professionalProfile.is_public ?? true,
         }
       : undefined,
   });
@@ -89,6 +93,7 @@ export function ProfileForm({ onSuccess }: ProfileFormProps) {
         linkedin_url: data.linkedin_url || null,
         github_url: data.github_url || null,
         portfolio_url: data.portfolio_url || null,
+        is_public: data.is_public ?? true,
       });
       toast.success(t("common.success"));
       onSuccess?.();
@@ -210,6 +215,23 @@ export function ProfileForm({ onSuccess }: ProfileFormProps) {
                 <Input type="url" placeholder="https://..." {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="is_public"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel>{t("profile.isPublic")}</FormLabel>
+                <p className="text-sm text-muted-foreground">
+                  {t("profile.isPublicDescription")}
+                </p>
+              </div>
+              <FormControl>
+                <Switch checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
             </FormItem>
           )}
         />

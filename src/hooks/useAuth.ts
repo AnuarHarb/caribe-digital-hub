@@ -20,8 +20,34 @@ export function useAuth() {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       queryClient.invalidateQueries({ queryKey: ["auth-session"] });
+
+      if (event === "SIGNED_IN" && session?.user) {
+        const meta = session.user.user_metadata;
+        const avatarUrl = meta?.avatar_url || meta?.picture;
+        if (avatarUrl) {
+          supabase
+            .from("profiles")
+            .select("avatar_url")
+            .eq("id", session.user.id)
+            .single()
+            .then(({ data: profile }) => {
+              if (profile && !profile.avatar_url) {
+                supabase
+                  .from("profiles")
+                  .update({
+                    avatar_url: avatarUrl,
+                    full_name: meta?.full_name || meta?.name || undefined,
+                  })
+                  .eq("id", session.user.id)
+                  .then(() => {
+                    queryClient.invalidateQueries({ queryKey: ["profile", session.user.id] });
+                  });
+              }
+            });
+        }
+      }
     });
     return () => subscription.unsubscribe();
   }, [queryClient]);

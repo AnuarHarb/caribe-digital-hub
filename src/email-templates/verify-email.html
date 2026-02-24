@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifica tu correo - Costa Digital</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e8f4f8; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #e8f4f8;">
+    <tr>
+      <td style="padding: 40px 20px;">
+        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="max-width: 480px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 24px rgba(21, 58, 91, 0.12); overflow: hidden;">
+          <!-- Header with logo -->
+          <tr>
+            <td style="padding: 32px 32px 24px; text-align: center; background: linear-gradient(135deg, #153a5b 0%, #1e4a6f 50%, #2dd4bf 100%);">
+              <img src="{{ .SiteURL }}/logos/costa-digital.png" alt="Costa Digital" width="120" height="auto" style="display: inline-block; max-height: 48px; width: auto;" />
+            </td>
+          </tr>
+          <!-- Content -->
+          <tr>
+            <td style="padding: 32px;">
+              <h1 style="margin: 0 0 16px; font-size: 24px; font-weight: 600; color: #153a5b; line-height: 1.3;">
+                Verifica tu correo electrónico
+              </h1>
+              <p style="margin: 0 0 24px; font-size: 16px; color: #4a5568; line-height: 1.6;">
+                ¡Bienvenido a Costa Digital! Haz clic en el botón de abajo para confirmar tu cuenta y unirte a la red de talento del Caribe.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr>
+                  <td style="text-align: center; padding: 8px 0 24px;">
+                    <a href="{{ .ConfirmationURL }}" style="display: inline-block; padding: 14px 32px; background-color: #2dd4bf; color: #153a5b; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 8px;">
+                      Confirmar mi correo
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin: 0; font-size: 14px; color: #718096; line-height: 1.6;">
+                Si no creaste una cuenta en Costa Digital, puedes ignorar este correo de forma segura.
+              </p>
+              <p style="margin: 16px 0 0; font-size: 12px; color: #a0aec0;">
+                Si el botón no funciona, copia y pega este enlace en tu navegador:<br>
+                <a href="{{ .ConfirmationURL }}" style="color: #2dd4bf; word-break: break-all;">{{ .ConfirmationURL }}</a>
+              </p>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 24px 32px; background-color: #f7fafc; border-top: 1px solid #e2e8f0;">
+              <p style="margin: 0; font-size: 12px; color: #718096; text-align: center;">
+                Costa Digital — Conectando talento con oportunidades
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

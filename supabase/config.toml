@@ -1,1 +1,4 @@
 project_id = "vldlyrzeyejgjkkdajvj"
+
+[functions.ai-curriculum-assistant]
+verify_jwt = false

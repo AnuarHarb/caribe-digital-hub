@@ -112,6 +112,7 @@ export type Database = {
           availability: Database["public"]["Enums"]["availability_status"]
           bio: string | null
           created_at: string | null
+          is_public: boolean
           github_url: string | null
           id: string
           linkedin_url: string | null
@@ -127,6 +128,7 @@ export type Database = {
           availability?: Database["public"]["Enums"]["availability_status"]
           bio?: string | null
           created_at?: string | null
+          is_public?: boolean
           github_url?: string | null
           id?: string
           linkedin_url?: string | null
@@ -142,6 +144,7 @@ export type Database = {
           availability?: Database["public"]["Enums"]["availability_status"]
           bio?: string | null
           created_at?: string | null
+          is_public?: boolean
           github_url?: string | null
           id?: string
           linkedin_url?: string | null

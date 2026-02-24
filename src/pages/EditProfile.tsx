@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { ProfileForm } from "@/components/talent/ProfileForm";
 import { PersonalInfoForm } from "@/components/talent/PersonalInfoForm";
 import { CompanyProfileForm } from "@/components/jobs/CompanyProfileForm";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
@@ -84,18 +82,7 @@ export default function EditProfile() {
           <CardDescription>{t("profile.editDescription")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="personal" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="personal">{t("profile.tabPersonal")}</TabsTrigger>
-              <TabsTrigger value="professional">{t("profile.tabProfessional")}</TabsTrigger>
-            </TabsList>
-            <TabsContent value="personal" className="mt-6">
-              <PersonalInfoForm />
-            </TabsContent>
-            <TabsContent value="professional" className="mt-6">
-              <ProfileForm />
-            </TabsContent>
-          </Tabs>
+          <PersonalInfoForm />
         </CardContent>
       </Card>
     </article>

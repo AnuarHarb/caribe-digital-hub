@@ -76,39 +76,41 @@ export default function Dashboard() {
             {t("dashboard.sectionCompany")}
           </h2>
           <div className="grid gap-6 md:grid-cols-2">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-base font-medium">{t("dashboard.jobs")}</CardTitle>
-              <Briefcase className="h-5 w-5 text-muted-foreground" aria-hidden />
-            </CardHeader>
-            <CardContent>
-              <p className="text-3xl font-bold">{jobs.length}</p>
-              <p className="text-sm text-muted-foreground">{t("dashboard.activeJobs")}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Link to="/dashboard/empleos/nuevo">
-                  <Button size="default" className="px-4 py-2">{t("dashboard.newJob")}</Button>
-                </Link>
-                <Link to="/dashboard/empleos">
-                  <Button variant="outline" size="default" className="px-4 py-2 my-4">
-                    {t("dashboard.manageJobs")}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-base font-medium">{t("dashboard.jobs")}</CardTitle>
+                <Briefcase className="h-5 w-5 text-muted-foreground" aria-hidden />
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <p className="text-3xl font-bold">{jobs.length}</p>
+                  <p className="text-sm text-muted-foreground">{t("dashboard.activeJobs")}</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Link to="/dashboard/empleos/nuevo">
+                    <Button size="default">{t("dashboard.newJob")}</Button>
+                  </Link>
+                  <Link to="/dashboard/empleos">
+                    <Button variant="outline" size="default">
+                      {t("dashboard.manageJobs")}
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-base font-medium">{t("dashboard.candidates")}</CardTitle>
+                <User className="h-5 w-5 text-muted-foreground" aria-hidden />
+              </CardHeader>
+              <CardContent>
+                <Link to="/dashboard/candidatos">
+                  <Button variant="outline" size="default">
+                    {t("dashboard.viewCandidates")}
                   </Button>
                 </Link>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-base font-medium">{t("dashboard.candidates")}</CardTitle>
-              <User className="h-5 w-5 text-muted-foreground" aria-hidden />
-            </CardHeader>
-            <CardContent>
-              <Link to="/dashboard/candidatos">
-                <Button variant="outline" size="default" className="px-4 py-2">
-                  {t("dashboard.viewCandidates")}
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           </div>
         </section>
 

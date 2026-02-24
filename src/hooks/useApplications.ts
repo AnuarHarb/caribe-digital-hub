@@ -49,6 +49,27 @@ export function useMyApplications() {
   };
 }
 
+export function useCompanyApplicationCounts(jobIds: string[]) {
+  const { data: counts } = useQuery({
+    queryKey: ["job-application-counts", jobIds.sort().join(",")],
+    queryFn: async () => {
+      if (jobIds.length === 0) return {} as Record<string, number>;
+      const { data, error } = await supabase
+        .from("job_applications")
+        .select("job_id")
+        .in("job_id", jobIds);
+      if (error) throw error;
+      const map: Record<string, number> = {};
+      for (const row of data ?? []) {
+        map[row.job_id] = (map[row.job_id] ?? 0) + 1;
+      }
+      return map;
+    },
+    enabled: jobIds.length > 0,
+  });
+  return counts ?? {};
+}
+
 export function useJobApplications(jobId: string | undefined) {
   const queryClient = useQueryClient();
   const { data: applications, isLoading } = useQuery({

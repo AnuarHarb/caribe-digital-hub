@@ -18,11 +18,14 @@ export default function TalentDirectory() {
         .select(`
           id,
           title,
+          bio,
           location,
           years_experience,
           availability,
-          profiles(full_name)
+          profiles(full_name, avatar_url),
+          professional_skills(skill_name)
         `)
+        .eq("is_public", true)
         .order("created_at", { ascending: false });
 
       if (filters.availability) {
@@ -63,16 +66,26 @@ export default function TalentDirectory() {
               </div>
             ) : (
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {professionals?.map((p) => (
-                  <TalentCard
-                    key={p.id}
-                    id={p.id}
-                    title={p.title}
-                    location={p.location}
-                    yearsExperience={p.years_experience}
-                    fullName={(p.profiles as { full_name?: string })?.full_name}
-                  />
-                ))}
+                {professionals?.map((p) => {
+                  const profile = p.profiles as { full_name?: string; avatar_url?: string } | null;
+                  const skills = (p.professional_skills as { skill_name: string }[] | null)?.map(
+                    (s) => s.skill_name
+                  ) ?? [];
+                  return (
+                    <TalentCard
+                      key={p.id}
+                      id={p.id}
+                      title={p.title}
+                      location={p.location}
+                      yearsExperience={p.years_experience}
+                      fullName={profile?.full_name}
+                      avatarUrl={profile?.avatar_url}
+                      skills={skills}
+                      bio={p.bio}
+                      availability={p.availability}
+                    />
+                  );
+                })}
               </div>
             )}
             {professionals?.length === 0 && (

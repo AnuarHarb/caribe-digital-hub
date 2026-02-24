@@ -1,13 +1,40 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCompanyJobs } from "@/hooks/useJobs";
+import { useActiveCompany } from "@/contexts/ActiveCompanyContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import { Briefcase, Plus } from "lucide-react";
+import { Briefcase, Plus, Pencil, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export default function ManageJobs() {
   const { t } = useTranslation();
-  const { jobs, isLoading } = useCompanyJobs();
+  const { activeCompany } = useActiveCompany();
+  const { jobs, isLoading, deleteJob, isDeleting } = useCompanyJobs();
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+
+  const canManage = activeCompany?.role === "owner" || activeCompany?.role === "admin";
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteJob(deleteTarget.id);
+      toast.success(t("common.success"));
+      setDeleteTarget(null);
+    } catch {
+      toast.error(t("common.error"));
+    }
+  };
 
   return (
     <article className="space-y-6">
@@ -37,17 +64,36 @@ export default function ManageJobs() {
                     {job.status === "draft" ? t("jobs.statusDraft") : job.status === "active" ? t("jobs.statusActive") : t("jobs.statusClosed")}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Link to={`/dashboard/candidatos?job=${job.id}`}>
                     <Button variant="outline" size="sm">
                       {t("dashboard.candidates")}
                     </Button>
                   </Link>
-                  <Link to={`/empleos/${job.slug}`}>
+                  {canManage && (
+                    <Link to={`/dashboard/empleos/${job.id}/edit`}>
+                      <Button variant="outline" size="sm" className="gap-1.5">
+                        <Pencil className="h-3.5 w-3.5" aria-hidden />
+                        {t("common.edit")}
+                      </Button>
+                    </Link>
+                  )}
+                  <Link to={`/empleos/${job.slug}`} target="_blank" rel="noopener noreferrer">
                     <Button variant="ghost" size="sm">
                       {t("landing.featuredJobs.viewJob")}
                     </Button>
                   </Link>
+                  {canManage && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-1.5 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => setDeleteTarget({ id: job.id, title: job.title })}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                      {t("common.delete")}
+                    </Button>
+                  )}
                 </div>
               </CardHeader>
             </Card>
@@ -65,6 +111,38 @@ export default function ManageJobs() {
           )}
         </div>
       )}
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t("jobs.deleteConfirm")}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget ? (
+                <>
+                  <span className="font-medium text-foreground">&quot;{deleteTarget.title}&quot;</span>
+                  {" — "}
+                  {t("jobs.deleteConfirmDescription")}
+                </>
+              ) : (
+                t("jobs.deleteConfirmDescription")
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>{t("common.cancel")}</AlertDialogCancel>
+            <Button
+              variant="destructive"
+              disabled={isDeleting}
+              onClick={(e) => {
+                e.preventDefault();
+                handleDelete();
+              }}
+            >
+              {isDeleting ? t("common.loading") : t("common.delete")}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </article>
   );
 }

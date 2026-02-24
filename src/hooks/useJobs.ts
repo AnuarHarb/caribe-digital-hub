@@ -157,12 +157,29 @@ export function useCompanyJobs(companyId?: string) {
     },
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: async (jobId: string) => {
+      const { error } = await supabase.from("job_postings").delete().eq("id", jobId);
+      if (error) throw error;
+    },
+    onSuccess: (_, jobId) => {
+      queryClient.setQueryData(
+        ["company-jobs", effectiveCompanyId],
+        (old: typeof jobs) => (old ?? []).filter((j) => j.id !== jobId)
+      );
+      queryClient.invalidateQueries({ queryKey: ["company-jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+    },
+  });
+
   return {
     jobs: jobs ?? [],
     isLoading,
     createJob: createMutation.mutateAsync,
     updateJob: updateMutation.mutateAsync,
+    deleteJob: deleteMutation.mutateAsync,
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
+    isDeleting: deleteMutation.isPending,
   };
 }

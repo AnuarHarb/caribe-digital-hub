@@ -18,7 +18,7 @@ export default function PublicProfile() {
   const { expressInterest, isSubmitting, isAuthenticated } = useContactInterest();
 
   // Query only fetches professional info; contact data (phone, email, address) is intentionally excluded
-  const { data: professional, isLoading } = useQuery({
+  const { data: professional, isLoading, isError } = useQuery({
     queryKey: ["professional-profile", id],
     queryFn: async () => {
       if (!id) return null;
@@ -37,12 +37,27 @@ export default function PublicProfile() {
       return data;
     },
     enabled: !!id,
+    retry: false,
   });
 
-  if (isLoading || !professional) {
+  if (isLoading) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  // RLS blocks private profiles for non-owners; show private message (also covers not-found)
+  if (isError || !professional) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="container mx-auto px-4 py-8">
+          <div className="mx-auto max-w-3xl rounded-lg border bg-card p-8 text-center">
+            <p className="text-muted-foreground">{t("profile.privateProfile")}</p>
+          </div>
+        </main>
       </div>
     );
   }

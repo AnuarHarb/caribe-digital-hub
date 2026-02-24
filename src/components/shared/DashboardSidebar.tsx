@@ -23,6 +23,7 @@ import {
   Users,
   Plus,
   Settings,
+  ScrollText,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useProfile } from "@/hooks/useAuth";
@@ -56,7 +57,10 @@ export function DashboardSidebar() {
     { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
     { to: "/dashboard/perfil", label: t("dashboard.profile"), icon: User },
     ...(accountType === "professional"
-      ? [{ to: "/dashboard/aplicaciones", label: t("dashboard.applications"), icon: FileText }]
+      ? [
+          { to: "/dashboard/curriculum", label: t("curriculum.title"), icon: ScrollText },
+          { to: "/dashboard/aplicaciones", label: t("dashboard.applications"), icon: FileText },
+        ]
       : []),
   ];
 
