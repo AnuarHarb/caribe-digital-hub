@@ -544,6 +544,7 @@
     "inputPlaceholder": "Type your question...",
     "send": "Send",
     "noResponse": "Could not get a response.",
+    "errorServerOverload": "The server is overloaded. Wait a few minutes and try again.",
     "analyzing": "Analyzing your resume. This may take a few minutes.",
     "exampleBefore": "Before",
     "exampleAfter": "After",

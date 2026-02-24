@@ -544,6 +544,7 @@
     "inputPlaceholder": "Escribe tu pregunta...",
     "send": "Enviar",
     "noResponse": "No se pudo obtener una respuesta.",
+    "errorServerOverload": "El servidor está saturado. Espera unos minutos e intenta de nuevo.",
     "analyzing": "Analizando tu currículum. Puede tardar unos minutos.",
     "exampleBefore": "Antes",
     "exampleAfter": "Después",
