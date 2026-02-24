@@ -35,6 +35,7 @@ import { AuthLayout } from "./components/auth/AuthLayout";
 import { DashboardLayout } from "./components/shared/DashboardLayout";
 import { ProtectedRoute } from "./components/shared/ProtectedRoute";
 import { ActiveCompanyProvider } from "./contexts/ActiveCompanyContext";
+import { GoogleAnalytics } from "./components/GoogleAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +46,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <GoogleAnalytics />
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<AuthLayout />}>
