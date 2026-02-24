@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { HeroTalent } from "@/components/landing/HeroTalent";
 import { HowItWorks } from "@/components/landing/HowItWorks";
+import { TechCentre } from "@/components/landing/TechCentre";
 import { EventsCTA } from "@/components/landing/EventsCTA";
 import { EcosystemMapCTA } from "@/components/landing/EcosystemMapCTA";
 import { FeaturedJobs } from "@/components/landing/FeaturedJobs";
@@ -16,6 +17,7 @@ export default function Landing() {
       <main>
         <HeroTalent />
         <HowItWorks />
+        <TechCentre />
         <EventsCTA />
         <EcosystemMapCTA />
         <FeaturedJobs />

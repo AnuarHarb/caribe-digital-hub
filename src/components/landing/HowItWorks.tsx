@@ -5,7 +5,7 @@ export function HowItWorks() {
   const { t } = useTranslation();
 
   return (
-    <section aria-labelledby="how-it-works-heading" className="py-20 md:py-28">
+    <section aria-labelledby="how-it-works-heading" className="py-12 md:py-16">
       <div className="container mx-auto px-4">
         <h2
           id="how-it-works-heading"
@@ -16,14 +16,14 @@ export function HowItWorks() {
         <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
           {t("landing.howItWorks.subtitle")}
         </p>
-        <div className="relative mt-16 grid gap-12 md:grid-cols-2">
+        <div className="relative mt-10 grid gap-8 md:grid-cols-2">
           {/* Connector line on desktop */}
           <div
             className="absolute left-1/2 top-1/2 hidden h-0.5 w-12 -translate-x-1/2 -translate-y-1/2 bg-accent/30 md:block"
             aria-hidden
           />
           <article
-            className="group relative rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg"
+            className="group relative rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg"
           >
             <div className="flex items-center gap-3">
               <span
@@ -36,7 +36,7 @@ export function HowItWorks() {
                 <UserPlus className="h-6 w-6" aria-hidden />
               </div>
             </div>
-            <h3 className="mt-6 font-display text-xl font-semibold text-foreground">
+            <h3 className="mt-4 font-display text-xl font-semibold text-foreground">
               {t("landing.howItWorks.professionals.title")}
             </h3>
             <ul className="mt-4 space-y-3 text-muted-foreground">
@@ -51,7 +51,7 @@ export function HowItWorks() {
             </ul>
           </article>
           <article
-            className="group relative rounded-xl border border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg"
+            className="group relative rounded-xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg"
           >
             <div className="flex items-center gap-3">
               <span
@@ -64,7 +64,7 @@ export function HowItWorks() {
                 <Building2 className="h-6 w-6" aria-hidden />
               </div>
             </div>
-            <h3 className="mt-6 font-display text-xl font-semibold text-foreground">
+            <h3 className="mt-4 font-display text-xl font-semibold text-foreground">
               {t("landing.howItWorks.companies.title")}
             </h3>
             <ul className="mt-4 space-y-3 text-muted-foreground">

@@ -885,6 +885,11 @@
         ]
       }
     },
+    "techCentre": {
+      "title": "Centro de Tecnología del Caribe",
+      "description": "Programas presenciales y prácticos en software, datos, diseño e inteligencia artificial, guiados por profesionales activos en el mercado.",
+      "cta": "Conocer Tech Centre"
+    },
     "featuredJobs": {
       "title": "Ofertas destacadas",
       "subtitle": "Últimas oportunidades en la región",

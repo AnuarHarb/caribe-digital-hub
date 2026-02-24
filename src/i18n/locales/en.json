@@ -885,6 +885,11 @@
         ]
       }
     },
+    "techCentre": {
+      "title": "The Caribbean's programming academy",
+      "description": "In-person and practical programs in software, data, design, and artificial intelligence, guided by active professionals in the market.",
+      "cta": "Discover Tech Centre"
+    },
     "featuredJobs": {
       "title": "Featured jobs",
       "subtitle": "Latest opportunities in the region",
