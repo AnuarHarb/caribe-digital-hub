@@ -1,6 +1,10 @@
 /**
- * Vercel Edge Middleware: injects dynamic meta tags for blog posts when crawlers request /blog/:slug.
- * This ensures Facebook, Twitter, LinkedIn, WhatsApp, etc. see the correct title, description, and cover image.
+ * Vercel Edge Middleware: serves a self-contained HTML page with dynamic meta
+ * tags when social-media crawlers request /blog/:slug.
+ *
+ * Instead of fetching the SPA HTML and replacing tags via regex, this builds
+ * a minimal HTML document from scratch — eliminating self-fetch failures and
+ * regex fragility.
  */
 
 const SITE_URL = "https://costadigital.org";
@@ -16,7 +20,7 @@ const CRAWLER_AGENTS = [
   "LinkedInBot",
   "WhatsApp",
   "TelegramBot",
-  "Slurp", // Yahoo
+  "Slurp",
   "bingbot",
   "Googlebot",
   "Pinterest",
@@ -28,7 +32,7 @@ function isCrawler(userAgent: string): boolean {
   return CRAWLER_AGENTS.some((bot) => ua.includes(bot.toLowerCase()));
 }
 
-function escapeHtml(str: string): string {
+function escapeAttr(str: string): string {
   return str
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -36,13 +40,64 @@ function escapeHtml(str: string): string {
     .replace(/"/g, "&quot;");
 }
 
+function buildCrawlerHtml(meta: {
+  title: string;
+  description: string;
+  image: string;
+  url: string;
+  publishedTime?: string;
+}): string {
+  const t = escapeAttr(meta.title);
+  const d = escapeAttr(meta.description);
+  const img = escapeAttr(meta.image);
+  const u = escapeAttr(meta.url);
+
+  return `<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>${t}</title>
+  <meta name="title" content="${t}" />
+  <meta name="description" content="${d}" />
+  <link rel="canonical" href="${u}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="${u}" />
+  <meta property="og:title" content="${t}" />
+  <meta property="og:description" content="${d}" />
+  <meta property="og:image" content="${img}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="${t}" />
+  <meta property="og:locale" content="es_CO" />
+  <meta property="og:site_name" content="Costa Digital" />
+  ${meta.publishedTime ? `<meta property="article:published_time" content="${escapeAttr(meta.publishedTime)}" />` : ""}
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="${u}" />
+  <meta name="twitter:title" content="${t}" />
+  <meta name="twitter:description" content="${d}" />
+  <meta name="twitter:image" content="${img}" />
+  <meta name="twitter:image:alt" content="${t}" />
+  <meta name="twitter:site" content="@costa_digital" />
+  <meta name="twitter:creator" content="@costa_digital" />
+
+  <meta http-equiv="refresh" content="0;url=${u}" />
+</head>
+<body>
+  <p><a href="${u}">${t}</a></p>
+</body>
+</html>`;
+}
+
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const pathMatch = url.pathname.match(/^\/blog\/([^/]+)$/);
   const userAgent = request.headers.get("user-agent") ?? "";
 
-  // Pass-through: fetch / (SPA root) - does not match matcher, so no loop
-  const passThrough = () => fetch(new Request(`${url.origin}/`));
+  const passThrough = () => fetch(new Request(`${url.origin}/`, { headers: request.headers }));
 
   if (!pathMatch || !isCrawler(userAgent)) {
     return passThrough();
@@ -58,7 +113,7 @@ export default async function middleware(request: Request): Promise<Response> {
 
   try {
     const res = await fetch(
-      `${supabaseUrl}/rest/v1/blog_posts?slug=eq.${encodeURIComponent(slug)}&status=eq.published&select=title,excerpt,cover_image_url`,
+      `${supabaseUrl}/rest/v1/blog_posts?slug=eq.${encodeURIComponent(slug)}&status=eq.published&select=title,excerpt,cover_image_url,published_at`,
       {
         headers: {
           apikey: supabaseKey,
@@ -89,80 +144,13 @@ export default async function middleware(request: Request): Promise<Response> {
           ? `${SITE_URL}${post.cover_image_url.startsWith("/") ? "" : "/"}${post.cover_image_url}`
           : `${SITE_URL}/og-image.png`;
 
-    const escapedTitle = escapeHtml(title);
-    const escapedDescription = escapeHtml(description);
-    const escapedImage = escapeHtml(image);
-    const escapedUrl = escapeHtml(articleUrl);
-
-    const htmlRes = await fetch(`${url.origin}/`);
-    if (!htmlRes.ok) {
-      return passThrough();
-    }
-
-    let html = await htmlRes.text();
-
-    html = html.replace(
-      /<title>[\s\S]*?<\/title>/,
-      `<title>${escapedTitle}</title>`
-    );
-    const metaPattern = (name: string) =>
-      new RegExp(`<meta ${name} content="[^"]*"\\s*\\/?>`, "g");
-    html = html.replace(
-      metaPattern("name=\"title\""),
-      `<meta name="title" content="${escapedTitle}" />`
-    );
-    html = html.replace(
-      metaPattern("name=\"description\""),
-      `<meta name="description" content="${escapedDescription}" />`
-    );
-    html = html.replace(
-      metaPattern("property=\"og:type\""),
-      `<meta property="og:type" content="article" />`
-    );
-    html = html.replace(
-      metaPattern("property=\"og:url\""),
-      `<meta property="og:url" content="${escapedUrl}" />`
-    );
-    html = html.replace(
-      metaPattern("property=\"og:title\""),
-      `<meta property="og:title" content="${escapedTitle}" />`
-    );
-    html = html.replace(
-      metaPattern("property=\"og:description\""),
-      `<meta property="og:description" content="${escapedDescription}" />`
-    );
-    html = html.replace(
-      metaPattern("property=\"og:image\""),
-      `<meta property="og:image" content="${escapedImage}" />`
-    );
-    html = html.replace(
-      metaPattern("property=\"og:image:alt\""),
-      `<meta property="og:image:alt" content="${escapedTitle}" />`
-    );
-    html = html.replace(
-      metaPattern("name=\"twitter:url\""),
-      `<meta name="twitter:url" content="${escapedUrl}" />`
-    );
-    html = html.replace(
-      metaPattern("name=\"twitter:title\""),
-      `<meta name="twitter:title" content="${escapedTitle}" />`
-    );
-    html = html.replace(
-      metaPattern("name=\"twitter:description\""),
-      `<meta name="twitter:description" content="${escapedDescription}" />`
-    );
-    html = html.replace(
-      metaPattern("name=\"twitter:image\""),
-      `<meta name="twitter:image" content="${escapedImage}" />`
-    );
-    html = html.replace(
-      metaPattern("name=\"twitter:image:alt\""),
-      `<meta name="twitter:image:alt" content="${escapedTitle}" />`
-    );
-    html = html.replace(
-      /<link rel="canonical" href="[^"]*"\s*\/?>/,
-      `<link rel="canonical" href="${escapedUrl}" />`
-    );
+    const html = buildCrawlerHtml({
+      title,
+      description,
+      image,
+      url: articleUrl,
+      publishedTime: post.published_at ?? undefined,
+    });
 
     return new Response(html, {
       headers: {
