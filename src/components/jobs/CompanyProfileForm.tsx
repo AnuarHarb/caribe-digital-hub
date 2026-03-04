@@ -33,7 +33,7 @@ const companySchema = z.object({
   industry: z.string().optional(),
   website: z.string().url().optional().or(z.literal("")),
   location: z.string().optional(),
-  company_size: z.enum(["startup", "small", "medium", "large", "enterprise"]).optional(),
+  company_size: z.enum(["solo_founder", "small", "medium", "large", "enterprise"]).optional(),
   whatsapp_url: z.string().url().optional().or(z.literal("")),
 });
 
@@ -213,7 +213,7 @@ export function CompanyProfileForm({ companyId, profileType = "company" }: Compa
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="startup">Startup</SelectItem>
+                    <SelectItem value="solo_founder">{t("company.soloFounder")}</SelectItem>
                     <SelectItem value="small">{t("company.small")}</SelectItem>
                     <SelectItem value="medium">{t("company.medium")}</SelectItem>
                     <SelectItem value="large">{t("company.large")}</SelectItem>

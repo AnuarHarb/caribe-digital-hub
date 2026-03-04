@@ -632,7 +632,7 @@ export type Database = {
       blog_status: "draft" | "published"
       application_status: "pending" | "reviewed" | "interview" | "accepted" | "rejected"
       availability_status: "available" | "open_to_offers" | "not_looking"
-      company_size: "startup" | "small" | "medium" | "large" | "enterprise"
+      company_size: "startup" | "solo_founder" | "small" | "medium" | "large" | "enterprise"
       employment_type: "full_time" | "part_time" | "contract" | "freelance" | "voluntariado"
       job_status: "draft" | "active" | "closed"
       skill_level: "beginner" | "intermediate" | "advanced" | "expert"
@@ -772,7 +772,7 @@ export const Constants = {
       blog_status: ["draft", "published"],
       application_status: ["pending", "reviewed", "interview", "accepted", "rejected"],
       availability_status: ["available", "open_to_offers", "not_looking"],
-      company_size: ["startup", "small", "medium", "large", "enterprise"],
+      company_size: ["startup", "solo_founder", "small", "medium", "large", "enterprise"],
       employment_type: ["full_time", "part_time", "contract", "freelance", "voluntariado"],
       job_status: ["draft", "active", "closed"],
       skill_level: ["beginner", "intermediate", "advanced", "expert"],

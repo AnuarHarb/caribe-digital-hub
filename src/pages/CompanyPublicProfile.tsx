@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
 import { Building2, MapPin, ExternalLink, Briefcase } from "lucide-react";
 
-type CompanySize = "startup" | "small" | "medium" | "large" | "enterprise";
+type CompanySize = "startup" | "solo_founder" | "small" | "medium" | "large" | "enterprise";
 
 export default function CompanyPublicProfile() {
   const { id } = useParams<{ id: string }>();
