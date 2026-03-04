@@ -8,7 +8,8 @@
     "admin": "Admin",
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión",
-    "talentNetwork": "Red de Talento"
+    "talentNetwork": "Red de Talento",
+    "events": "Eventos"
   },
   "talentNetwork": {
     "subtitle": "Encuentra ofertas de empleo y conecta con el talento tech del Caribe.",

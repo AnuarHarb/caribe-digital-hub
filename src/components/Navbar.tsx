@@ -126,6 +126,14 @@ export function Navbar() {
       <Link to="/talento" onClick={() => setMobileMenuOpen(false)}>
         <Button variant="ghost">{t("nav.talentNetwork")}</Button>
       </Link>
+      <a
+        href="https://www.codigoabierto.tech/eventos"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        <Button variant="ghost">{t("nav.events")}</Button>
+      </a>
       <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>
         <Button variant="ghost">{t("nav.blog")}</Button>
       </Link>

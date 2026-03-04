@@ -8,7 +8,8 @@
     "admin": "Admin",
     "login": "Login",
     "logout": "Logout",
-    "talentNetwork": "Talent Network"
+    "talentNetwork": "Talent Network",
+    "events": "Events"
   },
   "talentNetwork": {
     "subtitle": "Find job offers and connect with Caribbean tech talent.",
