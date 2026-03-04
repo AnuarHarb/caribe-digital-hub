@@ -9,7 +9,11 @@ import type { CommunityProfile } from "@/hooks/useCommunities";
 
 const SCROLL_SPEED = 0.4;
 
-const EVENT_KEYS = ["barranquiIA", "techCaribeFest", "techNights"] as const;
+const FEATURED_EVENTS = [
+  { logo: "/logos/tech-nights.png", url: "https://www.codigoabierto.tech/eventos", name: "Tech Nights" },
+  { logo: "/logos/barranqui-ia.png", url: "https://barranquiia.com", name: "Barranqui-IA" },
+  { logo: "/logos/tech-caribe-fest.webp", url: "https://techcaribe.co", name: "Tech Caribe Fest" },
+] as const;
 
 function Carousel({ communities }: { communities: CommunityProfile[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -263,19 +267,25 @@ export function CommunitySection() {
           </p>
         )}
 
-        <div className="mt-12 text-center">
-          <h3 className="font-display text-lg font-semibold text-foreground">
+        <div className="mt-12 rounded-xl bg-slate-900 px-8 py-6 dark:bg-slate-950">
+          <h3 className="text-center font-display text-lg font-semibold text-white">
             {t("landing.community.eventsTitle")}
           </h3>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            {EVENT_KEYS.map((key) => (
-              <Badge
-                key={key}
-                variant="secondary"
-                className="px-4 py-1.5 text-sm"
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-8">
+            {FEATURED_EVENTS.map((event) => (
+              <a
+                key={event.name}
+                href={event.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex max-w-[280px] items-center justify-center transition-opacity hover:opacity-80"
               >
-                {t(`landing.community.events.${key}`)}
-              </Badge>
+                <img
+                  src={event.logo}
+                  alt={event.name}
+                  className="h-12 w-auto max-w-[280px] object-contain md:h-14"
+                />
+              </a>
             ))}
           </div>
         </div>

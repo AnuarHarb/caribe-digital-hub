@@ -11,10 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Building2, Briefcase, FileText, ArrowRight, Plus } from "lucide-react";
+import { User, Building2, Briefcase, FileText, ArrowRight, Plus, CreditCard } from "lucide-react";
 import { calculateProfileCompletion } from "@/lib/profileCompletion";
 import { PendingInvitations } from "@/components/company/PendingInvitations";
 import { CreateCompanyDialog } from "@/components/company/CreateCompanyDialog";
+import { CredentialCard } from "@/components/credential/CredentialCard";
 
 function getInitials(name: string | null | undefined): string {
   if (!name?.trim()) return "?";
@@ -61,7 +62,7 @@ export default function Dashboard() {
           <h2 className="mb-4 font-display text-lg font-semibold text-foreground">
             {t("dashboard.sectionPersonal")}
           </h2>
-          <div className="mb-6">
+          <div className="mb-6 flex flex-wrap gap-3">
             <Link to="/dashboard/perfil">
               <Button variant="outline" size="default" className="gap-2">
                 <User className="h-4 w-4" aria-hidden />
@@ -69,6 +70,18 @@ export default function Dashboard() {
               </Button>
             </Link>
           </div>
+          <Link to="/dashboard/credencial" className="block max-w-xs">
+            <CredentialCard
+              name={profile?.full_name || ""}
+              avatarUrl={profile?.avatar_url}
+              userId={user?.id || ""}
+              compact
+            />
+            <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-accent hover:underline">
+              <CreditCard className="h-3.5 w-3.5" aria-hidden />
+              {t("credential.viewCredential")}
+            </p>
+          </Link>
         </section>
 
         <section>
@@ -303,6 +316,18 @@ export default function Dashboard() {
             </Link>
           </CardContent>
         </Card>
+        <Link to="/dashboard/credencial" className="block max-w-xs">
+          <CredentialCard
+            name={profile?.full_name || ""}
+            avatarUrl={profile?.avatar_url}
+            userId={user?.id || ""}
+            compact
+          />
+          <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-accent hover:underline">
+            <CreditCard className="h-3.5 w-3.5" aria-hidden />
+            {t("credential.viewCredential")}
+          </p>
+        </Link>
         </div>
         </div>
       </section>

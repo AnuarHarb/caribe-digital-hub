@@ -25,6 +25,7 @@ import {
   Settings,
   ScrollText,
   Building2,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useProfile } from "@/hooks/useAuth";
@@ -58,6 +59,7 @@ export function DashboardSidebar() {
   const personalLinks = [
     { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
     { to: "/dashboard/perfil", label: t("dashboard.profile"), icon: User },
+    { to: "/dashboard/credencial", label: t("dashboard.credential"), icon: CreditCard },
     ...(accountType === "professional"
       ? [
           { to: "/dashboard/curriculum", label: t("curriculum.title"), icon: ScrollText },

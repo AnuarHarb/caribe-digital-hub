@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import logoImage from "@/assets/costa-digital-logo.png";
-import { Menu, ChevronDown, LayoutDashboard, Settings, LogOut, Newspaper } from "lucide-react";
+import { Menu, ChevronDown, LayoutDashboard, Settings, LogOut, Newspaper, CreditCard } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth, useProfile } from "@/hooks/useAuth";
@@ -94,6 +94,12 @@ export function Navbar() {
             {t("nav.dashboard")}
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard/credencial" onClick={onItemClick} className="flex items-center gap-2 cursor-pointer">
+            <CreditCard className="h-4 w-4" />
+            {t("dashboard.credential")}
+          </Link>
+        </DropdownMenuItem>
         {isAdmin && (
           <DropdownMenuItem asChild>
             <Link
@@ -121,26 +127,71 @@ export function Navbar() {
     </DropdownMenu>
   );
 
+  const closeMobile = () => setMobileMenuOpen(false);
+
   const NavLinks = () => (
     <>
-      <Link to="/talento" onClick={() => setMobileMenuOpen(false)}>
-        <Button variant="ghost">{t("nav.talentNetwork")}</Button>
+      <Link to="/talento" onClick={closeMobile} className={isMobile ? "block w-full" : undefined}>
+        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
+          {t("nav.talentNetwork")}
+        </Button>
       </Link>
       <a
         href="https://www.codigoabierto.tech/eventos"
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => setMobileMenuOpen(false)}
+        onClick={closeMobile}
+        className={isMobile ? "block w-full" : undefined}
       >
-        <Button variant="ghost">{t("nav.events")}</Button>
+        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
+          {t("nav.events")}
+        </Button>
       </a>
-      <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>
-        <Button variant="ghost">{t("nav.blog")}</Button>
+      <Link to="/blog" onClick={closeMobile} className={isMobile ? "block w-full" : undefined}>
+        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
+          {t("nav.blog")}
+        </Button>
       </Link>
       {user ? (
-        <UserMenu onItemClick={() => setMobileMenuOpen(false)} />
+        isMobile ? (
+          <>
+            <Link to="/dashboard" onClick={closeMobile} className="block w-full">
+              <Button variant="ghost" className="gap-2 justify-start w-full">
+                <LayoutDashboard className="h-4 w-4" />
+                {t("nav.dashboard")}
+              </Button>
+            </Link>
+            <Link to="/dashboard/credencial" onClick={closeMobile} className="block w-full">
+              <Button variant="ghost" className="gap-2 justify-start w-full">
+                <CreditCard className="h-4 w-4" />
+                {t("dashboard.credential")}
+              </Button>
+            </Link>
+            {isAdmin && (
+              <Link to="/admin" onClick={closeMobile} className="block w-full">
+                <Button variant="ghost" className="gap-2 justify-start w-full">
+                  <Settings className="h-4 w-4" />
+                  {t("nav.admin")}
+                </Button>
+              </Link>
+            )}
+            <Button
+              variant="ghost"
+              className="gap-2 justify-start w-full text-destructive hover:text-destructive hover:bg-destructive/10"
+              onClick={() => {
+                closeMobile();
+                handleLogout();
+              }}
+            >
+              <LogOut className="h-4 w-4" />
+              {t("nav.logout")}
+            </Button>
+          </>
+        ) : (
+          <UserMenu onItemClick={closeMobile} />
+        )
       ) : (
-        <Link to={authUrl} onClick={() => setMobileMenuOpen(false)}>
+        <Link to={authUrl} onClick={closeMobile}>
           <Button variant="default">{t("nav.login")}</Button>
         </Link>
       )}

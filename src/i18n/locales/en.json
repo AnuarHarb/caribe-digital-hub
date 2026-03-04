@@ -242,7 +242,8 @@
       "full_time": "Full-time",
       "part_time": "Part-time",
       "contract": "Contract",
-      "freelance": "Freelance"
+      "freelance": "Freelance",
+      "voluntariado": "Volunteering"
     },
     "availability": {
       "available": "Available",
@@ -794,7 +795,16 @@
     "viewApplications": "View my applications",
     "createProfile": "Create profile",
     "completeProfile": "Complete your profile",
-    "completeProfileDescription": "Add your information so companies can find you."
+    "completeProfileDescription": "Add your information so companies can find you.",
+    "credential": "Credential"
+  },
+  "credential": {
+    "title": "Your Costa Digital Credential",
+    "member": "Ecosystem member",
+    "memberSince": "Member since",
+    "backToDashboard": "Back to dashboard",
+    "viewCredential": "View credential",
+    "description": "Show your credential to access discounts and promotions with partners."
   },
   "company": {
     "name": "Company name",

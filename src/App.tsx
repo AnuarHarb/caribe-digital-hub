@@ -28,6 +28,7 @@ import CreateJob from "./pages/CreateJob";
 import EditJob from "./pages/EditJob";
 import ViewApplicants from "./pages/ViewApplicants";
 import CompanySettings from "./pages/CompanySettings";
+import CredentialPage from "./pages/CredentialPage";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import AdminNews from "./pages/admin/AdminNews";
@@ -92,6 +93,7 @@ const App = () => (
               <Route path="empleos/:id/edit" element={<EditJob />} />
               <Route path="candidatos" element={<ViewApplicants />} />
               <Route path="empresa" element={<CompanySettings />} />
+              <Route path="credencial" element={<CredentialPage />} />
             </Route>
             <Route
               path="/admin"

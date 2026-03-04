@@ -24,7 +24,11 @@ export function Hero() {
     <header className="hero-bg relative overflow-hidden py-20 md:py-32">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-15"
-        style={{ backgroundImage: "url(/events/barranqui-ia-2025.webp)" }}
+        style={{ backgroundImage: "url(/events/tech-caribe.jpg)" }}
+        aria-hidden
+      />
+      <div
+        className="absolute inset-0 bg-black/25 dark:bg-transparent"
         aria-hidden
       />
 

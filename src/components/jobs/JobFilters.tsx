@@ -76,6 +76,7 @@ export function JobFilters({ filters, onFiltersChange }: JobFiltersProps) {
             <SelectItem value="part_time">{t("common.employmentType.part_time")}</SelectItem>
             <SelectItem value="contract">{t("common.employmentType.contract")}</SelectItem>
             <SelectItem value="freelance">{t("common.employmentType.freelance")}</SelectItem>
+            <SelectItem value="voluntariado">{t("common.employmentType.voluntariado")}</SelectItem>
           </SelectContent>
         </Select>
       </div>

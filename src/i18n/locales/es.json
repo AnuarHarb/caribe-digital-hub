@@ -242,7 +242,8 @@
       "full_time": "Tiempo completo",
       "part_time": "Medio tiempo",
       "contract": "Contrato",
-      "freelance": "Freelance"
+      "freelance": "Freelance",
+      "voluntariado": "Voluntariado"
     },
     "availability": {
       "available": "Disponible",
@@ -794,7 +795,16 @@
     "viewApplications": "Ver mis aplicaciones",
     "createProfile": "Crear perfil",
     "completeProfile": "Completa tu perfil",
-    "completeProfileDescription": "Añade tu información para que las empresas te encuentren."
+    "completeProfileDescription": "Añade tu información para que las empresas te encuentren.",
+    "credential": "Credencial"
+  },
+  "credential": {
+    "title": "Tu Credencial Costa Digital",
+    "member": "Miembro del ecosistema",
+    "memberSince": "Miembro desde",
+    "backToDashboard": "Volver al panel",
+    "viewCredential": "Ver credencial",
+    "description": "Muestra tu credencial para acceder a descuentos y promociones con aliados."
   },
   "company": {
     "name": "Nombre de la empresa",

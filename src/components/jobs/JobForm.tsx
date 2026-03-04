@@ -31,7 +31,7 @@ const jobSchema = z.object({
   description: z.string().min(10, "Mínimo 10 caracteres"),
   location: z.string().optional(),
   work_mode: z.enum(["remote", "hybrid", "onsite"]).optional(),
-  employment_type: z.enum(["full_time", "part_time", "contract", "freelance"]).optional(),
+  employment_type: z.enum(["full_time", "part_time", "contract", "freelance", "voluntariado"]).optional(),
   salary_min: z.coerce.number().min(0).optional(),
   salary_max: z.coerce.number().min(0).optional(),
   salary_currency: z.string().optional(),
@@ -79,9 +79,22 @@ export function JobForm({
     },
   });
 
+  const employmentType = form.watch("employment_type");
+  const isVoluntariado = employmentType === "voluntariado";
+
+  const handleSubmit = async (data: JobFormValues) => {
+    const payload = { ...data };
+    if (isVoluntariado) {
+      payload.salary_min = undefined;
+      payload.salary_max = undefined;
+      payload.salary_currency = undefined;
+    }
+    await onSubmit(payload);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -229,6 +242,7 @@ export function JobForm({
                     <SelectItem value="part_time">{t("common.employmentType.part_time")}</SelectItem>
                     <SelectItem value="contract">{t("common.employmentType.contract")}</SelectItem>
                     <SelectItem value="freelance">{t("common.employmentType.freelance")}</SelectItem>
+                    <SelectItem value="voluntariado">{t("common.employmentType.voluntariado")}</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -236,47 +250,49 @@ export function JobForm({
             )}
           />
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <FormField
-            control={form.control}
-            name="salary_min"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("jobs.salaryMin")}</FormLabel>
-                <FormControl>
-                  <Input type="number" min={0} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="salary_max"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("jobs.salaryMax")}</FormLabel>
-                <FormControl>
-                  <Input type="number" min={0} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="salary_currency"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("jobs.currency")}</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        {!isVoluntariado && (
+          <div className="grid gap-4 sm:grid-cols-3">
+            <FormField
+              control={form.control}
+              name="salary_min"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("jobs.salaryMin")}</FormLabel>
+                  <FormControl>
+                    <Input type="number" min={0} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="salary_max"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("jobs.salaryMax")}</FormLabel>
+                  <FormControl>
+                    <Input type="number" min={0} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="salary_currency"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("jobs.currency")}</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
         <FormField
           control={form.control}
           name="status"
