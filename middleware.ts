@@ -87,6 +87,8 @@ function buildCrawlerHtml(meta: {
   <meta property="og:description" content="${d}" />
   <meta property="og:image" content="${img}" />
   <meta property="og:image:secure_url" content="${img}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   ${imgType ? `<meta property="og:image:type" content="${imgType}" />` : ""}
   <meta property="og:image:alt" content="${t}" />
   <meta property="og:locale" content="es_CO" />
@@ -113,7 +115,7 @@ function buildCrawlerHtml(meta: {
 
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
-  const pathMatch = url.pathname.match(/^\/blog\/([^/]+)$/);
+  const pathMatch = url.pathname.match(/^\/blog\/([^/]+?)\/?$/);
   const userAgent = request.headers.get("user-agent") ?? "";
 
   const passThrough = () =>
