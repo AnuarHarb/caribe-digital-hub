@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { Plus, Pencil, Trash2, ImageIcon, ArrowLeft, Eye, X, Newspaper } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
 import { TipTapEditor } from "@/components/blog/TipTapEditor";
 import { TagInput } from "@/components/blog/TagInput";
 import { useAuth, useProfile } from "@/hooks/useAuth";
@@ -61,15 +60,14 @@ type ViewMode = "list" | "editor";
 
 export default function AdminBlog() {
   const { t, i18n } = useTranslation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const locale = i18n.language.startsWith("es") ? es : enUS;
   const { user } = useAuth();
   const { profile } = useProfile();
-  const navigate = useNavigate();
   const { uploadImage } = useBlogImageUpload(user?.id);
 
   const [posts, setPosts] = useState<BlogPostRow[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -137,28 +135,21 @@ export default function AdminBlog() {
   }, [t]);
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/auth");
-        return;
-      }
-      const { data } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", session.user.id)
-        .eq("role", "admin")
-        .maybeSingle();
-      if (!data) {
-        toast.error(t("admin.blog.noPermission"));
-        navigate("/");
-        return;
-      }
-      setIsAdmin(true);
-      await loadPosts();
-    };
-    checkAdmin();
-  }, [navigate, loadPosts, t]);
+    loadPosts();
+  }, [loadPosts]);
+
+  const editIdFromUrl = searchParams.get("edit");
+
+  useEffect(() => {
+    if (!editIdFromUrl || loading || posts.length === 0) return;
+    const post = posts.find((p) => p.id === editIdFromUrl);
+    if (post) openEdit(post);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("edit");
+      return next;
+    });
+  }, [editIdFromUrl, loading, posts]);
 
   const filteredPosts = useMemo(() => {
     let result = posts;
@@ -307,8 +298,6 @@ export default function AdminBlog() {
   const formatDate = (d: string | null) =>
     d ? format(new Date(d), "d MMM yyyy", { locale }) : "-";
 
-  if (!isAdmin) return null;
-
   const handleRestoreDraft = () => {
     const draft = draftAutoSave.restoreDraft();
     if (draft) {
@@ -356,9 +345,8 @@ export default function AdminBlog() {
     const charCount = formData.content.replace(/<[^>]*>/g, "").length;
 
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <div className="container mx-auto px-4 py-6">
+      <article className="w-full">
+        <div className="container mx-auto w-full">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <Button variant="ghost" onClick={handleBackToList} className="gap-2">
@@ -612,14 +600,13 @@ export default function AdminBlog() {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-      </div>
+      </article>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      <div className="container mx-auto px-4 py-8">
+    <article className="w-full">
+      <div className="container mx-auto w-full">
         <header className="mb-8">
           <h1 className="font-display text-2xl font-bold text-foreground md:text-3xl">
             {t("admin.blog.title")}
@@ -745,6 +732,6 @@ export default function AdminBlog() {
           </AlertDialogContent>
         </AlertDialog>
       </div>
-    </div>
+    </article>
   );
 }

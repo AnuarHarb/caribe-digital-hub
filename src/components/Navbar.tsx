@@ -95,28 +95,16 @@ export function Navbar() {
           </Link>
         </DropdownMenuItem>
         {isAdmin && (
-          <>
-            <DropdownMenuItem asChild>
-              <Link
-                to="/admin/configuracion"
-                onClick={onItemClick}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Settings className="h-4 w-4" />
-                {t("nav.admin")}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link
-                to="/admin/blog"
-                onClick={onItemClick}
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <Newspaper className="h-4 w-4" />
-                {t("nav.blog")}
-              </Link>
-            </DropdownMenuItem>
-          </>
+          <DropdownMenuItem asChild>
+            <Link
+              to="/admin"
+              onClick={onItemClick}
+              className="flex items-center gap-2 cursor-pointer"
+            >
+              <Settings className="h-4 w-4" />
+              {t("nav.admin")}
+            </Link>
+          </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -135,11 +123,8 @@ export function Navbar() {
 
   const NavLinks = () => (
     <>
-      <Link to="/empleos" onClick={() => setMobileMenuOpen(false)}>
-        <Button variant="ghost">{t("nav.jobs")}</Button>
-      </Link>
       <Link to="/talento" onClick={() => setMobileMenuOpen(false)}>
-        <Button variant="ghost">{t("nav.talent")}</Button>
+        <Button variant="ghost">{t("nav.talentNetwork")}</Button>
       </Link>
       <Link to="/blog" onClick={() => setMobileMenuOpen(false)}>
         <Button variant="ghost">{t("nav.blog")}</Button>

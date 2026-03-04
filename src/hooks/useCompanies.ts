@@ -5,6 +5,8 @@ import type { Database } from "@/integrations/supabase/types";
 
 type CompanyMemberRole = Database["public"]["Enums"]["company_member_role"];
 
+type ProfileType = Database["public"]["Enums"]["profile_type"];
+
 export type CompanyWithRole = {
   id: string;
   company_name: string;
@@ -14,6 +16,7 @@ export type CompanyWithRole = {
   logo_url: string | null;
   location: string | null;
   company_size: Database["public"]["Enums"]["company_size"] | null;
+  profile_type: ProfileType;
   role: CompanyMemberRole;
 };
 
@@ -38,7 +41,8 @@ export function useMyCompanies() {
             website,
             logo_url,
             location,
-            company_size
+            company_size,
+            profile_type
           )
         `
         )
@@ -54,6 +58,7 @@ export function useMyCompanies() {
           logo_url: string | null;
           location: string | null;
           company_size: Database["public"]["Enums"]["company_size"] | null;
+          profile_type: ProfileType;
         };
         return {
           ...cp,
@@ -72,11 +77,11 @@ export function useCreateCompany() {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (companyName: string) => {
+    mutationFn: async ({ companyName, profileType = "company" }: { companyName: string; profileType?: ProfileType }) => {
       if (!user?.id) throw new Error("Not authenticated");
       const { data: company, error: companyError } = await supabase
         .from("company_profiles")
-        .insert({ user_id: user.id, company_name: companyName })
+        .insert({ user_id: user.id, company_name: companyName, profile_type: profileType })
         .select()
         .single();
       if (companyError) throw companyError;

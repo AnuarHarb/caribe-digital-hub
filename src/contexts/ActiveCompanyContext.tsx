@@ -23,6 +23,7 @@ export type CompanyWithRole = {
   logo_url: string | null;
   location: string | null;
   company_size: Database["public"]["Enums"]["company_size"] | null;
+  profile_type: Database["public"]["Enums"]["profile_type"];
   role: Database["public"]["Enums"]["company_member_role"];
 };
 
@@ -61,7 +62,8 @@ export function ActiveCompanyProvider({ children }: { children: ReactNode }) {
             website,
             logo_url,
             location,
-            company_size
+            company_size,
+            profile_type
           )
         `
         )
@@ -77,6 +79,7 @@ export function ActiveCompanyProvider({ children }: { children: ReactNode }) {
           logo_url: string | null;
           location: string | null;
           company_size: Database["public"]["Enums"]["company_size"] | null;
+          profile_type: Database["public"]["Enums"]["profile_type"];
         };
         return {
           ...cp,

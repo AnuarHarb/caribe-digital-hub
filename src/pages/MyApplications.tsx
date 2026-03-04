@@ -209,7 +209,7 @@ export default function MyApplications() {
                     ? t("applications.empty")
                     : t("applications.noApplicationsForStatus")}
                 </p>
-                <Link to="/empleos">
+                <Link to="/talento">
                   <Button className="mt-4">{t("jobs.browse")}</Button>
                 </Link>
               </CardContent>

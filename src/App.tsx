@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
 import Landing from "./pages/Landing";
@@ -11,10 +11,12 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AuthCallback from "./pages/AuthCallback";
-import AdminSettings from "./pages/AdminSettings";
-import JobBoard from "./pages/JobBoard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminOrganizations from "./pages/admin/AdminOrganizations";
+import AdminJobs from "./pages/admin/AdminJobs";
 import JobDetail from "./pages/JobDetail";
-import TalentDirectory from "./pages/TalentDirectory";
+import TalentNetwork from "./pages/TalentNetwork";
 import PublicProfile from "./pages/PublicProfile";
 import CompanyPublicProfile from "./pages/CompanyPublicProfile";
 import Dashboard from "./pages/Dashboard";
@@ -28,12 +30,17 @@ import ViewApplicants from "./pages/ViewApplicants";
 import CompanySettings from "./pages/CompanySettings";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
-import AdminBlog from "./pages/AdminBlog";
+import AdminNews from "./pages/admin/AdminNews";
 import ForCompanies from "./pages/ForCompanies";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import { AuthLayout } from "./components/auth/AuthLayout";
 import { DashboardLayout } from "./components/shared/DashboardLayout";
 import { ProtectedRoute } from "./components/shared/ProtectedRoute";
+import { AdminRoute } from "./components/admin/AdminRoute";
+import { AdminLayout } from "./components/admin/AdminLayout";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { ActiveCompanyProvider } from "./contexts/ActiveCompanyContext";
 import { GoogleAnalytics } from "./components/GoogleAnalytics";
 
@@ -56,13 +63,15 @@ const App = () => (
               <Route path="reset-password" element={<ResetPassword />} />
             </Route>
             <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/empleos" element={<JobBoard />} />
+            <Route path="/talento" element={<TalentNetwork />} />
+            <Route path="/empleos" element={<Navigate to="/talento" replace />} />
             <Route path="/empleos/:slug" element={<JobDetail />} />
-            <Route path="/talento" element={<TalentDirectory />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/perfil/:id" element={<PublicProfile />} />
+            <Route path="/perfil/:slug" element={<PublicProfile />} />
             <Route path="/para-empresas" element={<ForCompanies />} />
+            <Route path="/terminos" element={<TermsAndConditions />} />
+            <Route path="/aviso-de-privacidad" element={<PrivacyPolicy />} />
             <Route path="/empresa/:id" element={<CompanyPublicProfile />} />
             <Route
               path="/dashboard"
@@ -84,8 +93,27 @@ const App = () => (
               <Route path="candidatos" element={<ViewApplicants />} />
               <Route path="empresa" element={<CompanySettings />} />
             </Route>
-            <Route path="/admin/configuracion" element={<AdminSettings />} />
-            <Route path="/admin/blog" element={<AdminBlog />} />
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminLayout />
+                </AdminRoute>
+              }
+            >
+              <Route index element={<AdminDashboard />} />
+              <Route path="usuarios" element={<AdminUsers />} />
+              <Route path="organizaciones" element={<AdminOrganizations />} />
+              <Route path="ofertas" element={<AdminJobs />} />
+              <Route
+                path="noticias"
+                element={
+                  <ErrorBoundary>
+                    <AdminNews />
+                  </ErrorBoundary>
+                }
+              />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

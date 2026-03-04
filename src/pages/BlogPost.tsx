@@ -9,8 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { LikeButton } from "@/components/blog/LikeButton";
+import { CommentSection } from "@/components/blog/CommentSection";
 
 function estimateReadingTime(html: string): number {
   const text = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
@@ -28,6 +31,7 @@ function getInitials(name: string | null | undefined): string {
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const { t, i18n } = useTranslation();
+  const { isAdmin } = useIsAdmin();
   const locale = i18n.language.startsWith("es") ? es : enUS;
 
   const { data: post, isLoading } = useQuery({
@@ -146,18 +150,32 @@ export default function BlogPost() {
           </header>
 
           <div
-            className="prose prose-lg dark:prose-invert max-w-none mt-8 prose-headings:font-display prose-img:rounded-lg"
+            className="prose prose-lg dark:prose-invert max-w-none mt-8 prose-headings:font-display prose-img:rounded-lg prose-p:leading-relaxed prose-p:mb-6 [&>p:last-of-type]:mb-0 [&_br]:block [&_br]:mb-3"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>
 
-        <div className="mt-12 pt-8 border-t">
+        <div className="mt-8 flex items-center gap-4 border-t pt-6">
+          <LikeButton postId={post.id} />
+        </div>
+
+        <CommentSection postId={post.id} />
+
+        <div className="mt-12 flex flex-wrap items-center gap-3 pt-8 border-t">
           <Link to="/blog">
             <Button variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
               {t("blog.backToBlog")}
             </Button>
           </Link>
+          {isAdmin && (
+            <Link to={`/admin/noticias?edit=${post.id}`}>
+              <Button variant="outline" className="gap-2">
+                <Pencil className="h-4 w-4" aria-hidden />
+                {t("common.edit")}
+              </Button>
+            </Link>
+          )}
         </div>
       </main>
     </div>

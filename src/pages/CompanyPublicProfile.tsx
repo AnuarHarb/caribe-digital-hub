@@ -184,7 +184,7 @@ export default function CompanyPublicProfile() {
           </section>
 
           <div className="flex justify-center pt-4">
-            <Link to="/empleos">
+            <Link to="/talento">
               <Button variant="outline">{t("jobs.browse")}</Button>
             </Link>
           </div>

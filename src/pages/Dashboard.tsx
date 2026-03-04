@@ -228,7 +228,7 @@ export default function Dashboard() {
             <p className="text-3xl font-bold">{applications.length}</p>
             <p className="text-sm text-muted-foreground">{t("dashboard.applicationsCount")}</p>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Link to="/empleos">
+              <Link to="/talento">
                 <Button size="default" className="px-4 py-2">{t("jobs.browse")}</Button>
               </Link>
               <Link to="/dashboard/aplicaciones">

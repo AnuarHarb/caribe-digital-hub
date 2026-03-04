@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Building2, UserPlus, Plus } from "lucide-react";
+import { Building2, UserPlus, Plus, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -140,6 +140,7 @@ export default function CompanySettings() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {companies.map((c) => {
               const isActive = activeCompany?.id === c.id;
+              const CardIcon = c.profile_type === "community" ? Users : Building2;
               return (
                 <Card
                   key={c.id}
@@ -150,23 +151,31 @@ export default function CompanySettings() {
                 >
                   <CardContent className="pt-4">
                     <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate font-medium text-foreground">
-                          {c.company_name}
-                        </p>
-                        {(c.industry || c.location) && (
-                          <p className="mt-0.5 truncate text-sm text-muted-foreground">
-                            {[c.industry, c.location].filter(Boolean).join(" · ")}
+                      <div className="flex min-w-0 flex-1 items-start gap-2.5">
+                        <CardIcon className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium text-foreground">
+                            {c.company_name}
                           </p>
-                        )}
+                          {(c.industry || c.location) && (
+                            <p className="mt-0.5 truncate text-sm text-muted-foreground">
+                              {[c.industry, c.location].filter(Boolean).join(" · ")}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <span
-                        className={`shrink-0 rounded px-2 py-0.5 text-[10px] font-medium uppercase ${
-                          isActive ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        {t(`company.role.${c.role}`)}
-                      </span>
+                      <div className="flex shrink-0 flex-col items-end gap-1">
+                        <span
+                          className={`rounded px-2 py-0.5 text-[10px] font-medium uppercase ${
+                            isActive ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {t(`company.type.${c.profile_type}`)}
+                        </span>
+                        <span className="rounded bg-muted px-2 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
+                          {t(`company.role.${c.role}`)}
+                        </span>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -200,13 +209,15 @@ export default function CompanySettings() {
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
-                <Building2 className="h-5 w-5" aria-hidden />
+                {activeCompany.profile_type === "community"
+                  ? <Users className="h-5 w-5" aria-hidden />
+                  : <Building2 className="h-5 w-5" aria-hidden />}
                 <CardTitle>{t("company.profile")}</CardTitle>
               </div>
               <CardDescription>{t("company.editDescription")}</CardDescription>
             </CardHeader>
             <CardContent>
-              <CompanyProfileForm companyId={activeCompany.id} />
+              <CompanyProfileForm companyId={activeCompany.id} profileType={activeCompany.profile_type} />
             </CardContent>
           </Card>
 

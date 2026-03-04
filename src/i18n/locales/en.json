@@ -7,7 +7,13 @@
     "settings": "Settings",
     "admin": "Admin",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "talentNetwork": "Talent Network"
+  },
+  "talentNetwork": {
+    "subtitle": "Find job offers and connect with Caribbean tech talent.",
+    "tabJobs": "Job Offers",
+    "tabTalent": "Talent"
   },
   "home": {
     "welcome": "Welcome to Costa Digital",
@@ -147,10 +153,14 @@
     "accountType": "Account type",
     "accountTypeProfessional": "Professional",
     "accountTypeCompany": "Company",
-    "accountTypeDescription": "Are you a professional looking for jobs or a company looking for talent?",
+    "accountTypeCommunity": "Community",
+    "accountTypeDescription": "Are you a professional, a company, or a community?",
     "companyName": "Company name",
     "companyNamePlaceholder": "e.g. My Tech Startup",
     "companyNameRequired": "Company name is required",
+    "communityName": "Community name",
+    "communityNamePlaceholder": "e.g. Dev Community BCQ",
+    "communityNameRequired": "Community name is required",
     "processing": "Processing...",
     "invalidCredentials": "Invalid credentials",
     "welcome": "Welcome!",
@@ -180,7 +190,12 @@
     "setNewPassword": "Set new password",
     "setNewPasswordDescription": "Enter your new password below.",
     "confirmPassword": "Confirm password",
-    "updatePassword": "Update password"
+    "updatePassword": "Update password",
+    "acceptTermsPrefix": "I accept the",
+    "termsLink": "Terms and Conditions",
+    "acceptTermsAnd": "and the",
+    "privacyLink": "Privacy Notice",
+    "termsRequired": "You must accept the terms and conditions to continue"
   },
   "adminSettings": {
     "title": "User Management",
@@ -568,6 +583,87 @@
     "contactLoginRequired": "Log in to contact this talent."
   },
   "admin": {
+    "nav": {
+      "title": "Admin panel",
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "organizations": "Organizations",
+      "jobs": "Jobs",
+      "news": "News"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "Overview of the Costa Digital ecosystem",
+      "totalUsers": "Total users",
+      "profiles": "Professional profiles",
+      "public": "public",
+      "private": "private",
+      "organizations": "Organizations",
+      "companies": "companies",
+      "communities": "communities",
+      "jobOffers": "Job offers",
+      "active": "active",
+      "news": "News",
+      "published": "published",
+      "drafts": "drafts"
+    },
+    "users": {
+      "title": "Users",
+      "subtitle": "Manage registered platform users",
+      "create": "Create user",
+      "createTitle": "Create new user",
+      "createDescription": "Enter the new user details",
+      "name": "Name",
+      "password": "Password",
+      "role": "Role",
+      "roleUser": "User",
+      "roleAdmin": "Admin",
+      "accountType": "Account type",
+      "visibility": "Visibility",
+      "public": "Public",
+      "private": "Private",
+      "createdAt": "Registered",
+      "actions": "Actions",
+      "search": "Search by name...",
+      "loadError": "Error loading users",
+      "created": "User created successfully",
+      "createError": "Error creating user",
+      "roleUpdated": "Role updated",
+      "roleError": "Error updating role"
+    },
+    "organizations": {
+      "title": "Organizations",
+      "subtitle": "Companies and communities registered on the platform",
+      "all": "All",
+      "companies": "Companies",
+      "communities": "Communities",
+      "name": "Name",
+      "type": "Type",
+      "industry": "Industry",
+      "location": "Location",
+      "website": "Website",
+      "createdAt": "Registered",
+      "visit": "Visit",
+      "empty": "No organizations found"
+    },
+    "jobs": {
+      "title": "Job offers",
+      "subtitle": "All job offers posted on the platform",
+      "all": "All",
+      "active": "Active",
+      "draft": "Draft",
+      "closed": "Closed",
+      "jobTitle": "Title",
+      "company": "Company",
+      "status": "Status",
+      "status_active": "Active",
+      "status_draft": "Draft",
+      "status_closed": "Closed",
+      "workMode": "Work mode",
+      "location": "Location",
+      "createdAt": "Posted",
+      "empty": "No job offers found"
+    },
     "blog": {
       "title": "Blog management",
       "description": "Create and edit Costa Digital News articles",
@@ -654,7 +750,16 @@
     "publishedOn": "Published on",
     "by": "by",
     "tags": "Tags",
-    "readingTime": "min read"
+    "readingTime": "min read",
+    "likes": "Likes",
+    "likeArticle": "Like",
+    "comments": "Comments",
+    "addComment": "Write a comment...",
+    "submitComment": "Comment",
+    "deleteComment": "Delete",
+    "loginToComment": "Log in to comment",
+    "loginToLike": "Log in to like",
+    "noComments": "Be the first to comment"
   },
   "applications": {
     "empty": "You haven't applied to any jobs yet.",
@@ -673,6 +778,7 @@
   "dashboard": {
     "sectionPersonal": "Personal",
     "sectionCompany": "Company",
+    "sectionCommunity": "Community",
     "profile": "My profile",
     "applications": "My applications",
     "jobs": "My jobs",
@@ -694,10 +800,19 @@
     "namePlaceholder": "My Company Inc",
     "nameRequired": "Company name is required",
     "selectCompany": "Select company",
-    "createNew": "Create new company",
+    "createNew": "Create new",
+    "createNewCompany": "Create new company",
+    "createNewCommunity": "Create new community",
     "createFirst": "Create your first company",
     "createDescription": "Register a new company to post job openings.",
-    "created": "Company created successfully",
+    "createDescriptionCommunity": "Register a new community to post openings and manage members.",
+    "created": "Created successfully",
+    "type": {
+      "company": "Company",
+      "community": "Community"
+    },
+    "communityName": "Community name",
+    "communityNamePlaceholder": "My Tech Community",
     "invitationsTitle": "You have pending invitations",
     "unknownCompany": "Company",
     "accept": "Accept",
@@ -716,12 +831,12 @@
     "removeMemberConfirm": "Remove this member?",
     "removeMemberDescription": "{{name}} will lose access to this company.",
     "removeMemberDescriptionGeneric": "This member will lose access to the company.",
-    "settingsTitle": "Company settings",
-    "myCompanies": "My companies",
-    "myCompaniesDescription": "Manage the companies you belong to and create new ones.",
-    "noCompanies": "You don't have any companies yet",
-    "noCompaniesDescription": "Create your first company to post job offers and manage candidates.",
-    "companyDetails": "Company details",
+    "settingsTitle": "Settings",
+    "myCompanies": "My organizations",
+    "myCompaniesDescription": "Manage the companies and communities you belong to.",
+    "noCompanies": "You don't have any organizations yet",
+    "noCompaniesDescription": "Create your first company or community to post openings and manage members.",
+    "companyDetails": "Details",
     "selectCompanyFirst": "Select a company from the sidebar.",
     "noPermissionEditJobs": "You don't have permission to edit jobs for this company.",
     "profile": "Company profile",
@@ -738,6 +853,9 @@
     "medium": "Medium (51-200)",
     "large": "Large (201-1000)",
     "enterprise": "Enterprise (1000+)",
+    "whatsappUrl": "WhatsApp link",
+    "whatsappUrlPlaceholder": "https://chat.whatsapp.com/...",
+    "whatsappUrlHint": "WhatsApp group or community link.",
     "editDescription": "Complete your company profile to post job openings.",
     "openPositions": "Open positions",
     "noOpenPositions": "No active positions at the moment",
@@ -842,16 +960,16 @@
   },
   "landing": {
     "hero": {
-      "badge": "Free",
-      "betaBanner": "We're in beta until May 4th. After that date, paid plans for companies will be enabled.",
-      "title": "The Caribbean tech talent network",
-      "subtitle": "Connect professionals with companies. Create your profile, apply to jobs, or find the talent you need. Free.",
-      "ctaProfessional": "I'm a professional",
-      "ctaCompany": "I'm a company",
-      "exploreJobs": "Explore job offers",
-      "createCompany": "Create a company",
-      "browseJobs": "Browse jobs",
-      "browseTalent": "Browse talent"
+      "title": "Building the Tech Future of the Caribbean",
+      "subtitle": "A growing ecosystem connecting talent, startups and capital in the Caribbean region of Colombia.",
+      "ctaJoin": "Join the community",
+      "ctaExplore": "Explore the ecosystem",
+      "stats": [
+        { "value": "2000+", "label": "community members" },
+        { "value": "500+", "label": "developers in the ecosystem" },
+        { "value": "350+", "label": "hackathon participants" },
+        { "value": "53+", "label": "projects created" }
+      ]
     },
     "eventsCta": {
       "title": "Community events",
@@ -886,9 +1004,10 @@
       }
     },
     "techCentre": {
-      "title": "The Caribbean's programming academy",
+      "title": "The Caribbean's Technology Centre",
       "description": "In-person and practical programs in software, data, design, and artificial intelligence, guided by active professionals in the market.",
-      "cta": "Discover Tech Centre"
+      "cta": "Explore Tech Centre",
+      "programs": ["Artificial Intelligence", "Web Development", "Cloud", "Data"]
     },
     "featuredJobs": {
       "title": "Featured jobs",
@@ -922,17 +1041,176 @@
       "jobs": "Active jobs"
     },
     "cta": {
-      "title": "Join the network",
-      "subtitle": "Sign up for free and start connecting with the Caribbean tech ecosystem.",
-      "ctaProfessional": "Create professional profile",
-      "ctaCompany": "Register company",
-      "ctaDashboard": "Go to dashboard",
-      "ctaMyCompanies": "My companies"
+      "title": "Be part of the Caribbean tech movement",
+      "subtitle": "Join a growing ecosystem that is transforming the region.",
+      "ctaJoin": "Join the community",
+      "ctaPartner": "Partner with us"
     },
     "footer": {
       "externalLinks": "External links",
       "events": "Community events",
-      "ecosystemMap": "Ecosystem map"
+      "ecosystemMap": "Ecosystem map",
+      "legal": "Legal"
+    },
+    "ecosystem": {
+      "title": "Costa Digital Activation Model",
+      "subtitle": "How we're transforming the region into a tech epicenter.",
+      "community": {
+        "title": "Community",
+        "description": "We activate communities and events that connect talent and generate new ideas."
+      },
+      "education": {
+        "title": "Talent",
+        "description": "Educational programs that train developers, designers and technology specialists."
+      },
+      "build": {
+        "title": "Innovation",
+        "description": "Hackathons and experimentation spaces where new projects are born."
+      },
+      "startups": {
+        "title": "Startups",
+        "description": "Teams and programs that help turn ideas into real products."
+      },
+      "investment": {
+        "title": "Capital",
+        "description": "Funds and investors that drive startup growth."
+      }
+    },
+    "community": {
+      "title": "Tech Communities",
+      "subtitle": "The communities driving the Caribbean tech ecosystem.",
+      "gdg": {
+        "name": "GDG Barranquilla",
+        "description": "Google developer community. Events, workshops and networking."
+      },
+      "cursor": {
+        "name": "Cursor Barranquilla",
+        "description": "Developer community focused on AI and productivity tools."
+      },
+      "techQueens": {
+        "name": "Tech Queens",
+        "description": "Women leaders in technology. Mentorship, talks and community."
+      },
+      "musaDigital": {
+        "name": "Musa Digital",
+        "description": "Creativity and technology. Design, digital content and entrepreneurship."
+      },
+      "dataMind": {
+        "name": "DataMind",
+        "description": "Data science, machine learning and applied artificial intelligence."
+      },
+      "joinWhatsApp": "Join group",
+      "noCommunities": "Active ecosystem communities will appear here soon.",
+      "eventsTitle": "Featured Events",
+      "events": {
+        "barranquiIA": "Barranqui-IA",
+        "techCaribeFest": "TechCaribe Fest",
+        "techNights": "Tech Nights"
+      }
+    },
+    "startups": {
+      "title": "Building Startups from the Caribbean",
+      "subtitle": "Founders, communities, funds and initiatives creating the next generation of Caribbean startups.",
+      "create": {
+        "title": "Create Startups",
+        "chip": "Ideation",
+        "barranquiIA": "Barranqui-IA",
+        "description1": "AI hackathon where Caribbean builders create prototypes and new startups.",
+        "description2": "It works as an open innovation space that connects talent, technology and organizations to solve real challenges."
+      },
+      "founders": {
+        "title": "Founder Community",
+        "chip": "Networking",
+        "description": "Community of founders and makers connecting Caribbean entrepreneurs to share experiences, strengthen their network and accelerate the creation of startups with global impact."
+      },
+      "investment": {
+        "title": "Investment",
+        "chip": "Investment",
+        "description1": "Venture studio and pre-seed fund that drives Caribbean startups building agentic AI companies to transform traditional industries.",
+        "description2": "We support founders with technology, mentorship and capital to scale innovative projects from the region."
+      },
+      "map": {
+        "title": "Ecosystem Map",
+        "description": "Explore the startups and players of the Caribbean.",
+        "cta": "Explore the full map"
+      }
+    },
+    "talentNetwork": {
+      "title": "Talent Network",
+      "subtitle": "Connect with developers, designers and AI engineers from the Caribbean tech ecosystem.",
+      "cta": "Explore the talent network"
+    },
+    "partners": {
+      "title": "Partners & Supporters",
+      "subtitle": "Organizations supporting the Caribbean tech ecosystem."
+    }
+  },
+  "legal": {
+    "termsTitle": "Terms and Conditions",
+    "privacyTitle": "Privacy Notice",
+    "lastUpdated": "Last updated",
+    "terms": {
+      "acceptanceTitle": "Acceptance of Terms",
+      "acceptanceText": "By accessing and using the Costa Digital platform, you agree to be bound by these Terms and Conditions. If you do not agree with any of these terms, you should not use the platform.",
+      "ecosystemTitle": "Participation in the Costa Digital Ecosystem",
+      "ecosystemIntro": "By registering on the Costa Digital platform, users, startups, companies or communities become part of the Costa Digital ecosystem, an open network that connects talent, organizations and technology projects in the Caribbean.",
+      "ecosystemRegistration": "Registration allows members to:",
+      "ecosystemBullet1": "Participate in ecosystem initiatives, programs and events.",
+      "ecosystemBullet2": "Appear in public directories or ecosystem maps (when applicable).",
+      "ecosystemBullet3": "Receive information about opportunities, collaborations and Costa Digital activities.",
+      "ecosystemVoluntary": "Participation in the ecosystem is voluntary and does not imply a contractual, employment or corporate relationship between Costa Digital and its members.",
+      "ecosystemReserve": "Costa Digital reserves the right to accept, reject or remove profiles that are not aligned with the principles and objectives of the ecosystem.",
+      "accountsTitle": "User Accounts",
+      "accountsText": "You are responsible for maintaining the confidentiality of your access credentials and for all activities that occur under your account. You must provide truthful and up-to-date information at the time of registration. Costa Digital reserves the right to suspend or delete accounts that violate these terms.",
+      "contentTitle": "User Content",
+      "contentText": "By publishing content on the platform (profiles, job offers, comments, articles, etc.), you grant Costa Digital a non-exclusive license to display and distribute such content within the platform. You are solely responsible for the content you publish and warrant that it does not infringe the rights of third parties.",
+      "intellectualTitle": "Intellectual Property",
+      "intellectualText": "The Costa Digital platform, its design, code, logos and original content are the property of Costa Digital or their respective owners. Reproduction, distribution or modification without prior authorization is prohibited.",
+      "conductTitle": "Prohibited Conduct",
+      "conductIntro": "Users agree not to:",
+      "conductBullet1": "Publish false, defamatory, offensive or illegal content.",
+      "conductBullet2": "Use the platform to send spam or unsolicited communications.",
+      "conductBullet3": "Attempt to access other users' accounts or data without authorization.",
+      "conductBullet4": "Carry out activities that damage the operation of the platform.",
+      "limitationTitle": "Limitation of Liability",
+      "limitationText": "Costa Digital provides the platform \"as is\" and does not guarantee that the service will be uninterrupted or error-free. Costa Digital is not responsible for direct, indirect or consequential damages arising from the use of the platform. Connections and relationships between users are the sole responsibility of the parties involved.",
+      "modificationsTitle": "Modifications",
+      "modificationsText": "Costa Digital reserves the right to modify these Terms and Conditions at any time. Changes will be notified through the platform. Continued use of the platform after publication of changes constitutes acceptance thereof.",
+      "contactTitle": "Contact",
+      "contactText": "For questions about these terms, contact us at contacto@costadigital.org"
+    },
+    "privacy": {
+      "collectionTitle": "Information We Collect",
+      "collectionIntro": "We collect the following information when you use our platform:",
+      "collectionBullet1": "Registration information: name, email, account type and organization data.",
+      "collectionBullet2": "Profile information: biography, skills, work experience, education, photo and social media links.",
+      "collectionBullet3": "Generated content: posts, comments, job offers and applications.",
+      "collectionBullet4": "Usage data: information about how you interact with the platform, pages visited and features used.",
+      "useTitle": "Use of Information",
+      "useIntro": "We use your information to:",
+      "useBullet1": "Provide and improve platform services.",
+      "useBullet2": "Manage your account and profile within the ecosystem.",
+      "useBullet3": "Facilitate connections between ecosystem members.",
+      "useBullet4": "Send relevant communications about the ecosystem, events and opportunities.",
+      "useBullet5": "Generate aggregated and anonymous statistics about the ecosystem.",
+      "sharingTitle": "Sharing Information",
+      "sharingText": "We do not sell your personal information to third parties. We may share information in the following cases: when you choose to make your profile public within the platform, with service providers that help us operate the platform (such as hosting and analytics services), when required by law or to protect our legal rights.",
+      "publicTitle": "Public Profiles",
+      "publicText": "By making your profile public on the platform, you agree that your profile information (name, title, skills, experience) will be visible to other users and may appear in ecosystem directories. You can change your profile visibility at any time from your dashboard.",
+      "securityTitle": "Security",
+      "securityText": "We implement technical and organizational security measures to protect your personal information. However, no method of Internet transmission is completely secure, so we cannot guarantee the absolute security of data.",
+      "rightsTitle": "Your Rights",
+      "rightsIntro": "You have the right to:",
+      "rightsBullet1": "Access your personal information stored on the platform.",
+      "rightsBullet2": "Rectify incorrect or outdated information.",
+      "rightsBullet3": "Request the deletion of your account and associated data.",
+      "rightsBullet4": "Object to the processing of your data for specific purposes.",
+      "cookiesTitle": "Cookies and Similar Technologies",
+      "cookiesText": "We use cookies and similar technologies to keep your session active, remember your preferences and analyze platform usage. You can manage cookies from your browser settings.",
+      "changesTitle": "Changes to this Notice",
+      "changesText": "We may update this Privacy Notice periodically. We will notify you of significant changes through the platform or by email.",
+      "contactTitle": "Contact",
+      "contactText": "To exercise your rights or make privacy inquiries, write to us at contacto@costadigital.org"
     }
   }
 }

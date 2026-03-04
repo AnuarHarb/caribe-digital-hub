@@ -82,6 +82,7 @@ export function useJobApplications(jobId: string | undefined) {
           *,
           professional_profiles(
             id,
+            slug,
             title,
             bio,
             location,

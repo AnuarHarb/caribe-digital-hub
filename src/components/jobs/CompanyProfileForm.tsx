@@ -34,17 +34,22 @@ const companySchema = z.object({
   website: z.string().url().optional().or(z.literal("")),
   location: z.string().optional(),
   company_size: z.enum(["startup", "small", "medium", "large", "enterprise"]).optional(),
+  whatsapp_url: z.string().url().optional().or(z.literal("")),
 });
 
 type CompanyFormValues = z.infer<typeof companySchema>;
 
+type ProfileType = Database["public"]["Enums"]["profile_type"];
+
 type CompanyProfileFormProps = {
   companyId?: string;
+  profileType?: ProfileType;
 };
 
-export function CompanyProfileForm({ companyId }: CompanyProfileFormProps) {
+export function CompanyProfileForm({ companyId, profileType = "company" }: CompanyProfileFormProps) {
   const { t } = useTranslation();
   const { companyProfile, upsertCompanyProfile, isUpserting } = useCompanyProfile(companyId);
+  const isCommunity = (companyProfile?.profile_type ?? profileType) === "community";
 
   const form = useForm<CompanyFormValues>({
     resolver: zodResolver(companySchema),
@@ -55,6 +60,7 @@ export function CompanyProfileForm({ companyId }: CompanyProfileFormProps) {
       website: companyProfile?.website ?? "",
       location: companyProfile?.location ?? "",
       company_size: companyProfile?.company_size ?? undefined,
+      whatsapp_url: companyProfile?.whatsapp_url ?? "",
     },
     values: companyProfile
       ? {
@@ -64,6 +70,7 @@ export function CompanyProfileForm({ companyId }: CompanyProfileFormProps) {
           website: companyProfile.website ?? "",
           location: companyProfile.location ?? "",
           company_size: companyProfile.company_size ?? undefined,
+          whatsapp_url: companyProfile.whatsapp_url ?? "",
         }
       : undefined,
   });
@@ -76,7 +83,9 @@ export function CompanyProfileForm({ companyId }: CompanyProfileFormProps) {
         industry: data.industry || null,
         website: data.website || null,
         location: data.location || null,
-        company_size: (data.company_size as CompanySize) ?? null,
+        ...(isCommunity
+          ? { whatsapp_url: data.whatsapp_url || null }
+          : { company_size: (data.company_size as CompanySize) ?? null }),
       });
       toast.success(t("common.success"));
     } catch {
@@ -100,9 +109,18 @@ export function CompanyProfileForm({ companyId }: CompanyProfileFormProps) {
           name="company_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("company.name")}</FormLabel>
+              <FormLabel>
+                {isCommunity ? t("company.communityName") : t("company.name")}
+              </FormLabel>
               <FormControl>
-                <Input placeholder={t("company.namePlaceholder")} {...field} />
+                <Input
+                  placeholder={
+                    isCommunity
+                      ? t("company.communityNamePlaceholder")
+                      : t("company.namePlaceholder")
+                  }
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -160,30 +178,53 @@ export function CompanyProfileForm({ companyId }: CompanyProfileFormProps) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="company_size"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("company.size")}</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+        {isCommunity ? (
+          <FormField
+            control={form.control}
+            name="whatsapp_url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("company.whatsappUrl")}</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("company.selectSize")} />
-                  </SelectTrigger>
+                  <Input
+                    type="url"
+                    placeholder={t("company.whatsappUrlPlaceholder")}
+                    {...field}
+                  />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="startup">Startup</SelectItem>
-                  <SelectItem value="small">{t("company.small")}</SelectItem>
-                  <SelectItem value="medium">{t("company.medium")}</SelectItem>
-                  <SelectItem value="large">{t("company.large")}</SelectItem>
-                  <SelectItem value="enterprise">{t("company.enterprise")}</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <p className="text-xs text-muted-foreground">
+                  {t("company.whatsappUrlHint")}
+                </p>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : (
+          <FormField
+            control={form.control}
+            name="company_size"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("company.size")}</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("company.selectSize")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="startup">Startup</SelectItem>
+                    <SelectItem value="small">{t("company.small")}</SelectItem>
+                    <SelectItem value="medium">{t("company.medium")}</SelectItem>
+                    <SelectItem value="large">{t("company.large")}</SelectItem>
+                    <SelectItem value="enterprise">{t("company.enterprise")}</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <Button type="submit" disabled={isUpserting}>
           {isUpserting ? t("common.loading") : t("common.save")}
         </Button>

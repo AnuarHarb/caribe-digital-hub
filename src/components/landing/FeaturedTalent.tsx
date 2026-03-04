@@ -17,6 +17,7 @@ export function FeaturedTalent() {
         .from("professional_profiles")
         .select(`
           id,
+          slug,
           title,
           location,
           years_experience,
@@ -97,7 +98,7 @@ export function FeaturedTalent() {
                       </span>
                     )}
                   </div>
-                  <Link to={`/perfil/${prof.id}`} className="mt-4 block">
+                  <Link to={`/perfil/${prof.slug ?? prof.id}`} className="mt-4 block">
                     <Button
                       variant="outline"
                       size="sm"

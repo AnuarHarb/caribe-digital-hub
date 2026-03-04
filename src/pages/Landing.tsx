@@ -1,12 +1,12 @@
 import { Navbar } from "@/components/Navbar";
-import { HeroTalent } from "@/components/landing/HeroTalent";
-import { HowItWorks } from "@/components/landing/HowItWorks";
+import { Hero } from "@/components/landing/Hero";
+import { EcosystemOverview } from "@/components/landing/EcosystemOverview";
+import { CommunitySection } from "@/components/landing/CommunitySection";
 import { TechCentre } from "@/components/landing/TechCentre";
-import { EventsCTA } from "@/components/landing/EventsCTA";
-import { EcosystemMapCTA } from "@/components/landing/EcosystemMapCTA";
-import { FeaturedJobs } from "@/components/landing/FeaturedJobs";
+import { StartupsSection } from "@/components/landing/StartupsSection";
+import { TalentNetworkCTA } from "@/components/landing/TalentNetworkCTA";
 import { CostaDigitalNews } from "@/components/landing/CostaDigitalNews";
-import { Stats } from "@/components/landing/Stats";
+import { PartnersSection } from "@/components/landing/PartnersSection";
 import { LandingCTA } from "@/components/landing/LandingCTA";
 import { Footer } from "@/components/landing/Footer";
 
@@ -15,14 +15,14 @@ export default function Landing() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <main>
-        <HeroTalent />
-        <HowItWorks />
+        <Hero />
+        <EcosystemOverview />
+        <CommunitySection />
         <TechCentre />
-        <EventsCTA />
-        <EcosystemMapCTA />
-        <FeaturedJobs />
+        <StartupsSection />
+        <TalentNetworkCTA />
         <CostaDigitalNews />
-        <Stats />
+        <PartnersSection />
         <LandingCTA />
       </main>
       <Footer />

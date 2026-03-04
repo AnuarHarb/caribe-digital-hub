@@ -33,7 +33,7 @@ export function HeroTalent() {
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           {isAuthenticated ? (
             <>
-              <Link to="/empleos">
+              <Link to="/talento">
                 <Button
                   size="lg"
                   className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"
@@ -74,7 +74,7 @@ export function HeroTalent() {
           )}
         </div>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Link to="/empleos">
+          <Link to="/talento">
             <Button
               variant="ghost"
               size="sm"

@@ -103,7 +103,7 @@ export default function JobDetail() {
           <h1 className="font-display text-xl font-semibold text-foreground">
             {t("jobs.notFound")}
           </h1>
-          <Link to="/empleos" className="mt-4">
+          <Link to="/talento" className="mt-4">
             <Button variant="outline">{t("jobs.browse")}</Button>
           </Link>
         </main>

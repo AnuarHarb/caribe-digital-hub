@@ -1,3 +1,5 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +16,7 @@ export interface TalentFiltersState {
   search?: string;
   location?: string;
   availability?: string;
+  skill?: string;
 }
 
 interface TalentFiltersProps {
@@ -23,6 +26,22 @@ interface TalentFiltersProps {
 
 export function TalentFilters({ filters, onFiltersChange }: TalentFiltersProps) {
   const { t } = useTranslation();
+
+  const { data: skillsData } = useQuery({
+    queryKey: ["talent-skills"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("professional_skills")
+        .select("skill_name")
+        .order("skill_name");
+      if (error) throw error;
+      const names = [...new Set((data ?? []).map((s) => s.skill_name))].sort();
+      return names;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const skills = skillsData ?? [];
 
   const handleChange = (key: keyof TalentFiltersState, value: string | undefined) => {
     onFiltersChange({ ...filters, [key]: value || undefined });
@@ -43,6 +62,25 @@ export function TalentFilters({ filters, onFiltersChange }: TalentFiltersProps) 
           value={filters.search ?? ""}
           onChange={(e) => handleChange("search", e.target.value)}
         />
+      </div>
+      <div className="space-y-2">
+        <Label>{t("talent.skills")}</Label>
+        <Select
+          value={filters.skill ?? "all"}
+          onValueChange={(v) => handleChange("skill", v === "all" ? undefined : v)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder={t("talent.all")} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">{t("talent.all")}</SelectItem>
+            {skills.map((skill) => (
+              <SelectItem key={skill} value={skill}>
+                {skill}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       <div className="space-y-2">
         <Label>{t("profile.availability")}</Label>

@@ -9,6 +9,7 @@ type AvailabilityStatus = "available" | "open_to_offers" | "not_looking";
 
 interface TalentCardProps {
   id: string;
+  slug?: string | null;
   title?: string | null;
   location?: string | null;
   yearsExperience?: number | null;
@@ -43,6 +44,7 @@ function avatarBadgeVariant(availability: AvailabilityStatus | null | undefined)
 
 export function TalentCard({
   id,
+  slug,
   title,
   location,
   yearsExperience,
@@ -98,7 +100,7 @@ export function TalentCard({
             {t(`common.availability.${availability}`)}
           </Badge>
         )}
-        <Link to={`/perfil/${id}`} className="mt-4 block">
+        <Link to={`/perfil/${slug ?? id}`} className="mt-4 block">
           <Button variant="outline" size="sm" className="w-full">
             {t("landing.featuredTalent.viewProfile")}
           </Button>

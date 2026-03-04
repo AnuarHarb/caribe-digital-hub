@@ -115,7 +115,7 @@ export function FeaturedJobs() {
           )}
         </div>
         <div className="mt-10 text-center">
-          <Link to="/empleos">
+          <Link to="/talento">
             <Button variant="outline" className="transition-colors">
               {t("landing.featuredJobs.viewAll")}
             </Button>

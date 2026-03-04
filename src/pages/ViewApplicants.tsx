@@ -165,6 +165,7 @@ export default function ViewApplicants() {
             {applications.map((app) => {
               const prof = app.professional_profiles as {
                 id?: string;
+                slug?: string;
                 title?: string;
                 bio?: string;
                 location?: string;
@@ -181,6 +182,7 @@ export default function ViewApplicants() {
                   key={app.id}
                   application={app}
                   professionalId={prof?.id}
+                  professionalSlug={prof?.slug}
                   name={name}
                   avatarUrl={profile?.avatar_url}
                   title={prof?.title}
@@ -229,6 +231,7 @@ type CandidateCardProps = {
     created_at: string;
   };
   professionalId?: string;
+  professionalSlug?: string | null;
   name: string;
   avatarUrl?: string | null;
   title?: string | null;
@@ -246,6 +249,7 @@ type CandidateCardProps = {
 function CandidateCard({
   application,
   professionalId,
+  professionalSlug,
   name,
   avatarUrl,
   title,
@@ -295,8 +299,8 @@ function CandidateCard({
           </div>
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
-          {professionalId && (
-            <Link to={`/perfil/${professionalId}`}>
+          {(professionalSlug ?? professionalId) && (
+            <Link to={`/perfil/${professionalSlug ?? professionalId}`}>
               <Button variant="outline" size="sm">
                 {t("landing.featuredTalent.viewProfile")}
               </Button>

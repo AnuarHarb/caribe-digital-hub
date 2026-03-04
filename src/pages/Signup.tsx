@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
+import { Checkbox } from "@/components/ui/checkbox";
 import { GoogleIcon } from "@/components/auth/GoogleIcon";
 
 type AccountType = Database["public"]["Enums"]["account_type"];
@@ -21,13 +22,22 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accountType, setAccountType] = useState<AccountType>(
-    preselectedType === "company" ? "company" : "professional"
+    preselectedType === "company" || preselectedType === "community"
+      ? preselectedType
+      : "professional"
   );
-  const [companyName, setCompanyName] = useState("");
+  const [orgName, setOrgName] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const needsOrgName = accountType === "company" || accountType === "community";
+
   useEffect(() => {
-    if (preselectedType === "company" || preselectedType === "professional") {
+    if (
+      preselectedType === "company" ||
+      preselectedType === "professional" ||
+      preselectedType === "community"
+    ) {
       setAccountType(preselectedType);
     }
   }, [preselectedType]);
@@ -41,14 +51,23 @@ export default function Signup() {
     e.preventDefault();
     setLoading(true);
     try {
+      if (!acceptedTerms) {
+        toast.error(t("auth.termsRequired"));
+        setLoading(false);
+        return;
+      }
       const validation = authSchema.safeParse({ email, password });
       if (!validation.success) {
         toast.error(validation.error.errors[0].message);
         setLoading(false);
         return;
       }
-      if (accountType === "company" && !companyName?.trim()) {
-        toast.error(t("auth.companyNameRequired"));
+      if (needsOrgName && !orgName?.trim()) {
+        toast.error(
+          accountType === "community"
+            ? t("auth.communityNameRequired")
+            : t("auth.companyNameRequired")
+        );
         setLoading(false);
         return;
       }
@@ -59,8 +78,8 @@ export default function Signup() {
           data: {
             full_name: fullName || undefined,
             account_type: accountType,
-            ...(accountType === "company" && companyName?.trim()
-              ? { company_name: companyName.trim() }
+            ...(needsOrgName && orgName?.trim()
+              ? { company_name: orgName.trim() }
               : {}),
           },
         },
@@ -126,7 +145,7 @@ export default function Signup() {
           <RadioGroup
             value={accountType}
             onValueChange={(v) => setAccountType(v as AccountType)}
-            className="flex gap-4 mt-2"
+            className="flex flex-wrap gap-4 mt-2"
           >
             <label className="flex items-center gap-2 cursor-pointer">
               <RadioGroupItem value="professional" id="type-professional" />
@@ -136,18 +155,30 @@ export default function Signup() {
               <RadioGroupItem value="company" id="type-company" />
               <span>{t("auth.accountTypeCompany")}</span>
             </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <RadioGroupItem value="community" id="type-community" />
+              <span>{t("auth.accountTypeCommunity")}</span>
+            </label>
           </RadioGroup>
         </div>
-        {accountType === "company" && (
+        {needsOrgName && (
           <div className="space-y-2">
-            <Label htmlFor="signup-company-name">{t("auth.companyName")}</Label>
+            <Label htmlFor="signup-org-name">
+              {accountType === "community"
+                ? t("auth.communityName")
+                : t("auth.companyName")}
+            </Label>
             <Input
-              id="signup-company-name"
+              id="signup-org-name"
               type="text"
-              placeholder={t("auth.companyNamePlaceholder")}
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              required={accountType === "company"}
+              placeholder={
+                accountType === "community"
+                  ? t("auth.communityNamePlaceholder")
+                  : t("auth.companyNamePlaceholder")
+              }
+              value={orgName}
+              onChange={(e) => setOrgName(e.target.value)}
+              required
               autoComplete="organization"
             />
           </div>
@@ -176,7 +207,25 @@ export default function Signup() {
             autoComplete="new-password"
           />
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+        <div className="flex items-start gap-2">
+          <Checkbox
+            id="accept-terms"
+            checked={acceptedTerms}
+            onCheckedChange={(v) => setAcceptedTerms(v === true)}
+            className="mt-0.5"
+          />
+          <label htmlFor="accept-terms" className="text-sm text-muted-foreground leading-snug cursor-pointer">
+            {t("auth.acceptTermsPrefix")}{" "}
+            <Link to="/terminos" target="_blank" className="text-primary hover:underline">
+              {t("auth.termsLink")}
+            </Link>{" "}
+            {t("auth.acceptTermsAnd")}{" "}
+            <Link to="/aviso-de-privacidad" target="_blank" className="text-primary hover:underline">
+              {t("auth.privacyLink")}
+            </Link>
+          </label>
+        </div>
+        <Button type="submit" className="w-full" disabled={loading || !acceptedTerms}>
           {loading ? t("auth.processing") : t("auth.signup")}
         </Button>
       </form>

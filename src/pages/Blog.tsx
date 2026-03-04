@@ -26,7 +26,9 @@ export default function Blog() {
           cover_image_url,
           published_at,
           tags,
-          profiles(full_name, avatar_url)
+          profiles(full_name, avatar_url),
+          blog_likes(count),
+          blog_comments(count)
         `)
         .eq("status", "published")
         .order("published_at", { ascending: false })
@@ -46,6 +48,8 @@ export default function Blog() {
       published_at: p.published_at,
       tags: (p as { tags?: string[] }).tags ?? [],
       author: p.profiles as { full_name?: string; avatar_url?: string } | null,
+      likeCount: (p.blog_likes as unknown as { count: number }[])?.[0]?.count ?? 0,
+      commentCount: (p.blog_comments as unknown as { count: number }[])?.[0]?.count ?? 0,
     })) ?? [];
 
   const collectionPageJsonLd = {

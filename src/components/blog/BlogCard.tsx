@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
-import { Newspaper } from "lucide-react";
+import { Heart, MessageCircle, Newspaper } from "lucide-react";
 
 export interface BlogPostCardData {
   id: string;
@@ -17,6 +17,8 @@ export interface BlogPostCardData {
   published_at: string | null;
   tags?: string[];
   author?: { full_name?: string; avatar_url?: string } | null;
+  likeCount?: number;
+  commentCount?: number;
 }
 
 interface BlogCardProps {
@@ -72,7 +74,25 @@ export function BlogCard({ post, variant = "full" }: BlogCardProps) {
           </CardHeader>
           <CardContent className="pt-0">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
-              {dateStr && <span>{dateStr}</span>}
+              <span className="flex items-center gap-3">
+                {dateStr && <span>{dateStr}</span>}
+                {(post.likeCount != null || post.commentCount != null) && (
+                  <span className="flex items-center gap-2">
+                    {post.likeCount != null && (
+                      <span className="inline-flex items-center gap-0.5">
+                        <Heart className="h-3 w-3" aria-hidden />
+                        {post.likeCount}
+                      </span>
+                    )}
+                    {post.commentCount != null && (
+                      <span className="inline-flex items-center gap-0.5">
+                        <MessageCircle className="h-3 w-3" aria-hidden />
+                        {post.commentCount}
+                      </span>
+                    )}
+                  </span>
+                )}
+              </span>
               {post.author?.full_name && (
                 <span className="truncate ml-2">{post.author.full_name}</span>
               )}
@@ -129,6 +149,22 @@ export function BlogCard({ post, variant = "full" }: BlogCardProps) {
               {post.author?.full_name && <span className="truncate block">{post.author.full_name}</span>}
               {dateStr && <span>{dateStr}</span>}
             </div>
+            {(post.likeCount != null || post.commentCount != null) && (
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                {post.likeCount != null && (
+                  <span className="inline-flex items-center gap-0.5">
+                    <Heart className="h-3 w-3" aria-hidden />
+                    {post.likeCount}
+                  </span>
+                )}
+                {post.commentCount != null && (
+                  <span className="inline-flex items-center gap-0.5">
+                    <MessageCircle className="h-3 w-3" aria-hidden />
+                    {post.commentCount}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
           <Button variant="outline" size="sm" className="w-full mt-3">
             {t("landing.news.readMore")}

@@ -119,6 +119,7 @@ export type Database = {
           location: string | null
           portfolio_url: string | null
           resume_url: string | null
+          slug: string
           title: string | null
           updated_at: string | null
           user_id: string
@@ -135,6 +136,7 @@ export type Database = {
           location?: string | null
           portfolio_url?: string | null
           resume_url?: string | null
+          slug?: string
           title?: string | null
           updated_at?: string | null
           user_id: string
@@ -151,6 +153,7 @@ export type Database = {
           location?: string | null
           portfolio_url?: string | null
           resume_url?: string | null
+          slug?: string
           title?: string | null
           updated_at?: string | null
           user_id?: string
@@ -176,6 +179,54 @@ export type Database = {
           requester_id?: string
           professional_profile_id?: string
           created_at?: string | null
+        }
+        Relationships: []
+      }
+      blog_likes: {
+        Row: {
+          id: string
+          post_id: string
+          user_id: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          user_id: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          post_id?: string
+          user_id?: string
+          created_at?: string | null
+        }
+        Relationships: []
+      }
+      blog_comments: {
+        Row: {
+          id: string
+          post_id: string
+          user_id: string
+          content: string
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          user_id: string
+          content: string
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          post_id?: string
+          user_id?: string
+          content?: string
+          created_at?: string | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -324,9 +375,11 @@ export type Database = {
           industry: string | null
           location: string | null
           logo_url: string | null
+          profile_type: Database["public"]["Enums"]["profile_type"]
           updated_at: string | null
           user_id: string
           website: string | null
+          whatsapp_url: string | null
         }
         Insert: {
           company_name: string
@@ -337,9 +390,11 @@ export type Database = {
           industry?: string | null
           location?: string | null
           logo_url?: string | null
+          profile_type?: Database["public"]["Enums"]["profile_type"]
           updated_at?: string | null
           user_id: string
           website?: string | null
+          whatsapp_url?: string | null
         }
         Update: {
           company_name?: string
@@ -350,9 +405,11 @@ export type Database = {
           industry?: string | null
           location?: string | null
           logo_url?: string | null
+          profile_type?: Database["public"]["Enums"]["profile_type"]
           updated_at?: string | null
           user_id?: string
           website?: string | null
+          whatsapp_url?: string | null
         }
         Relationships: []
       }
@@ -568,7 +625,7 @@ export type Database = {
       }
     }
     Enums: {
-      account_type: "professional" | "company"
+      account_type: "professional" | "company" | "community"
       app_role: "admin" | "user"
       company_member_role: "owner" | "admin" | "member"
       invitation_status: "pending" | "accepted" | "declined"
@@ -579,6 +636,7 @@ export type Database = {
       employment_type: "full_time" | "part_time" | "contract" | "freelance"
       job_status: "draft" | "active" | "closed"
       skill_level: "beginner" | "intermediate" | "advanced" | "expert"
+      profile_type: "company" | "community"
       work_mode: "remote" | "hybrid" | "onsite"
     }
     CompositeTypes: {
@@ -707,7 +765,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      account_type: ["professional", "company"],
+      account_type: ["professional", "company", "community"],
       app_role: ["admin", "user"],
       company_member_role: ["owner", "admin", "member"],
       invitation_status: ["pending", "accepted", "declined"],
@@ -718,6 +776,7 @@ export const Constants = {
       employment_type: ["full_time", "part_time", "contract", "freelance"],
       job_status: ["draft", "active", "closed"],
       skill_level: ["beginner", "intermediate", "advanced", "expert"],
+      profile_type: ["company", "community"],
       work_mode: ["remote", "hybrid", "onsite"],
     },
   },

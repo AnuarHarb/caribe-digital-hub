@@ -24,6 +24,7 @@ import {
   Plus,
   Settings,
   ScrollText,
+  Building2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useProfile } from "@/hooks/useAuth";
@@ -52,6 +53,7 @@ export function DashboardSidebar() {
       : { percentage: 100 };
 
   const hasCompanies = companies.length > 0;
+  const isCommunity = activeCompany?.profile_type === "community";
 
   const personalLinks = [
     { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
@@ -74,6 +76,7 @@ export function DashboardSidebar() {
     : [];
 
   const showCompanyLogo = hasCompanies && activeCompany?.logo_url;
+  const HeaderFallbackIcon = isCommunity ? Users : Building2;
   const defaultLabel = activeCompany?.company_name ?? profile?.full_name ?? t("auth.accountTypeProfessional");
 
   return (
@@ -142,7 +145,9 @@ export function DashboardSidebar() {
         {companyLinks.length > 0 && (
           <SidebarGroup>
             <SidebarGroupLabel className="px-3 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground dark:text-foreground/90">
-              {t("dashboard.sectionCompany")}
+              {isCommunity
+                ? t("dashboard.sectionCommunity")
+                : t("dashboard.sectionCompany")}
             </SidebarGroupLabel>
             <SidebarGroupContent className="mt-2">
               <SidebarMenu className="gap-1">

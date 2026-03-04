@@ -10,8 +10,10 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useContactInterest } from "@/hooks/useContactInterest";
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export default function PublicProfile() {
-  const { id } = useParams<{ id: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -19,9 +21,10 @@ export default function PublicProfile() {
 
   // Query only fetches professional info; contact data (phone, email, address) is intentionally excluded
   const { data: professional, isLoading, isError } = useQuery({
-    queryKey: ["professional-profile", id],
+    queryKey: ["professional-profile", slug],
     queryFn: async () => {
-      if (!id) return null;
+      if (!slug) return null;
+      const byId = UUID_REGEX.test(slug);
       const { data, error } = await supabase
         .from("professional_profiles")
         .select(`
@@ -31,12 +34,12 @@ export default function PublicProfile() {
           professional_education(*),
           profiles(full_name, avatar_url)
         `)
-        .eq("id", id)
+        .eq(byId ? "id" : "slug", slug)
         .single();
       if (error) throw error;
       return data;
     },
-    enabled: !!id,
+    enabled: !!slug,
     retry: false,
   });
 
@@ -71,8 +74,16 @@ export default function PublicProfile() {
       <main className="container mx-auto px-4 py-8">
     <article className="mx-auto max-w-3xl space-y-6">
       <header className="flex flex-col gap-4 md:flex-row md:items-start">
-        <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-accent/20 text-accent">
-          <User className="h-10 w-10" aria-hidden />
+        <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent/20 text-accent">
+          {profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <User className="h-12 w-12" aria-hidden />
+          )}
         </div>
         <div className="flex-1">
           <h1 className="font-display text-2xl font-bold text-foreground">{fullName}</h1>
@@ -198,14 +209,14 @@ export default function PublicProfile() {
       )}
 
       <div className="flex flex-wrap justify-center gap-2">
-        <Link to="/empleos">
+        <Link to="/talento">
           <Button variant="outline">{t("talent.viewJobs")}</Button>
         </Link>
         {professional.user_id !== user?.id && (
           <Button
             onClick={async () => {
               if (!isAuthenticated) {
-                navigate(`/auth?redirect=/perfil/${id}`);
+                navigate(`/auth?redirect=/perfil/${slug}`);
                 toast.info(t("talent.contactLoginRequired"));
                 return;
               }

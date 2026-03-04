@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Building2, ChevronDown, Plus } from "lucide-react";
+import { Building2, Check, ChevronDown, Plus, Users } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,39 +19,48 @@ export function CompanySwitcher() {
 
   if (isLoading || companies.length === 0) return null;
 
+  const ActiveIcon = activeCompany?.profile_type === "community" ? Users : Building2;
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full justify-between gap-2 px-3 py-2 h-auto font-normal"
+            className="w-full justify-between gap-1 px-2 py-1.5 h-auto font-normal text-xs"
           >
-            <div className="flex min-w-0 flex-1 items-center gap-2">
-              <Building2 className="h-4 w-4 shrink-0" aria-hidden />
-              <span className="truncate text-left">
-                {activeCompany?.company_name ?? t("company.selectCompany")}
-              </span>
-              <span className="shrink-0 rounded bg-accent/50 px-1.5 py-0.5 text-[10px] font-medium uppercase text-muted-foreground">
-                {activeCompany?.role ?? "—"}
+            <div className="flex min-w-0 flex-1 items-center gap-1.5">
+              <ActiveIcon className="h-3.5 w-3.5 shrink-0 opacity-60" aria-hidden />
+              <span className="truncate text-left text-sidebar-foreground/70 dark:text-foreground/85">
+                {t(`company.type.${activeCompany?.profile_type ?? "company"}`)}
               </span>
             </div>
-            <ChevronDown className="h-4 w-4 shrink-0 opacity-50" aria-hidden />
+            <ChevronDown className="h-3 w-3 shrink-0 opacity-40" aria-hidden />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
-          {companies.map((c) => (
-            <DropdownMenuItem
-              key={c.id}
-              onClick={() => setActiveCompany(c)}
-              className="flex items-center justify-between gap-2"
-            >
-              <span className="truncate">{c.company_name}</span>
-              <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase">
-                {c.role}
-              </span>
-            </DropdownMenuItem>
-          ))}
+        <DropdownMenuContent align="start" className="w-56">
+          {companies.map((c) => {
+            const Icon = c.profile_type === "community" ? Users : Building2;
+            const isActive = activeCompany?.id === c.id;
+            return (
+              <DropdownMenuItem
+                key={c.id}
+                onClick={() => setActiveCompany(c)}
+                className="flex items-start gap-2.5 py-2"
+              >
+                <Icon className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">{c.company_name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {t(`company.type.${c.profile_type}`)} · {t(`company.role.${c.role}`)}
+                  </p>
+                </div>
+                {isActive && (
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
+                )}
+              </DropdownMenuItem>
+            );
+          })}
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setCreateOpen(true)} className="gap-2">
             <Plus className="h-4 w-4" aria-hidden />
