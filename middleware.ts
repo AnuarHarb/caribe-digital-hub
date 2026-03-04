@@ -2,9 +2,8 @@
  * Vercel Edge Middleware: serves a self-contained HTML page with dynamic meta
  * tags when social-media crawlers request /blog/:slug.
  *
- * Instead of fetching the SPA HTML and replacing tags via regex, this builds
- * a minimal HTML document from scratch — eliminating self-fetch failures and
- * regex fragility.
+ * Builds a minimal HTML document from scratch so crawlers see the correct
+ * title, description, and cover image without needing to execute JavaScript.
  */
 
 const SITE_URL = "https://costadigital.org";
@@ -18,6 +17,7 @@ const CRAWLER_AGENTS = [
   "Facebot",
   "Twitterbot",
   "LinkedInBot",
+  "lnms",
   "WhatsApp",
   "TelegramBot",
   "Slurp",
@@ -25,6 +25,12 @@ const CRAWLER_AGENTS = [
   "Googlebot",
   "Pinterest",
   "Discordbot",
+  "Slackbot",
+  "redditbot",
+  "Applebot",
+  "Embedly",
+  "outbrain",
+  "Quora Link Preview",
 ];
 
 function isCrawler(userAgent: string): boolean {
@@ -40,6 +46,18 @@ function escapeAttr(str: string): string {
     .replace(/"/g, "&quot;");
 }
 
+function detectImageType(url: string): string | null {
+  const ext = url.split("?")[0].split(".").pop()?.toLowerCase();
+  const types: Record<string, string> = {
+    jpg: "image/jpeg",
+    jpeg: "image/jpeg",
+    png: "image/png",
+    gif: "image/gif",
+    webp: "image/webp",
+  };
+  return ext ? types[ext] ?? null : null;
+}
+
 function buildCrawlerHtml(meta: {
   title: string;
   description: string;
@@ -51,30 +69,30 @@ function buildCrawlerHtml(meta: {
   const d = escapeAttr(meta.description);
   const img = escapeAttr(meta.image);
   const u = escapeAttr(meta.url);
+  const imgType = detectImageType(meta.image);
 
   return `<!doctype html>
-<html lang="es">
+<html lang="es" prefix="og: https://ogp.me/ns# article: https://ogp.me/ns/article#">
 <head>
   <meta charset="UTF-8" />
   <title>${t}</title>
   <meta name="title" content="${t}" />
   <meta name="description" content="${d}" />
   <link rel="canonical" href="${u}" />
+  <meta name="robots" content="index, follow" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="article" />
   <meta property="og:url" content="${u}" />
   <meta property="og:title" content="${t}" />
   <meta property="og:description" content="${d}" />
   <meta property="og:image" content="${img}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:secure_url" content="${img}" />
+  ${imgType ? `<meta property="og:image:type" content="${imgType}" />` : ""}
   <meta property="og:image:alt" content="${t}" />
   <meta property="og:locale" content="es_CO" />
   <meta property="og:site_name" content="Costa Digital" />
   ${meta.publishedTime ? `<meta property="article:published_time" content="${escapeAttr(meta.publishedTime)}" />` : ""}
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="${u}" />
   <meta name="twitter:title" content="${t}" />
@@ -83,11 +101,12 @@ function buildCrawlerHtml(meta: {
   <meta name="twitter:image:alt" content="${t}" />
   <meta name="twitter:site" content="@costa_digital" />
   <meta name="twitter:creator" content="@costa_digital" />
-
-  <meta http-equiv="refresh" content="0;url=${u}" />
 </head>
 <body>
+  <h1>${t}</h1>
+  <p>${d}</p>
   <p><a href="${u}">${t}</a></p>
+  ${meta.image ? `<img src="${img}" alt="${t}" />` : ""}
 </body>
 </html>`;
 }
@@ -97,7 +116,8 @@ export default async function middleware(request: Request): Promise<Response> {
   const pathMatch = url.pathname.match(/^\/blog\/([^/]+)$/);
   const userAgent = request.headers.get("user-agent") ?? "";
 
-  const passThrough = () => fetch(new Request(`${url.origin}/`, { headers: request.headers }));
+  const passThrough = () =>
+    fetch(new Request(`${url.origin}/`, { headers: request.headers }));
 
   if (!pathMatch || !isCrawler(userAgent)) {
     return passThrough();
@@ -137,12 +157,15 @@ export default async function middleware(request: Request): Promise<Response> {
     const articleUrl = `${SITE_URL}/blog/${slug}`;
     const title = `${post.title} | Costa Digital`;
     const description = post.excerpt || post.title;
-    const image =
-      post.cover_image_url?.startsWith("http")
-        ? post.cover_image_url
-        : post.cover_image_url
-          ? `${SITE_URL}${post.cover_image_url.startsWith("/") ? "" : "/"}${post.cover_image_url}`
-          : `${SITE_URL}/og-image.png`;
+
+    let image = post.cover_image_url ?? "";
+    if (image && !image.startsWith("http")) {
+      image = `${SITE_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+    }
+    image = image.replace(/^http:\/\//, "https://");
+    if (!image) {
+      image = `${SITE_URL}/og-image.png`;
+    }
 
     const html = buildCrawlerHtml({
       title,
@@ -155,7 +178,7 @@ export default async function middleware(request: Request): Promise<Response> {
     return new Response(html, {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "public, max-age=3600, s-maxage=3600",
+        "Cache-Control": "public, max-age=300, s-maxage=300",
       },
     });
   } catch {
