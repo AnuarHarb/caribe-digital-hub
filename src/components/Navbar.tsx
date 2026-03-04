@@ -155,6 +155,7 @@ export function Navbar() {
       {user ? (
         isMobile ? (
           <>
+            <div className="my-3 border-t border-border" aria-hidden />
             <Link to="/dashboard" onClick={closeMobile} className="block w-full">
               <Button variant="ghost" className="gap-2 justify-start w-full">
                 <LayoutDashboard className="h-4 w-4" />

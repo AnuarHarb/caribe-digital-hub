@@ -229,9 +229,9 @@ export function CommunitySection() {
   return (
     <section
       aria-labelledby="community-heading"
-      className="py-20 md:py-28 bg-muted/30"
+      className="overflow-x-hidden py-20 md:py-28 bg-muted/30"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto min-w-0 px-4">
         <h2
           id="community-heading"
           className="text-center font-display text-3xl font-bold text-primary md:text-4xl"

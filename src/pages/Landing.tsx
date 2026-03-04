@@ -32,7 +32,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen overflow-x-hidden bg-background">
       <SEOHead
         title="Costa Digital — Ecosistema Tech del Caribe | Startups, talento y comunidad"
         description="Costa Digital es el ecosistema tech del Caribe que conecta comunidades, talento, startups y capital en la región Caribe de Colombia. Barranquilla, Cartagena, Santa Marta."

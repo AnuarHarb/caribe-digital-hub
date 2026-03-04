@@ -27,9 +27,9 @@ export function StartupsSection() {
   return (
     <section
       aria-labelledby="startups-heading"
-      className="py-20 md:py-28 bg-muted/30"
+      className="overflow-x-hidden py-20 md:py-28 bg-muted/30"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto min-w-0 px-4">
         <h2
           id="startups-heading"
           className="text-center font-display text-3xl font-bold text-primary md:text-4xl"
@@ -40,9 +40,9 @@ export function StartupsSection() {
           {t("landing.startups.subtitle")}
         </p>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2 lg:items-stretch">
+        <div className="mt-12 grid min-w-0 gap-6 lg:grid-cols-2 lg:items-stretch">
           {/* Left: Map card */}
-          <Card className="flex flex-col transition-all duration-300 hover:border-accent/30 hover:shadow-lg">
+          <Card className="flex min-w-0 flex-col overflow-hidden transition-all duration-300 hover:border-accent/30 hover:shadow-lg">
             <CardHeader>
               <CardTitle className="font-display text-xl">
                 {t("landing.startups.map.title")}
@@ -51,12 +51,12 @@ export function StartupsSection() {
                 {t("landing.startups.map.description")}
               </p>
             </CardHeader>
-            <CardContent className="flex flex-1 flex-col">
-              <div className="flex-1 min-h-[240px] rounded-lg overflow-hidden bg-muted/50 border border-border/50 aspect-video">
+            <CardContent className="flex min-w-0 flex-1 flex-col">
+              <div className="min-h-[240px] w-full max-w-full overflow-hidden rounded-lg bg-muted/50 border border-border/50 aspect-video">
                 <img
                   src="/events/screenshot-shelv.png"
                   alt=""
-                  className="h-full w-full object-cover rounded-lg opacity-90"
+                  className="h-full w-full max-w-full object-cover rounded-lg opacity-90"
                   loading="lazy"
                   aria-hidden
                 />
@@ -81,7 +81,7 @@ export function StartupsSection() {
           </Card>
 
           {/* Right: 3 cards stacked vertically */}
-          <div className="flex flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-6">
             {LIST_CARDS.map((card) => {
               const Icon = card.icon;
               const isInvestment = card.key === "investment";
