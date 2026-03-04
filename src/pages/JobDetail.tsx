@@ -5,6 +5,7 @@ import { useProfessionalProfile } from "@/hooks/useProfile";
 import { useApplyToJob } from "@/hooks/useApplications";
 import { useMyApplications } from "@/hooks/useApplications";
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -137,6 +138,12 @@ export default function JobDetail() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title={`${job.title} en ${company?.company_name ?? "empresa"} | Tech del Caribe`}
+        description={job.description?.slice(0, 160) ?? `Oferta de empleo tech: ${job.title}`}
+        canonical={`/empleos/${job.slug}`}
+        keywords={["Caribe Tech", "empleo tech del Caribe", job.title, company?.company_name ?? ""].filter(Boolean)}
+      />
       <Navbar />
       <main className="container mx-auto px-4 py-8">
         <div className="mx-auto max-w-6xl">

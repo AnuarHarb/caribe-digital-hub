@@ -48,6 +48,7 @@ export default function BlogPost() {
           content,
           cover_image_url,
           published_at,
+          updated_at,
           tags,
           profiles(full_name, avatar_url)
         `)
@@ -88,7 +89,11 @@ export default function BlogPost() {
         imageAlt={post.title}
         type="article"
         publishedTime={post.published_at ?? undefined}
+        modifiedTime={(post as { updated_at?: string }).updated_at ?? undefined}
         author={author?.full_name}
+        keywords={tags.length > 0 ? [...tags, "Caribe Tech", "tech del Caribe"] : ["Caribe Tech", "tech del Caribe"]}
+        tags={tags}
+        section="Noticias Tech del Caribe"
       />
       <ArticleJsonLd
         title={post.title}
@@ -96,7 +101,9 @@ export default function BlogPost() {
         slug={post.slug}
         coverImageUrl={post.cover_image_url}
         publishedAt={post.published_at ?? new Date().toISOString()}
+        modifiedAt={(post as { updated_at?: string }).updated_at ?? undefined}
         authorName={author?.full_name ?? "Costa Digital"}
+        keywords={tags.length > 0 ? tags : undefined}
       />
       <Navbar />
       <main className="container mx-auto px-4 py-8 max-w-3xl">

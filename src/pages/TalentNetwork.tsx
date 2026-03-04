@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { JobCard } from "@/components/jobs/JobCard";
 import { JobFilters, type JobFiltersState } from "@/components/jobs/JobFilters";
@@ -34,6 +35,12 @@ export default function TalentNetwork() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Red de Talento Tech del Caribe | Desarrolladores, Diseñadores, IA"
+        description="Conecta con desarrolladores, diseñadores e ingenieros de IA del Caribe colombiano. Encuentra ofertas de empleo tech o talento especializado en Barranquilla, Cartagena y Santa Marta."
+        canonical="/talento"
+        keywords={["Caribe Tech", "talento tech del Caribe", "desarrolladores Caribe", "empleos tech Barranquilla", "diseñadores Caribe", "IA Caribe"]}
+      />
       <Navbar />
       <main className="container mx-auto px-4 py-8">
         <header className="mb-8">

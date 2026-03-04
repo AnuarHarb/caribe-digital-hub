@@ -3,6 +3,7 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /dashboard/
+Disallow: /auth/
 
 # AI Search Engine Bots
 User-agent: GPTBot
@@ -60,3 +61,6 @@ Allow: /
 
 # Sitemap
 Sitemap: https://costadigital.org/sitemap.xml
+
+# LLMs
+# https://costadigital.org/llms.txt

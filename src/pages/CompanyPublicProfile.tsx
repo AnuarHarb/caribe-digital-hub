@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -62,6 +63,13 @@ export default function CompanyPublicProfile() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title={`${company.company_name} | Tech del Caribe`}
+        description={company.description?.slice(0, 160) ?? `${company.company_name} — empresa del ecosistema tech del Caribe.`}
+        canonical={`/empresa/${id}`}
+        image={company.logo_url ?? undefined}
+        keywords={["Caribe Tech", "empresa tech del Caribe", company.company_name, company.industry ?? ""].filter(Boolean)}
+      />
       <Navbar />
       <main className="container mx-auto px-4 py-8">
         <article className="mx-auto max-w-4xl space-y-8">

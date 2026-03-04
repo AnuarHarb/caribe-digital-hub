@@ -1,5 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -70,6 +71,13 @@ export default function PublicProfile() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title={`${fullName} — ${professional.title ?? "Profesional"} | Tech del Caribe`}
+        description={professional.bio?.slice(0, 160) ?? `Perfil profesional de ${fullName} en el ecosistema tech del Caribe.`}
+        canonical={`/perfil/${professional.slug ?? slug}`}
+        image={profile?.avatar_url ?? undefined}
+        keywords={["Caribe Tech", "talento tech del Caribe", professional.title ?? ""].filter(Boolean)}
+      />
       <Navbar />
       <main className="container mx-auto px-4 py-8">
     <article className="mx-auto max-w-3xl space-y-6">

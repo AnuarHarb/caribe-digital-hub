@@ -10,6 +10,7 @@ export interface ArticleJsonLdProps {
   publishedAt: string;
   modifiedAt?: string;
   authorName: string;
+  keywords?: string[];
 }
 
 export function ArticleJsonLd({
@@ -20,6 +21,7 @@ export function ArticleJsonLd({
   publishedAt,
   modifiedAt,
   authorName,
+  keywords,
 }: ArticleJsonLdProps) {
   const url = `${SITE_URL}/blog/${slug}`;
   const imageUrl = coverImageUrl?.startsWith("http")
@@ -44,11 +46,13 @@ export function ArticleJsonLd({
     publisher: {
       "@type": "Organization",
       name: "Costa Digital",
+      alternateName: "Caribe Tech",
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/og-image.png`,
       },
     },
+    ...(keywords && keywords.length > 0 ? { keywords } : {}),
   };
 
   const breadcrumb = {
@@ -64,7 +68,7 @@ export function ArticleJsonLd({
       {
         "@type": "ListItem",
         position: 2,
-        name: "Costa Digital News",
+        name: "Noticias Tech del Caribe",
         item: `${SITE_URL}/blog`,
       },
       {

@@ -58,9 +58,14 @@ export default function Blog() {
     name: t("blog.title"),
     description: t("landing.news.subtitle"),
     url: `${SITE_URL}/blog`,
+    about: {
+      "@type": "Thing",
+      name: "Noticias Tech del Caribe",
+    },
     isPartOf: {
       "@type": "WebSite",
       name: "Costa Digital",
+      alternateName: "Caribe Tech",
       url: SITE_URL,
     },
   };

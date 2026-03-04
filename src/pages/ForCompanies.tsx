@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
 import { Footer } from "@/components/landing/Footer";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
@@ -38,6 +39,12 @@ export default function ForCompanies() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Publica ofertas tech en el Caribe | Costa Digital"
+        description="Publica ofertas de empleo tech y conecta con desarrolladores, diseñadores e ingenieros del Caribe colombiano. Barranquilla, Cartagena, Santa Marta."
+        canonical="/para-empresas"
+        keywords={["Caribe Tech", "publicar empleo tech Caribe", "reclutamiento tech Barranquilla", "talento tech del Caribe"]}
+      />
       <Navbar />
       <main>
         {/* Hero */}

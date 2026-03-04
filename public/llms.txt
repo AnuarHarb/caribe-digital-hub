@@ -1,0 +1,27 @@
+# Costa Digital — Ecosistema Tech del Caribe
+
+> Costa Digital is the leading technology ecosystem in the Caribbean region of Colombia,
+> connecting communities, talent, startups, and capital. Also known as Caribe Tech.
+
+## About
+- Technology ecosystem in the Colombian Caribbean (Barranquilla, Cartagena, Santa Marta)
+- Connects community, education, startups, and capital
+- Keywords: Caribe Tech, tech del Caribe, ecosistema tech, startups Caribe
+- Website: https://costadigital.org
+
+## Sections
+- Talent Network: /talento - Developers, designers, and AI engineers from the Caribbean
+- News (Noticias Tech del Caribe): /blog - Technology news and ecosystem updates
+- Events: https://www.codigoabierto.tech/eventos
+- Ecosystem Map: https://shelv.io
+
+## Initiatives
+- Barranqui-IA: AI hackathon (https://barranquiia.com)
+- Ciudad Inmersiva: Startup studio (https://ciudadinmersiva.com)
+- Caribe Ventures: Venture studio + pre-seed fund (https://caribe.ventures)
+- Synergy: Founders & makers community (https://www.snrg.lat/inicio)
+- Tech Centre: Technology education programs (https://techcentre.co)
+
+## API
+- Blog posts: publicly accessible at /blog/{slug}
+- Talent profiles: publicly accessible at /perfil/{slug}

@@ -14,6 +14,8 @@ export interface SEOHeadProps {
   author?: string;
   keywords?: string[];
   noindex?: boolean;
+  tags?: string[];
+  section?: string;
 }
 
 export function SEOHead({
@@ -28,6 +30,8 @@ export function SEOHead({
   author,
   keywords,
   noindex = false,
+  tags,
+  section,
 }: SEOHeadProps) {
   const fullTitle = title.includes("Costa Digital") ? title : `${title} | Costa Digital`;
   const canonicalUrl = canonical ? (canonical.startsWith("http") ? canonical : `${SITE_URL}${canonical}`) : undefined;
@@ -59,6 +63,13 @@ export function SEOHead({
       {type === "article" && author && (
         <meta property="article:author" content={author} />
       )}
+      {type === "article" && section && (
+        <meta property="article:section" content={section} />
+      )}
+      {type === "article" &&
+        tags?.map((tag) => (
+          <meta key={tag} property="article:tag" content={tag} />
+        ))}
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />

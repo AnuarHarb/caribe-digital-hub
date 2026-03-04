@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/Navbar";
+import { SEOHead } from "@/components/SEOHead";
 import { Footer } from "@/components/landing/Footer";
 import { useTranslation } from "react-i18next";
 
@@ -7,6 +8,11 @@ export default function PrivacyPolicy() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Aviso de Privacidad | Costa Digital"
+        description="Aviso de privacidad y política de tratamiento de datos personales de Costa Digital, el ecosistema tech del Caribe colombiano."
+        canonical="/aviso-de-privacidad"
+      />
       <Navbar />
       <main className="container mx-auto max-w-3xl px-4 py-12">
         <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl">
