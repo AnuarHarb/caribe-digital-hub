@@ -30,7 +30,7 @@ export function EcosystemOverview() {
     <section
       id="ecosystem-overview"
       aria-labelledby="ecosystem-heading"
-      className="py-20 md:py-28"
+      className="py-14 md:py-20"
     >
       <div className="container mx-auto px-4">
         <h2

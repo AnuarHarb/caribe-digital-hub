@@ -27,7 +27,7 @@ export function StartupsSection() {
   return (
     <section
       aria-labelledby="startups-heading"
-      className="overflow-x-hidden py-20 md:py-28 bg-muted/30"
+      className="overflow-x-hidden py-20 md:py-28"
     >
       <div className="container mx-auto min-w-0 px-4">
         <h2

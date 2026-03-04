@@ -16,7 +16,7 @@ export function PartnersSection() {
   return (
     <section
       aria-labelledby="partners-heading"
-      className="py-20 md:py-28 bg-muted/30"
+      className="py-20 md:py-28"
     >
       <div className="container mx-auto px-4">
         <h2

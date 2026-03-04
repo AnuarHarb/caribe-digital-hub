@@ -48,11 +48,11 @@ export default function Landing() {
       <main>
         <Hero />
         <EcosystemOverview />
+        <CostaDigitalNews />
         <CommunitySection />
         <TechCentre />
         <StartupsSection />
         <TalentNetworkCTA />
-        <CostaDigitalNews />
         <PartnersSection />
         <LandingCTA />
       </main>

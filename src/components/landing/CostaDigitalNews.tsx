@@ -52,7 +52,7 @@ export function CostaDigitalNews() {
   return (
     <section
       aria-labelledby="costa-digital-news-heading"
-      className="py-20 md:py-28"
+      className="py-14 md:py-20 bg-muted/30"
     >
       <div className="container mx-auto px-4">
         <h2

@@ -14,7 +14,7 @@ export function TechCentre() {
   return (
     <section
       aria-labelledby="tech-centre-heading"
-      className="py-20 md:py-28"
+      className="py-20 md:py-28 bg-muted/30"
     >
       <div className="container mx-auto px-4">
         <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 lg:items-center">

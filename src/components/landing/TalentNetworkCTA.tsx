@@ -9,7 +9,7 @@ export function TalentNetworkCTA() {
   return (
     <section
       aria-labelledby="talent-network-heading"
-      className="py-20 md:py-28"
+      className="py-20 md:py-28 bg-muted/30"
     >
       <div className="container mx-auto px-4">
         <article className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-10 text-center shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg md:p-14">
