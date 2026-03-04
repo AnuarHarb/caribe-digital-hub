@@ -1,4 +1,7 @@
 {
+  "breadcrumb": {
+    "home": "Home"
+  },
   "nav": {
     "jobs": "Jobs",
     "talent": "Talent",

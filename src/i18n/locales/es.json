@@ -1,4 +1,7 @@
 {
+  "breadcrumb": {
+    "home": "Inicio"
+  },
   "nav": {
     "jobs": "Empleos",
     "talent": "Talento",

@@ -35,7 +35,11 @@ export function SEOHead({
 }: SEOHeadProps) {
   const fullTitle = title.includes("Costa Digital") ? title : `${title} | Costa Digital`;
   const canonicalUrl = canonical ? (canonical.startsWith("http") ? canonical : `${SITE_URL}${canonical}`) : undefined;
-  const imageUrl = image ? (image.startsWith("http") ? image : `${SITE_URL}${image}`) : `${SITE_URL}/og-image.png`;
+  const imageUrl = image
+    ? image.startsWith("http")
+      ? image
+      : `${SITE_URL}${image.startsWith("/") ? image : `/${image}`}`
+    : `${SITE_URL}/og-image.png`;
 
   return (
     <Helmet>
