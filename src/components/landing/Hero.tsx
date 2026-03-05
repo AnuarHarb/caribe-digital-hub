@@ -23,12 +23,12 @@ export function Hero() {
   return (
     <header className="hero-bg relative overflow-hidden py-20 md:py-32">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-15"
+        className="absolute inset-0 bg-cover bg-center opacity-25 dark:opacity-15"
         style={{ backgroundImage: "url(/events/tech-caribe.jpg)" }}
         aria-hidden
       />
       <div
-        className="absolute inset-0 bg-black/25 dark:bg-transparent"
+        className="absolute inset-0 bg-[hsl(215,55%,6%)]/65 dark:bg-transparent"
         aria-hidden
       />
 
@@ -41,11 +41,11 @@ export function Hero() {
           />
         </div>
 
-        <h1 className="mt-6 font-display text-4xl font-bold tracking-tight text-primary md:text-6xl lg:text-7xl">
+        <h1 className="mt-6 font-display text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl dark:text-primary">
           {t("landing.hero.title")}
         </h1>
 
-        <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-white md:text-xl dark:text-muted-foreground">
           {t("landing.hero.subtitle")}
         </p>
 
@@ -55,7 +55,7 @@ export function Hero() {
               <dt className="font-display text-3xl font-bold text-accent md:text-4xl">
                 {stat.value}
               </dt>
-              <dd className="mt-1 text-sm text-muted-foreground">
+              <dd className="mt-1 text-sm text-white dark:text-muted-foreground">
                 {stat.label}
               </dd>
             </div>

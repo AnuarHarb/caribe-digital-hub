@@ -30,7 +30,8 @@
     "manifestoSubtitle": "Caribbean Tech Order",
     "footer": {
       "copyright": "© 2026 Costa Digital • Caribbean Technology Movement",
-      "cities": "Barranquilla • Cartagena • Santa Marta"
+      "cities": "Barranquilla • Cartagena • Santa Marta",
+      "fcaInitiative": "An initiative of Fundación Código Abierto"
     },
     "finalMessage": {
       "title": "END OF CODE",

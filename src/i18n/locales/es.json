@@ -30,7 +30,8 @@
     "manifestoSubtitle": "Orden del Caribe Tech",
     "footer": {
       "copyright": "© 2026 Costa Digital • Movimiento Tecnológico del Caribe",
-      "cities": "Barranquilla • Cartagena • Santa Marta"
+      "cities": "Barranquilla • Cartagena • Santa Marta",
+      "fcaInitiative": "Una iniciativa de Fundación Código Abierto"
     },
     "finalMessage": {
       "title": "FIN DEL CÓDIGO",

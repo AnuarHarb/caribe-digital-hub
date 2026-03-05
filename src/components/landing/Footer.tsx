@@ -13,29 +13,52 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">{t("home.footer.copyright")}</p>
             <p className="text-sm text-muted-foreground">{t("home.footer.cities")}</p>
           </div>
-          <nav
-            className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8"
-            aria-label={t("landing.footer.externalLinks")}
-          >
+          <div className="flex flex-col items-center gap-4">
             <a
-              href="https://www.codigoabierto.tech/eventos"
+              href="https://www.codigoabierto.tech"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-2"
+              aria-label="Fundación Código Abierto"
             >
-              <Calendar className="h-4 w-4" aria-hidden />
-              {t("landing.footer.events")}
+              <img
+                src="/logos/fca-black.png"
+                alt=""
+                className="h-8 w-auto object-contain dark:hidden"
+                aria-hidden
+              />
+              <img
+                src="/logos/logo-fca.webp"
+                alt=""
+                className="hidden h-8 w-auto object-contain dark:block"
+                aria-hidden
+              />
+              <span className="text-sm text-muted-foreground">{t("home.footer.fcaInitiative")}</span>
             </a>
-            <a
-              href="https://shelv.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            <nav
+              className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8"
+              aria-label={t("landing.footer.externalLinks")}
             >
-              <Map className="h-4 w-4" aria-hidden />
-              {t("landing.footer.ecosystemMap")}
-            </a>
-          </nav>
+              <a
+                href="https://www.codigoabierto.tech/eventos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Calendar className="h-4 w-4" aria-hidden />
+                {t("landing.footer.events")}
+              </a>
+              <a
+                href="https://shelv.io/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <Map className="h-4 w-4" aria-hidden />
+                {t("landing.footer.ecosystemMap")}
+              </a>
+            </nav>
+          </div>
           <nav className="flex flex-col items-center gap-2 sm:flex-row sm:gap-6 md:items-end" aria-label={t("landing.footer.legal")}>
             <Link to="/terminos" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
               {t("legal.termsTitle")}
