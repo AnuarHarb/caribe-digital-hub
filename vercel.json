@@ -1,6 +1,17 @@
 {
   "rewrites": [
     {
+      "source": "/empleos/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Applebot).*"
+        }
+      ],
+      "destination": "/api/og-empleos?slug=:slug"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -800,7 +800,10 @@
     "createProfile": "Create profile",
     "completeProfile": "Complete your profile",
     "completeProfileDescription": "Add your information so companies can find you.",
-    "credential": "Credential"
+    "credential": "Credential",
+    "registerOrgTitle": "Do you have a company or community?",
+    "registerOrgDescription": "Do you have a company or community you'd like to register on Costa Digital? You can do it here.",
+    "registerOrgButton": "Register organization"
   },
   "credential": {
     "title": "Your Costa Digital Credential",
@@ -981,8 +984,8 @@
       "ctaJoin": "Join the community",
       "ctaExplore": "Explore the ecosystem",
       "stats": [
-        { "value": "2000+", "label": "community members" },
-        { "value": "500+", "label": "developers in the ecosystem" },
+        { "value": "3000+", "label": "community members" },
+        { "value": "1800+", "label": "developers in the ecosystem" },
         { "value": "350+", "label": "hackathon participants" },
         { "value": "53+", "label": "projects created" }
       ]

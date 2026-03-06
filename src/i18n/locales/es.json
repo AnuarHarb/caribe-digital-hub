@@ -800,7 +800,10 @@
     "createProfile": "Crear perfil",
     "completeProfile": "Completa tu perfil",
     "completeProfileDescription": "Añade tu información para que las empresas te encuentren.",
-    "credential": "Credencial"
+    "credential": "Credencial",
+    "registerOrgTitle": "¿Tienes una empresa o comunidad?",
+    "registerOrgDescription": "¿Tienes una empresa o comunidad que quieras registrar en Costa Digital? Puedes hacerlo aquí.",
+    "registerOrgButton": "Registrar organización"
   },
   "credential": {
     "title": "Tu Credencial Costa Digital",
@@ -981,8 +984,8 @@
       "ctaJoin": "Únete a la comunidad",
       "ctaExplore": "Explora el ecosistema",
       "stats": [
-        { "value": "2000+", "label": "miembros en la comunidad" },
-        { "value": "500+", "label": "developers en el ecosistema" },
+        { "value": "3000+", "label": "miembros en la comunidad" },
+        { "value": "1800+", "label": "developers en el ecosistema" },
         { "value": "350+", "label": "participantes en hackathons" },
         { "value": "53+", "label": "proyectos creados" }
       ]

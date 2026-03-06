@@ -139,9 +139,11 @@ export default function JobDetail() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title={`${job.title} en ${company?.company_name ?? "empresa"} | Tech del Caribe`}
+        title={`${job.title} en ${company?.company_name ?? "empresa"} | Costa Digital`}
         description={job.description?.slice(0, 160) ?? `Oferta de empleo tech: ${job.title}`}
         canonical={`/empleos/${job.slug}`}
+        image={company?.logo_url ?? undefined}
+        imageAlt={company?.company_name ? `Logo de ${company.company_name}` : undefined}
         keywords={["Caribe Tech", "empleo tech del Caribe", job.title, company?.company_name ?? ""].filter(Boolean)}
       />
       <Navbar />

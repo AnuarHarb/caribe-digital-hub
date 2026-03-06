@@ -345,6 +345,31 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       )}
+
+      <section className="rounded-xl border border-accent/20 bg-gradient-to-br from-accent/5 to-muted/30 p-6 sm:p-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent/10">
+            <Building2 className="h-6 w-6 text-accent" aria-hidden />
+          </div>
+          <div className="space-y-1">
+            <h3 className="font-display text-lg font-semibold text-foreground">
+              {t("dashboard.registerOrgTitle")}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {t("dashboard.registerOrgDescription")}
+            </p>
+          </div>
+          <Button
+            className="gap-2 sm:ml-auto"
+            onClick={() => setCreateCompanyOpen(true)}
+          >
+            <Plus className="h-4 w-4" aria-hidden />
+            {t("dashboard.registerOrgButton")}
+          </Button>
+        </div>
+      </section>
+
+      <CreateCompanyDialog open={createCompanyOpen} onOpenChange={setCreateCompanyOpen} />
     </article>
   );
 }
