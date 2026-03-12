@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Mail } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { usePendingInvitations, useRespondInvitation } from "@/hooks/useCompanies";
@@ -8,6 +9,17 @@ export function PendingInvitations() {
   const { t } = useTranslation();
   const { invitations, isLoading } = usePendingInvitations();
   const { respondInvitation, isResponding } = useRespondInvitation();
+
+  const handleRespond = async (invitationId: string, accept: boolean) => {
+    try {
+      await respondInvitation({ invitationId, accept });
+      toast.success(
+        accept ? t("company.invitationAccepted") : t("company.invitationDeclined")
+      );
+    } catch {
+      toast.error(t("company.invitationRespondError"));
+    }
+  };
 
   if (isLoading || invitations.length === 0) return null;
 
@@ -38,9 +50,7 @@ export function PendingInvitations() {
                       variant="outline"
                       className="flex-1 sm:flex-initial"
                       disabled={isResponding}
-                      onClick={() =>
-                        respondInvitation({ invitationId: inv.id, accept: false })
-                      }
+                      onClick={() => handleRespond(inv.id, false)}
                     >
                       {t("company.decline")}
                     </Button>
@@ -48,9 +58,7 @@ export function PendingInvitations() {
                       size="sm"
                       className="flex-1 sm:flex-initial"
                       disabled={isResponding}
-                      onClick={() =>
-                        respondInvitation({ invitationId: inv.id, accept: true })
-                      }
+                      onClick={() => handleRespond(inv.id, true)}
                     >
                       {t("company.accept")}
                     </Button>

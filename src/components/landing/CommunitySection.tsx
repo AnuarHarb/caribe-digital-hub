@@ -228,6 +228,7 @@ export function CommunitySection() {
 
   return (
     <section
+      id="community-section"
       aria-labelledby="community-heading"
       className="overflow-x-hidden py-20 md:py-28"
     >

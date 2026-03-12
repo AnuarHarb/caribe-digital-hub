@@ -1,8 +1,8 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 import logoImage from "@/assets/costa-digital-logo.png";
-
-const COMMUNITY_URL = "https://chat.whatsapp.com/LBr9T0ciCmE0l1LkxEqOBf";
 
 interface HeroStat {
   value: string;
@@ -11,12 +11,19 @@ interface HeroStat {
 
 export function Hero() {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
 
   const stats = t("landing.hero.stats", { returnObjects: true }) as HeroStat[];
 
   const scrollToEcosystem = () => {
     document
       .getElementById("ecosystem-overview")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToCommunities = () => {
+    document
+      .getElementById("community-section")
       ?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -63,14 +70,35 @@ export function Hero() {
         </dl>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a href={COMMUNITY_URL} target="_blank" rel="noopener noreferrer">
-            <Button
-              size="lg"
-              className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"
-            >
-              {t("landing.hero.ctaJoin")}
-            </Button>
-          </a>
+          {!isAuthenticated ? (
+            <Link to="/auth">
+              <Button
+                size="lg"
+                className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"
+              >
+                {t("landing.hero.ctaJoin")}
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/blog">
+                <Button
+                  size="lg"
+                  className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"
+                >
+                  {t("landing.hero.ctaDiscover")}
+                </Button>
+              </Link>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full transition-all duration-300 hover:border-accent/50 sm:w-auto"
+                onClick={scrollToCommunities}
+              >
+                {t("landing.hero.ctaExploreCommunities")}
+              </Button>
+            </>
+          )}
           <Button
             variant="outline"
             size="lg"

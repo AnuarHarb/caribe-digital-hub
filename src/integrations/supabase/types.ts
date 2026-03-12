@@ -623,6 +623,17 @@ export type Database = {
         }
         Returns: boolean
       }
+      search_users_by_name: {
+        Args: {
+          search_term: string
+          exclude_company_id?: string | null
+        }
+        Returns: {
+          id: string
+          full_name: string | null
+          avatar_url: string | null
+        }[]
+      }
     }
     Enums: {
       account_type: "professional" | "company" | "community"

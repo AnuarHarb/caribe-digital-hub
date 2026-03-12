@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Building2, UserPlus, Plus, Users } from "lucide-react";
+import { Building2, UserPlus, Plus, Users, Mail, UserSearch } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,15 +23,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CompanyProfileForm } from "@/components/jobs/CompanyProfileForm";
 import { PendingInvitations } from "@/components/company/PendingInvitations";
 import { CreateCompanyDialog } from "@/components/company/CreateCompanyDialog";
+import { UserSearchCombobox } from "@/components/company/UserSearchCombobox";
 import { useActiveCompany } from "@/contexts/ActiveCompanyContext";
 import {
   useCompanyMembers,
   useInviteMember,
+  useAddMemberDirectly,
   useRemoveMember,
   type CompanyMember,
+  type SearchedUser,
 } from "@/hooks/useCompanies";
 import { toast } from "sonner";
 
@@ -54,9 +58,12 @@ export default function CompanySettings() {
   } = useActiveCompany();
   const { members, isLoading } = useCompanyMembers(activeCompany?.id);
   const { inviteMember, isInviting } = useInviteMember();
+  const { addMember, isAdding } = useAddMemberDirectly();
   const { removeMember, isRemoving } = useRemoveMember();
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState<"admin" | "member">("member");
+  const [addRole, setAddRole] = useState<"admin" | "member">("member");
+  const [selectedUser, setSelectedUser] = useState<SearchedUser | null>(null);
   const [memberToRemove, setMemberToRemove] = useState<CompanyMember | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
 
@@ -65,6 +72,23 @@ export default function CompanySettings() {
   const handleSelectCompany = (company: (typeof companies)[0]) => {
     setActiveCompany(company);
     detailSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleAddExistingUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!activeCompany?.id || !selectedUser) return;
+    try {
+      await addMember({
+        companyId: activeCompany.id,
+        userId: selectedUser.id,
+        role: addRole,
+      });
+      toast.success(t("company.addMemberSuccess"));
+      setSelectedUser(null);
+      setAddRole("member");
+    } catch {
+      toast.error(t("company.addMemberError"));
+    }
   };
 
   const handleInvite = async (e: React.FormEvent) => {
@@ -226,49 +250,102 @@ export default function CompanySettings() {
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <UserPlus className="h-5 w-5" aria-hidden />
-                  <CardTitle>{t("company.inviteMember")}</CardTitle>
+                  <CardTitle>{t("company.addMembers")}</CardTitle>
                 </div>
-                <CardDescription>{t("company.inviteDescription")}</CardDescription>
+                <CardDescription>{t("company.addMembersDescription")}</CardDescription>
               </CardHeader>
               <CardContent>
-                <form
-                  onSubmit={handleInvite}
-                  className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-4"
-                >
-                  <div className="min-w-0 flex-1 space-y-2">
-                    <Label htmlFor="invite-email">{t("auth.email")}</Label>
-                    <Input
-                      id="invite-email"
-                      type="email"
-                      placeholder={t("company.inviteEmailPlaceholder")}
-                      value={inviteEmail}
-                      onChange={(e) => setInviteEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="w-full space-y-2 sm:w-36">
-                    <Label htmlFor="invite-role">{t("company.roleLabel")}</Label>
-                    <Select
-                      value={inviteRole}
-                      onValueChange={(v) => setInviteRole(v as "admin" | "member")}
+                <Tabs defaultValue="existing">
+                  <TabsList className="mb-4 w-full">
+                    <TabsTrigger value="existing" className="flex-1 gap-2">
+                      <UserSearch className="h-4 w-4" aria-hidden />
+                      {t("company.addExistingMember")}
+                    </TabsTrigger>
+                    <TabsTrigger value="invite" className="flex-1 gap-2">
+                      <Mail className="h-4 w-4" aria-hidden />
+                      {t("company.inviteByEmail")}
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="existing">
+                    <form
+                      onSubmit={handleAddExistingUser}
+                      className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-4"
                     >
-                      <SelectTrigger id="invite-role">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="member">{t("company.role.member")}</SelectItem>
-                        <SelectItem value="admin">{t("company.role.admin")}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <Button
-                    type="submit"
-                    disabled={isInviting}
-                    className="shrink-0 w-full sm:w-auto"
-                  >
-                    {isInviting ? t("common.loading") : t("company.inviteMember")}
-                  </Button>
-                </form>
+                      <div className="min-w-0 flex-1 space-y-2">
+                        <Label>{t("company.selectUser")}</Label>
+                        <UserSearchCombobox
+                          companyId={activeCompany?.id}
+                          selectedUser={selectedUser}
+                          onSelect={setSelectedUser}
+                        />
+                      </div>
+                      <div className="w-full space-y-2 sm:w-36">
+                        <Label htmlFor="add-role">{t("company.roleLabel")}</Label>
+                        <Select
+                          value={addRole}
+                          onValueChange={(v) => setAddRole(v as "admin" | "member")}
+                        >
+                          <SelectTrigger id="add-role">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="member">{t("company.role.member")}</SelectItem>
+                            <SelectItem value="admin">{t("company.role.admin")}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <Button
+                        type="submit"
+                        disabled={isAdding || !selectedUser}
+                        className="shrink-0 w-full sm:w-auto"
+                      >
+                        {isAdding ? t("common.loading") : t("company.addMember")}
+                      </Button>
+                    </form>
+                  </TabsContent>
+
+                  <TabsContent value="invite">
+                    <form
+                      onSubmit={handleInvite}
+                      className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-4"
+                    >
+                      <div className="min-w-0 flex-1 space-y-2">
+                        <Label htmlFor="invite-email">{t("auth.email")}</Label>
+                        <Input
+                          id="invite-email"
+                          type="email"
+                          placeholder={t("company.inviteEmailPlaceholder")}
+                          value={inviteEmail}
+                          onChange={(e) => setInviteEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="w-full space-y-2 sm:w-36">
+                        <Label htmlFor="invite-role">{t("company.roleLabel")}</Label>
+                        <Select
+                          value={inviteRole}
+                          onValueChange={(v) => setInviteRole(v as "admin" | "member")}
+                        >
+                          <SelectTrigger id="invite-role">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="member">{t("company.role.member")}</SelectItem>
+                            <SelectItem value="admin">{t("company.role.admin")}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <Button
+                        type="submit"
+                        disabled={isInviting}
+                        className="shrink-0 w-full sm:w-auto"
+                      >
+                        {isInviting ? t("common.loading") : t("company.inviteMember")}
+                      </Button>
+                    </form>
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
           )}

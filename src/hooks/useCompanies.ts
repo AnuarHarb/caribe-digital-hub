@@ -270,6 +270,61 @@ export function useRespondInvitation() {
   };
 }
 
+export type SearchedUser = {
+  id: string;
+  full_name: string | null;
+  avatar_url: string | null;
+};
+
+export function useSearchUsers(searchTerm: string, companyId: string | undefined) {
+  const { data: users = [], isLoading } = useQuery({
+    queryKey: ["search-users", searchTerm, companyId],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("search_users_by_name", {
+        search_term: searchTerm.trim(),
+        exclude_company_id: companyId ?? null,
+      });
+      if (error) throw error;
+      return (data ?? []) as SearchedUser[];
+    },
+    enabled: searchTerm.trim().length >= 2 && !!companyId,
+  });
+
+  return { users, isLoading };
+}
+
+export function useAddMemberDirectly() {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: async ({
+      companyId,
+      userId,
+      role,
+    }: {
+      companyId: string;
+      userId: string;
+      role: CompanyMemberRole;
+    }) => {
+      const { error } = await supabase.from("company_members").insert({
+        company_id: companyId,
+        user_id: userId,
+        role,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["company-members"] });
+      queryClient.invalidateQueries({ queryKey: ["my-companies"] });
+    },
+  });
+
+  return {
+    addMember: mutation.mutateAsync,
+    isAdding: mutation.isPending,
+  };
+}
+
 export function useRemoveMember() {
   const queryClient = useQueryClient();
 

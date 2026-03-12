@@ -1,11 +1,19 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 
-const COMMUNITY_URL = "https://chat.whatsapp.com/HEHmdscnxsx2CdkLpLQzqO?mode=gi_t";
 const PARTNER_EMAIL = "mailto:hola@costadigital.org";
 
 export function LandingCTA() {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
+
+  const scrollToCommunities = () => {
+    document
+      .getElementById("community-section")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section
@@ -23,15 +31,37 @@ export function LandingCTA() {
           {t("landing.cta.subtitle")}
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a href={COMMUNITY_URL} target="_blank" rel="noopener noreferrer">
-            <Button
-              size="lg"
-              variant="secondary"
-              className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 sm:w-auto"
-            >
-              {t("landing.cta.ctaJoin")}
-            </Button>
-          </a>
+          {!isAuthenticated ? (
+            <Link to="/auth">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 sm:w-auto"
+              >
+                {t("landing.cta.ctaJoin")}
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/blog">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 sm:w-auto"
+                >
+                  {t("landing.cta.ctaDiscover")}
+                </Button>
+              </Link>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 sm:w-auto"
+                onClick={scrollToCommunities}
+              >
+                {t("landing.cta.ctaExploreCommunities")}
+              </Button>
+            </>
+          )}
           <a href={PARTNER_EMAIL}>
             <Button
               variant="outline"
