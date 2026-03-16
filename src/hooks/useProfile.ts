@@ -29,12 +29,18 @@ export function useProfessionalProfile(userId?: string) {
         .select(`
           *,
           professional_skills(*),
-          professional_experience(*),
+          professional_experience(*, display_order),
           professional_education(*),
           profiles(full_name, avatar_url)
         `)
         .eq("user_id", targetUserId)
         .maybeSingle();
+      if (data?.professional_experience) {
+        data.professional_experience.sort(
+          (a: { display_order: number }, b: { display_order: number }) =>
+            a.display_order - b.display_order
+        );
+      }
       if (error) throw error;
       return data;
     },
@@ -44,14 +50,28 @@ export function useProfessionalProfile(userId?: string) {
   const upsertMutation = useMutation({
     mutationFn: async (data: Partial<ProfessionalProfileInsert> & Partial<ProfessionalProfileUpdate>) => {
       if (!user?.id) throw new Error("Not authenticated");
-      const { data: result, error } = await supabase
+      const { data: existing } = await supabase
         .from("professional_profiles")
-        .upsert(
-          { ...data, user_id: user.id },
-          { onConflict: "user_id" }
-        )
-        .select()
-        .single();
+        .select("id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      let result, error;
+      if (existing?.id) {
+        ({ data: result, error } = await supabase
+          .from("professional_profiles")
+          .update(data)
+          .eq("id", existing.id)
+          .select()
+          .single());
+      } else {
+        ({ data: result, error } = await supabase
+          .from("professional_profiles")
+          .insert({ ...data, user_id: user.id })
+          .select()
+          .single());
+      }
+
       if (error) throw error;
       return result;
     },
@@ -222,13 +242,32 @@ export function useExperience(professionalId: string | undefined) {
     },
   });
 
+  const reorderMutation = useMutation({
+    mutationFn: async (orderedIds: string[]) => {
+      const updates = orderedIds.map((id, index) =>
+        supabase
+          .from("professional_experience")
+          .update({ display_order: index })
+          .eq("id", id)
+      );
+      const results = await Promise.all(updates);
+      const failed = results.find((r) => r.error);
+      if (failed?.error) throw failed.error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["professional-profile", user?.id] });
+    },
+  });
+
   return {
     addExperience: addMutation.mutateAsync,
     updateExperience: updateMutation.mutateAsync,
     deleteExperience: deleteMutation.mutateAsync,
+    reorderExperience: reorderMutation.mutateAsync,
     isAdding: addMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
+    isReordering: reorderMutation.isPending,
   };
 }
 

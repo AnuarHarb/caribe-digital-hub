@@ -6,48 +6,49 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM_PROMPT = `Eres un analista de carreras tecnológicas especializado en el mercado laboral de Barranquilla, Colombia y el Caribe colombiano. Tu rol es ayudar a profesionales a mejorar su currículum y perfil profesional.
+const SYSTEM_PROMPT = `Eres un analista de carreras tecnológicas del Caribe colombiano. Analiza el perfil y da recomendaciones accionables.
 
-Responde siempre en el mismo idioma que use el usuario (español o inglés).
+Idioma: responde en el mismo idioma del usuario.
 
-IMPORTANTE: Debes devolver SIEMPRE un JSON con exactamente estas 4 secciones (en este orden), cada una con su título y al menos 2 ítems con subtitle, description y action:
+REGLAS DE BREVEDAD (MUY IMPORTANTE):
+- greeting: máximo 2 oraciones.
+- Cada section: exactamente 3 items. No más.
+- subtitle: máximo 5 palabras.
+- description: máximo 2 oraciones cortas.
+- action: máximo 1 oración que empiece con un verbo.
+- example before/after: máximo 2 oraciones cada uno.
+- summary: máximo 2 oraciones.
+- NO repitas información entre items. NO hagas listas dentro de strings.
 
-1. "Optimización del Currículum" (o "Resume Optimization" en inglés): recomendaciones para mejorar el CV (historial profesional, métricas de impacto, educación, etc.). Cada ítem debe tener subtitle, description y action que empiece con "Acción:".
+Devuelve JSON con 3 secciones:
+1. "Optimización del Currículum": mejoras concretas al CV.
+2. "Roadmap Tecnológico": tecnologías a aprender.
+3. "Consejos para el Mercado": cómo destacar en el mercado local y remoto.
 
-2. "Roadmap Tecnológico Sugerido" (o "Suggested Technology Roadmap" en inglés): tecnologías y habilidades a aprender (frameworks de agentes, bases de datos vectoriales, cloud AI, etc.). Cada ítem con subtitle, description y action.
-
-3. "Consejos para el Mercado" (o "Market Tips" en inglés): cómo destacar en Barranquilla y el Caribe (mercado local, exportación de servicios, networking, inglés). Cada ítem con subtitle, description y action.
-
-4. "Impacto Técnico y de Negocio" (o "Technical and Business Impact" en inglés): un ejemplo práctico con "before" (texto actual de su experiencia) y "after" (versión mejorada y cuantificada). Usa el campo "example" con label, before y after.
-
-Además incluye: "greeting" (saludo personalizado + resumen de su perfil) y "summary" (resumen de impacto final motivador).
-
-Sé directo, constructivo y accionable. Prioriza recomendaciones por impacto.`;
+Incluye también: greeting, example (label, before, after) y summary.`;
 
 const ANALYSIS_JSON_SCHEMA = {
   type: "object",
   required: ["greeting", "sections", "example", "summary"],
   properties: {
-    greeting: { type: "string", description: "Saludo personalizado al usuario con resumen de su perfil" },
+    greeting: { type: "string", description: "Max 2 sentences" },
     sections: {
       type: "array",
-      description: "Exactamente 4 secciones: Optimización del Currículum, Roadmap Tecnológico, Consejos para el Mercado, Impacto Técnico",
+      description: "Exactly 3 sections, each with exactly 3 items",
       items: {
         type: "object",
         required: ["title", "items"],
         properties: {
-          title: { type: "string", description: "Título de la sección" },
+          title: { type: "string" },
           items: {
             type: "array",
-            description: "Al menos 2 ítems por sección",
+            description: "Exactly 3 items",
             items: {
               type: "object",
               properties: {
-                subtitle: { type: "string", description: "Subtítulo o etiqueta del ítem" },
-                description: { type: "string", description: "Descripción o contexto" },
-                action: { type: "string", description: "Acción recomendada" },
-                category: { type: "string", description: "Categoría (ej: Orquestadores)" },
-                content: { type: "string", description: "Contenido del ítem" },
+                subtitle: { type: "string", description: "Max 5 words" },
+                description: { type: "string", description: "Max 2 short sentences" },
+                action: { type: "string", description: "1 sentence starting with a verb" },
               },
             },
           },
@@ -56,15 +57,14 @@ const ANALYSIS_JSON_SCHEMA = {
     },
     example: {
       type: "object",
-      description: "Ejemplo práctico Antes/Después de mejora en descripción de experiencia",
       required: ["label", "before", "after"],
       properties: {
-        label: { type: "string", description: "Título del ejemplo (ej: Impacto Técnico y de Negocio)" },
-        before: { type: "string", description: "Texto actual de su experiencia" },
-        after: { type: "string", description: "Texto mejorado y cuantificado" },
+        label: { type: "string" },
+        before: { type: "string", description: "Max 2 sentences" },
+        after: { type: "string", description: "Max 2 sentences" },
       },
     },
-    summary: { type: "string", description: "Resumen de impacto final motivador" },
+    summary: { type: "string", description: "Max 2 sentences" },
   },
 };
 
@@ -126,7 +126,7 @@ serve(async (req) => {
     const prompt = `${userMessage}${curriculumContext}`;
 
     if (isAnalyze) {
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`;
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${geminiApiKey}`;
       const geminiResponse = await fetch(geminiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -137,6 +137,8 @@ serve(async (req) => {
           generationConfig: {
             responseMimeType: "application/json",
             responseSchema: ANALYSIS_JSON_SCHEMA,
+            maxOutputTokens: 8192,
+            temperature: 0.7,
           },
           contents: [{ role: "user", parts: [{ text: prompt }] }],
         }),
@@ -156,31 +158,46 @@ serve(async (req) => {
       }
 
       const geminiData = await geminiResponse.json();
-      const text =
-        geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
-      if (!text || typeof text !== "string" || text.trim().length === 0) {
+      const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
+
+      if (!text) {
         const finishReason = geminiData?.candidates?.[0]?.finishReason;
-        const userMsg =
-          finishReason === "SAFETY" || finishReason === "RECITATION"
-            ? "La respuesta fue bloqueada por filtros de seguridad. Intenta reformular tu currículum."
-            : "No se pudo generar una respuesta. Intenta de nuevo.";
+        const userMsg = finishReason === "SAFETY" || finishReason === "RECITATION"
+          ? "La respuesta fue bloqueada por filtros de seguridad."
+          : "No se pudo generar el análisis.";
         return new Response(
           JSON.stringify({ error: userMsg }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 502 }
         );
       }
+
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(text);
+      } catch {
+        console.error("Gemini returned malformed JSON, length:", text.length);
+        return new Response(
+          JSON.stringify({ error: "El análisis fue demasiado largo y se truncó. Intenta de nuevo." }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 502 }
+        );
+      }
+
       return new Response(
-        JSON.stringify({ json: text }),
+        JSON.stringify({ data: parsed }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
       );
     }
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:streamGenerateContent?alt=sse&key=${geminiApiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=${geminiApiKey}`;
     const geminiResponse = await fetch(geminiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        generationConfig: {
+          maxOutputTokens: 4096,
+          temperature: 0.7,
+        },
         contents: [{ role: "user", parts: [{ text: prompt }] }],
       }),
     });
@@ -198,14 +215,13 @@ serve(async (req) => {
       );
     }
 
-    return new Response(geminiResponse.body, {
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
-    });
+    const chatData = await geminiResponse.json();
+    const chatText = chatData?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+
+    return new Response(
+      JSON.stringify({ data: chatText }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
+    );
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Error desconocido";
     console.error("ai-curriculum-assistant error:", errorMessage);

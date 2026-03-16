@@ -182,23 +182,31 @@ export function AIAssistant({ curriculum }: AIAssistantProps) {
   };
 
   const analyzeCurriculum = async (message: string): Promise<AnalysisResponse> => {
-    // #region agent log
     const headers = await getAuthHeaders();
-    fetch('http://127.0.0.1:7904/ingest/8dc63d39-01c4-4858-bb48-5ff09cb58b89',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'28141e'},body:JSON.stringify({sessionId:'28141e',location:'AIAssistant.tsx:analyzeCurriculum',message:'pre-fetch',data:{hasAuth:!!headers.Authorization,urlPrefix:SUPABASE_URL?.slice(0,40),hasAnonKey:!!SUPABASE_ANON_KEY},hypothesisId:'A',timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
     const trimmedCurriculum = trimCurriculumForAnalysis(curriculum);
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/ai-curriculum-assistant`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ curriculum: trimmedCurriculum, message, isAnalyze: true }),
-    });
-    // #region agent log
-    const rawBody = await res.text();
-    fetch('http://127.0.0.1:7904/ingest/8dc63d39-01c4-4858-bb48-5ff09cb58b89',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'28141e'},body:JSON.stringify({sessionId:'28141e',location:'AIAssistant.tsx:analyzeCurriculum',message:'post-fetch',data:{status:res.status,ok:res.ok,bodyPreview:rawBody?.slice(0,300)},hypothesisId:'B',timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 90_000);
+    let res: Response;
+    try {
+      res = await fetch(`${SUPABASE_URL}/functions/v1/ai-curriculum-assistant`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ curriculum: trimmedCurriculum, message, isAnalyze: true }),
+        signal: controller.signal,
+      });
+    } catch (fetchErr) {
+      clearTimeout(timeout);
+      if (fetchErr instanceof DOMException && fetchErr.name === "AbortError") {
+        toast.error(t("aiAssistant.errorTimeout"));
+        throw new Error("timeout");
+      }
+      throw fetchErr;
+    }
+
     if (!res.ok) {
       let msg = "Error al comunicarse con el asistente de IA";
       try {
+        const rawBody = await res.text();
         const body = JSON.parse(rawBody) as { error?: string; code?: string; message?: string };
         if (body?.code === "WORKER_LIMIT") {
           msg = t("aiAssistant.errorServerOverload");
@@ -213,29 +221,12 @@ export function AIAssistant({ curriculum }: AIAssistantProps) {
       toast.error(msg);
       throw new Error(msg);
     }
-    const data = (() => { try { return JSON.parse(rawBody) as { json?: string }; } catch { return {}; } })();
-    const jsonStr = data?.json;
-    // #region agent log
-    fetch('http://127.0.0.1:7904/ingest/8dc63d39-01c4-4858-bb48-5ff09cb58b89',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'28141e'},body:JSON.stringify({sessionId:'28141e',location:'AIAssistant.tsx:analyzeCurriculum',message:'pre-parse',data:{hasJson:!!jsonStr,jsonLen:jsonStr?.length,dataKeys:Object.keys(data||{})},hypothesisId:'C',timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
-    if (!jsonStr) throw new Error(t("aiAssistant.noResponse"));
-    try {
-      const parsed = JSON.parse(jsonStr) as AnalysisResponse;
-      // #region agent log
-      fetch('http://127.0.0.1:7904/ingest/8dc63d39-01c4-4858-bb48-5ff09cb58b89',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'28141e'},body:JSON.stringify({sessionId:'28141e',location:'AIAssistant.tsx:analyzeCurriculum',message:'parse-ok',data:{hasGreeting:!!parsed.greeting,sectionCount:parsed.sections?.length},hypothesisId:'D',timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
-      return parsed;
-    } catch (parseErr) {
-      // #region agent log
-      fetch('http://127.0.0.1:7904/ingest/8dc63d39-01c4-4858-bb48-5ff09cb58b89',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'28141e'},body:JSON.stringify({sessionId:'28141e',location:'AIAssistant.tsx:analyzeCurriculum',message:'parse-fail',data:{err:parseErr instanceof Error?parseErr.message:parseErr},hypothesisId:'D',timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
-      const cleaned = jsonStr.replace(/^```json\s*|\s*```$/g, "").trim();
-      try {
-        return JSON.parse(cleaned) as AnalysisResponse;
-      } catch {
-        throw new Error("Respuesta inválida del asistente");
-      }
-    }
+
+    clearTimeout(timeout);
+    const json = await res.json();
+    const data = json?.data as AnalysisResponse | undefined;
+    if (!data) throw new Error(json?.error || t("aiAssistant.noResponse"));
+    return data;
   };
 
   const handleAnalyze = async () => {
@@ -244,10 +235,7 @@ export function AIAssistant({ curriculum }: AIAssistantProps) {
       const analyzeMessage = t("aiAssistant.analyzePrompt");
       const result = await analyzeCurriculum(analyzeMessage);
       setAnalysis(result);
-    } catch (err) {
-      // #region agent log
-      fetch('http://127.0.0.1:7904/ingest/8dc63d39-01c4-4858-bb48-5ff09cb58b89',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'28141e'},body:JSON.stringify({sessionId:'28141e',location:'AIAssistant.tsx:handleAnalyze',message:'catch',data:{err:err instanceof Error?err.message:err},hypothesisId:'E',timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
+    } catch {
       /* toast already shown in analyzeCurriculum */
     } finally {
       setIsLoading(false);

@@ -4,6 +4,7 @@ import { SkillsManager } from "@/components/talent/SkillsManager";
 import { ExperienceManager } from "@/components/talent/ExperienceManager";
 import { EducationManager } from "@/components/talent/EducationManager";
 import { AIAssistant } from "@/components/talent/AIAssistant";
+import { CurriculumUpload } from "@/components/talent/CurriculumUpload";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -97,6 +98,9 @@ export default function Curriculum() {
         <CardDescription>{t("curriculum.sectionsDescription")}</CardDescription>
       </CardHeader>
       <CardContent>
+        <div className="mb-6">
+          <CurriculumUpload />
+        </div>
         <Tabs defaultValue="professional" className="w-full">
           <TabsList className="mb-4 flex h-auto flex-wrap gap-1 bg-transparent p-0">
             <TabsTrigger value="professional" className="gap-2">

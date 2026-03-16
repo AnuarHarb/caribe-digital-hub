@@ -8,6 +8,7 @@ const DOCUMENT_MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
 const AVATAR_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const DOCUMENT_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+const CURRICULUM_MIME_TYPES = ["application/pdf"];
 
 function getFileExtension(file: File): string {
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
@@ -84,6 +85,36 @@ export function useFileUpload(userId: string | undefined) {
     [userId]
   );
 
+  const uploadCurriculum = useCallback(
+    async (file: File): Promise<{ path: string } | { error: string }> => {
+      if (!userId) return { error: "Usuario no autenticado" };
+      if (file.size > DOCUMENT_MAX_SIZE) return { error: "El archivo no debe superar 10MB" };
+      if (!CURRICULUM_MIME_TYPES.includes(file.type)) return { error: "Formato no válido. Solo PDF" };
+
+      setIsUploading(true);
+      setError(null);
+
+      try {
+        const path = `${userId}/curriculum.pdf`;
+
+        const { error: uploadError } = await supabase.storage
+          .from(DOCUMENTS_BUCKET)
+          .upload(path, file, { upsert: true });
+
+        if (uploadError) throw uploadError;
+
+        return { path };
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Error al subir el currículum";
+        setError(message);
+        return { error: message };
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [userId]
+  );
+
   const getDocumentSignedUrl = useCallback(
     async (path: string, expiresIn = 3600): Promise<string | null> => {
       if (!path) return null;
@@ -103,6 +134,7 @@ export function useFileUpload(userId: string | undefined) {
   return {
     uploadAvatar,
     uploadDocument,
+    uploadCurriculum,
     getDocumentSignedUrl,
     isUploading,
     error,

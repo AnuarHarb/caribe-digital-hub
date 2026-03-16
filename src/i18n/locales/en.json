@@ -504,6 +504,29 @@
     "tabAssistant": "AI Assistant",
     "companyNotApplicable": "Resume is only available for professional accounts."
   },
+  "cvUpload": {
+    "dropzone": "Upload your CV to auto-fill your profile",
+    "hint": "Drag or click to upload a PDF (max 10MB). AI will extract your information automatically.",
+    "uploading": "Uploading resume...",
+    "uploaded": "Resume uploaded successfully",
+    "processing": "Analyzing your CV with AI...",
+    "errorPdfOnly": "Only PDF files are allowed",
+    "errorTooLarge": "File must not exceed 10MB",
+    "errorProcessing": "Error processing resume",
+    "errorApplying": "Error saving extracted data",
+    "dialogTitle": "Data extracted from your CV",
+    "dialogDescription": "Review the extracted information before applying it to your profile.",
+    "previewPersonal": "Personal data",
+    "previewProfessional": "Professional profile",
+    "yearsExp": "years of experience",
+    "studies": "Studies",
+    "noData": "Could not extract data from the document.",
+    "apply": "Apply to my profile",
+    "applied": "Profile updated with your CV data",
+    "existingLabel": "CV uploaded",
+    "existingHint": "Your resume has been processed. You can replace it if needed.",
+    "replace": "Replace"
+  },
   "skills": {
     "name": "Skill",
     "namePlaceholder": "e.g. React, Python",
@@ -537,7 +560,8 @@
     "added": "Experience added",
     "updated": "Experience updated",
     "removed": "Experience removed",
-    "empty": "You haven't added any work experience yet."
+    "empty": "You haven't added any work experience yet.",
+    "reorderHandle": "Drag to reorder"
   },
   "education": {
     "add": "Add education",
@@ -566,7 +590,8 @@
     "send": "Send",
     "noResponse": "Could not get a response.",
     "errorServerOverload": "The server is overloaded. Wait a few minutes and try again.",
-    "analyzing": "Analyzing your resume. This may take a few minutes.",
+    "analyzing": "Analyzing your resume...",
+    "errorTimeout": "The analysis took too long. Please try again.",
     "exampleBefore": "Before",
     "exampleAfter": "After",
     "action": "Action",

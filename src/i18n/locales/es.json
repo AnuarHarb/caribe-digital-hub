@@ -504,6 +504,29 @@
     "tabAssistant": "Asistente IA",
     "companyNotApplicable": "El curriculum está disponible solo para cuentas de profesionales."
   },
+  "cvUpload": {
+    "dropzone": "Sube tu CV para autocompletar tu perfil",
+    "hint": "Arrastra o haz clic para subir un PDF (máx. 10MB). La IA extraerá tu información automáticamente.",
+    "uploading": "Subiendo currículum...",
+    "uploaded": "Currículum subido correctamente",
+    "processing": "Analizando tu CV con IA...",
+    "errorPdfOnly": "Solo se permiten archivos PDF",
+    "errorTooLarge": "El archivo no debe superar 10MB",
+    "errorProcessing": "Error al procesar el currículum",
+    "errorApplying": "Error al guardar los datos extraídos",
+    "dialogTitle": "Datos extraídos de tu CV",
+    "dialogDescription": "Revisa la información extraída antes de aplicarla a tu perfil.",
+    "previewPersonal": "Datos personales",
+    "previewProfessional": "Perfil profesional",
+    "yearsExp": "años de experiencia",
+    "studies": "Estudios",
+    "noData": "No se pudieron extraer datos del documento.",
+    "apply": "Aplicar a mi perfil",
+    "applied": "Perfil actualizado con los datos de tu CV",
+    "existingLabel": "CV subido",
+    "existingHint": "Tu currículum ya fue procesado. Puedes reemplazarlo si lo deseas.",
+    "replace": "Reemplazar"
+  },
   "skills": {
     "name": "Habilidad",
     "namePlaceholder": "ej. React, Python",
@@ -537,7 +560,8 @@
     "added": "Experiencia agregada",
     "updated": "Experiencia actualizada",
     "removed": "Experiencia eliminada",
-    "empty": "Aún no has agregado experiencia laboral."
+    "empty": "Aún no has agregado experiencia laboral.",
+    "reorderHandle": "Arrastrar para reordenar"
   },
   "education": {
     "add": "Agregar educación",
@@ -566,7 +590,8 @@
     "send": "Enviar",
     "noResponse": "No se pudo obtener una respuesta.",
     "errorServerOverload": "El servidor está saturado. Espera unos minutos e intenta de nuevo.",
-    "analyzing": "Analizando tu currículum. Puede tardar unos minutos.",
+    "analyzing": "Analizando tu currículum...",
+    "errorTimeout": "El análisis tardó demasiado. Intenta de nuevo.",
     "exampleBefore": "Antes",
     "exampleAfter": "Después",
     "action": "Acción",
