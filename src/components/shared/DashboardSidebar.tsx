@@ -59,7 +59,6 @@ export function DashboardSidebar() {
   const personalLinks = [
     { to: "/dashboard", label: t("nav.dashboard"), icon: LayoutDashboard },
     { to: "/dashboard/perfil", label: t("dashboard.profile"), icon: User },
-    { to: "/dashboard/credencial", label: t("dashboard.credential"), icon: CreditCard },
     ...(accountType === "professional"
       ? [
           { to: "/dashboard/curriculum", label: t("curriculum.title"), icon: ScrollText },
@@ -113,6 +112,30 @@ export function DashboardSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent className="mb-2">
+            <SidebarMenu className="gap-1">
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <NavLink
+                    to="/dashboard/credencial"
+                    className={({ isActive }) =>
+                      cn(
+                        "rounded-lg px-3 py-2.5 transition-colors",
+                        isActive
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium hover:bg-sidebar-accent/80"
+                          : "text-sidebar-foreground dark:text-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground dark:hover:text-foreground"
+                      )
+                    }
+                  >
+                    <CreditCard className="h-5 w-5 shrink-0" aria-hidden />
+                    <span>{t("dashboard.credential")}</span>
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel className="px-3 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground dark:text-foreground/90">
             {t("dashboard.sectionPersonal")}

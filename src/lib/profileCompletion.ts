@@ -26,8 +26,6 @@ const PERSONAL_FIELDS = [
   "address",
   "city",
   "avatar_url",
-  "document_type",
-  "document_number",
 ] as const;
 
 const PROFESSIONAL_FIELDS = [

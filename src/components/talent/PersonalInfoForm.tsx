@@ -22,7 +22,6 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Info } from "lucide-react";
 import { AvatarUpload } from "@/components/shared/AvatarUpload";
-import { DocumentUpload } from "@/components/shared/DocumentUpload";
 import { useProfile } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
@@ -80,15 +79,6 @@ export function PersonalInfoForm() {
         document_number: data.document_number || undefined,
       });
       toast.success(t("common.success"));
-    } catch {
-      toast.error(t("common.error"));
-    }
-  };
-
-  const handleDocumentUpload = async (path: string) => {
-    try {
-      await updateProfile({ document_url: path });
-      toast.success(t("profile.documentUploaded"));
     } catch {
       toast.error(t("common.error"));
     }
@@ -188,50 +178,43 @@ export function PersonalInfoForm() {
           )}
         />
 
-        <div className="space-y-4 rounded-lg border border-border p-4">
-          <h3 className="font-medium">{t("profile.documentSection")}</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="document_type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("profile.documentType")}</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t("profile.selectDocumentType")} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {DOCUMENT_TYPES.map((type) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="document_number"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("profile.documentNumber")}</FormLabel>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="document_type"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("profile.documentType")}</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <Input placeholder="1234567890" {...field} />
+                    <SelectTrigger>
+                      <SelectValue placeholder={t("profile.selectDocumentType")} />
+                    </SelectTrigger>
                   </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <DocumentUpload
-            currentPath={profile?.document_url}
-            onUploadComplete={handleDocumentUpload}
+                  <SelectContent>
+                    {DOCUMENT_TYPES.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="document_number"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("profile.documentNumber")}</FormLabel>
+                <FormControl>
+                  <Input placeholder="1234567890" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </div>
 
