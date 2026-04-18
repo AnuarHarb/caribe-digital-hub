@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
-import logoImage from "@/assets/costa-digital-logo.png";
+import costaDigitalLogo from "@/assets/costa-digital-logo.png";
 
 interface HeroStat {
   value: string;
@@ -40,11 +40,24 @@ export function Hero() {
       />
 
       <div className="container relative z-10 mx-auto px-4 text-center">
-        <div className="flex justify-center mb-6">
+        <div
+          className="mb-6 flex flex-nowrap items-center justify-center gap-2 sm:gap-3 md:gap-4"
+          role="group"
+          aria-label="Costa Digital y FCA"
+        >
           <img
-            src={logoImage}
+            src={costaDigitalLogo}
             alt="Costa Digital"
-            className="h-16 w-16 md:h-20 md:w-20 drop-shadow-lg"
+            className="h-10 w-10 shrink-0 object-contain drop-shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14"
+          />
+          <span
+            className="h-9 w-px shrink-0 bg-white sm:h-10 md:h-12"
+            aria-hidden
+          />
+          <img
+            src="/logos/logo-fca.webp"
+            alt="FCA"
+            className="h-10 w-auto max-w-[min(100%,180px)] shrink-0 object-contain object-center sm:h-12 sm:max-w-[220px] md:h-14 md:max-w-[240px] drop-shadow-lg"
           />
         </div>
 

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
 import Landing from "./pages/Landing";
+import Conocenos from "./pages/Conocenos";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -57,6 +58,7 @@ const App = () => (
           <GoogleAnalytics />
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/conocenos" element={<Conocenos />} />
             <Route path="/auth" element={<AuthLayout />}>
               <Route index element={<Login />} />
               <Route path="signup" element={<Signup />} />

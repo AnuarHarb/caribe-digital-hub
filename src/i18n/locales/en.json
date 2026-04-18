@@ -12,7 +12,8 @@
     "login": "Login",
     "logout": "Logout",
     "talentNetwork": "Talent Network",
-    "events": "Events"
+    "events": "Events",
+    "about": "About"
   },
   "talentNetwork": {
     "subtitle": "Find job offers and connect with Caribbean tech talent.",
@@ -1117,6 +1118,7 @@
     "ecosystem": {
       "title": "Costa Digital Activation Model",
       "subtitle": "How we're transforming the region into a tech epicenter.",
+      "ctaFca": "Learn more about FCA",
       "community": {
         "title": "Community",
         "description": "We activate communities and events that connect talent and generate new ideas."

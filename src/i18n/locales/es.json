@@ -12,7 +12,8 @@
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión",
     "talentNetwork": "Red de Talento",
-    "events": "Eventos"
+    "events": "Eventos",
+    "about": "Conócenos"
   },
   "talentNetwork": {
     "subtitle": "Encuentra ofertas de empleo y conecta con el talento tech del Caribe.",
@@ -1117,6 +1118,7 @@
     "ecosystem": {
       "title": "Modelo de Activación Costa Digital",
       "subtitle": "Así estamos construyendo el ecosistema que convertirá al Caribe en un epicentro tecnológico.",
+      "ctaFca": "Conoce más sobre FCA",
       "community": {
         "title": "Comunidad",
         "description": "Activamos comunidades y eventos que conectan talento y generan nuevas ideas."

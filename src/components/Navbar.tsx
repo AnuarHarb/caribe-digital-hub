@@ -131,6 +131,11 @@ export function Navbar() {
 
   const NavLinks = () => (
     <>
+      <Link to="/conocenos" onClick={closeMobile} className={isMobile ? "block w-full" : undefined}>
+        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
+          {t("nav.about")}
+        </Button>
+      </Link>
       <Link to="/talento" onClick={closeMobile} className={isMobile ? "block w-full" : undefined}>
         <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
           {t("nav.talentNetwork")}

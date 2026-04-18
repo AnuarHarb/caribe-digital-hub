@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
 import {
   Users,
   GraduationCap,
@@ -79,6 +81,12 @@ export function EcosystemOverview() {
               </div>
             );
           })}
+        </div>
+
+        <div className="mt-10 flex justify-center">
+          <Link to="/conocenos">
+            <Button size="lg">{t("landing.ecosystem.ctaFca")}</Button>
+          </Link>
         </div>
       </div>
     </section>
