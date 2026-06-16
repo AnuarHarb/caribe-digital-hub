@@ -6,7 +6,7 @@ import { PillarsOverview } from "@/components/landing/PillarsOverview";
 import { Impact } from "@/components/landing/Impact";
 import { TechCentre } from "@/components/landing/TechCentre";
 import { CommunitySection } from "@/components/landing/CommunitySection";
-import { TalentNetworkCTA } from "@/components/landing/TalentNetworkCTA";
+
 import { Innovation } from "@/components/landing/Innovation";
 import { StartupsSection } from "@/components/landing/StartupsSection";
 import { Audiences } from "@/components/landing/Audiences";
@@ -23,7 +23,7 @@ export default function Landing() {
     alternateName: "Caribe Tech",
     url: "https://costadigital.org",
     description:
-      "Centro de innovación y transformación tecnológica del Caribe que articula educación, comunidad, innovación y capital para convertir al Caribe colombiano en el nuevo epicentro tech de LATAM.",
+      "Ecosistema tech del Caribe colombiano. +120 proyectos en hackatones, +400 estudiantes, +5,000 asistentes a eventos. Eventos gratuitos como Tech Nights y Jueves de Cowork.",
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -37,10 +37,10 @@ export default function Landing() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
       <SEOHead
-        title="Costa Digital — Centro de Innovación Tech del Caribe | Camino al epicentro tech de LATAM"
-        description="Costa Digital es el centro de innovación y transformación tecnológica del Caribe colombiano. Articula educación, comunidad, innovación y capital para convertir la región en el nuevo epicentro tech de LATAM. Barranquilla, Cartagena, Santa Marta."
+        title="Costa Digital — Ecosistema Tech del Caribe | 3 años generando impacto"
+        description="Costa Digital es el ecosistema tech del Caribe colombiano. +120 proyectos en hackatones, +400 estudiantes, +5,000 asistentes a eventos. Eventos gratuitos como Tech Nights y Jueves de Cowork. Barranquilla, Cartagena, Santa Marta."
         canonical="/"
-        keywords={["centro de innovación Caribe", "epicentro tech LATAM", "Caribe Tech", "tech del Caribe", "ecosistema tech Caribe", "startups Caribe", "comunidad tech Barranquilla", "hackathons Caribe", "innovación Caribe"]}
+        keywords={["ecosistema tech Caribe", "Caribe Tech", "tech del Caribe", "startups Caribe", "comunidad tech Barranquilla", "hackatón Barranquilla", "Tech Nights", "coworking Barranquilla", "eventos tech gratis", "IA Caribe", "innovación Caribe"]}
       />
       <Helmet>
         <script type="application/ld+json">
@@ -54,7 +54,6 @@ export default function Landing() {
         <Impact />
         <TechCentre />
         <CommunitySection />
-        <TalentNetworkCTA />
         <Innovation />
         <StartupsSection />
         <Audiences />

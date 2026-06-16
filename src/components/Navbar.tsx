@@ -20,7 +20,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 
 function getInitials(name: string | null | undefined): string {
   if (!name?.trim()) return "?";
@@ -139,6 +138,7 @@ export function Navbar() {
         { to: "/talento", label: t("nav.talentNetwork") },
         { to: "/aliados", label: t("nav.aliados") },
       ],
+      hidden: true,
     },
     {
       label: t("nav.nosotros"),
@@ -148,13 +148,14 @@ export function Navbar() {
         { to: "/equipo", label: t("nav.equipo") },
         { to: "/sede", label: t("nav.sede") },
       ],
+      hidden: true,
     },
   ];
 
   const NavLinks = () =>
     isMobile ? (
       <>
-        {navGroups.map((group) => (
+        {navGroups.filter(g => !g.hidden).map((group) => (
           <div key={group.label} className="w-full">
             <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               {group.label}
@@ -183,7 +184,7 @@ export function Navbar() {
       </>
     ) : (
       <>
-        {navGroups.map((group) => (
+        {navGroups.filter(g => !g.hidden).map((group) => (
           <DropdownMenu key={group.label}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="gap-1">
@@ -269,9 +270,6 @@ export function Navbar() {
           <span className="font-display text-xl font-bold text-primary">
             COSTA DIGITAL
           </span>
-          <Badge variant="secondary" className="text-xs font-medium uppercase tracking-wide">
-            Beta
-          </Badge>
         </Link>
 
         {!isMobile ? (

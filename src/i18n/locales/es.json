@@ -994,20 +994,20 @@
       "ctaExplore": "Explora el ecosistema",
       "stats": [
         {
-          "value": "3000+",
-          "label": "miembros en la comunidad"
+          "value": "3",
+          "label": "años generando impacto"
         },
         {
-          "value": "1800+",
-          "label": "developers en el ecosistema"
+          "value": "+120",
+          "label": "proyectos creados en hackatones"
         },
         {
-          "value": "350+",
-          "label": "participantes en hackathons"
+          "value": "+400",
+          "label": "estudiantes"
         },
         {
-          "value": "53+",
-          "label": "proyectos creados"
+          "value": "+5000",
+          "label": "asistentes a eventos"
         }
       ],
       "eyebrow": "Centro de Innovación y Transformación Tecnológica del Caribe",
@@ -1136,12 +1136,12 @@
           "text": "Más de 100 personas formadas con nosotros hoy trabajan en la industria tecnológica."
         },
         {
-          "title": "Becas con el sector público",
-          "text": "Junto a la Gobernación del Atlántico ofrecemos becas en diplomados de tecnología para la región."
+          "title": "Eventos gratuitos todos los meses",
+          "text": "Tech Nights el tercer sábado de cada mes y Jueves de Cowork donde abrimos nuestra sede para trabajar y aprender en comunidad. Más de 5,000 asistentes nos han acompañado en este tiempo."
         },
         {
           "title": "El hackatón de IA más grande del Caribe",
-          "text": "Barranqui-IA reúne a cientos de builders para crear prototipos y nuevas startups."
+          "text": "Barranqui-IA ha reunido a más de 650 participantes en 3 años, creando prototipos y nuevas startups desde el Caribe."
         }
       ]
     },

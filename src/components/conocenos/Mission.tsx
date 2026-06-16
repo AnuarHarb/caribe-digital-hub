@@ -7,7 +7,7 @@ const images = [
     alt: "Evento Tech Nights impulsado por Fundación Código Abierto",
   },
   {
-    src: "/FCA-fundacion/barranqui-ia.jpg",
+    src: "/events/hackaton-bquilla-2026-impacto.jpg",
     alt: "Barranqui-IA, el hackatón de inteligencia artificial más grande del Caribe",
   },
   {
@@ -110,7 +110,7 @@ export function ConocenosMission() {
           />
           <img
             className="h-full w-full rounded-xl object-cover"
-            src="/FCA-fundacion/barranqui-ia.jpg"
+            src="/events/hackaton-bquilla-2026-impacto.jpg"
             alt="Barranqui-IA, el hackatón de inteligencia artificial más grande del Caribe"
             loading="lazy"
           />

@@ -994,20 +994,20 @@
       "ctaExplore": "Explore the ecosystem",
       "stats": [
         {
-          "value": "3000+",
-          "label": "community members"
+          "value": "3",
+          "label": "years generating impact"
         },
         {
-          "value": "1800+",
-          "label": "developers in the ecosystem"
+          "value": "+120",
+          "label": "projects created in hackathons"
         },
         {
-          "value": "350+",
-          "label": "hackathon participants"
+          "value": "+400",
+          "label": "students"
         },
         {
-          "value": "53+",
-          "label": "projects created"
+          "value": "+5000",
+          "label": "event attendees"
         }
       ],
       "eyebrow": "Innovation & Tech Transformation Center of the Caribbean",
@@ -1136,12 +1136,12 @@
           "text": "Over 100 people trained with us now work in the technology industry."
         },
         {
-          "title": "Scholarships with the public sector",
-          "text": "Together with the Government of Atlántico we offer scholarships in technology programs for the region."
+          "title": "Free events every month",
+          "text": "Tech Nights every third Saturday of the month and Coworking Thursdays where we open our HQ to work and learn together. Over 5,000 attendees have joined us so far."
         },
         {
           "title": "The Caribbean's largest AI hackathon",
-          "text": "Barranqui-IA gathers hundreds of builders to create prototypes and new startups."
+          "text": "Barranqui-IA has brought together over 650 participants in 3 years, creating prototypes and new startups from the Caribbean."
         }
       ]
     },

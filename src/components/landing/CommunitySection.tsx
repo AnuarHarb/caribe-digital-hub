@@ -1,6 +1,4 @@
-import { useRef, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, MessageCircle, ExternalLink, MapPin } from "lucide-react";
@@ -8,192 +6,66 @@ import { useCommunities } from "@/hooks/useCommunities";
 import type { CommunityProfile } from "@/hooks/useCommunities";
 import { PillarBadge } from "@/components/landing/PillarBadge";
 
-const SCROLL_SPEED = 0.4;
-
 const FEATURED_EVENTS = [
-  { logo: "/logos/tech-nights.png", url: "https://www.codigoabierto.tech/eventos", name: "Tech Nights" },
-  { logo: "/logos/barranqui-ia.png", url: "https://barranquiia.com", name: "Barranqui-IA" },
-  { logo: "/logos/tech-caribe-fest.webp", url: "https://techcaribe.co", name: "Tech Caribe Fest" },
+  { logo: "/logos/tech-nights.png", url: "https://www.codigoabierto.tech/eventos", name: "Tech Nights", description: "3er sábado de cada mes" },
+  { logo: "/logos/barranqui-ia.png", url: "https://barranquiia.com", name: "Barranqui-IA", description: "Hackatón de IA del Caribe" },
+  { logo: "/logos/tech-caribe-fest.webp", url: "https://techcaribe.co", name: "Tech Caribe Fest", description: "Festival de tecnología" },
 ] as const;
-
-function Carousel({ communities }: { communities: CommunityProfile[] }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const positionRef = useRef(0);
-  const isPausedRef = useRef(false);
-  const isDraggingRef = useRef(false);
-  const dragStartRef = useRef({ x: 0, pos: 0 });
-
-  const applyTransform = useCallback(() => {
-    const track = trackRef.current;
-    if (track) track.style.transform = `translateX(${positionRef.current}px)`;
-  }, []);
-
-  const normalizePosition = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const halfWidth = track.scrollWidth / 2;
-    if (positionRef.current > 0) positionRef.current -= halfWidth;
-    if (positionRef.current <= -halfWidth) positionRef.current += halfWidth;
-  }, []);
-
-  useEffect(() => {
-    let raf: number;
-    const tick = () => {
-      const track = trackRef.current;
-      if (!track || isPausedRef.current || isDraggingRef.current) {
-        raf = requestAnimationFrame(tick);
-        return;
-      }
-      const halfWidth = track.scrollWidth / 2;
-      positionRef.current -= SCROLL_SPEED;
-      if (positionRef.current <= -halfWidth) positionRef.current += halfWidth;
-      applyTransform();
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [communities.length, applyTransform]);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    isDraggingRef.current = true;
-    isPausedRef.current = true;
-    dragStartRef.current = { x: e.clientX, pos: positionRef.current };
-    containerRef.current?.setPointerCapture?.(e.pointerId);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDraggingRef.current) return;
-    const delta = e.clientX - dragStartRef.current.x;
-    positionRef.current = dragStartRef.current.pos + delta;
-    normalizePosition();
-    applyTransform();
-    dragStartRef.current = { x: e.clientX, pos: positionRef.current };
-  };
-
-  const handlePointerUp = (e: React.PointerEvent) => {
-    if (isDraggingRef.current) {
-      containerRef.current?.releasePointerCapture?.(e.pointerId);
-      isDraggingRef.current = false;
-    }
-    isPausedRef.current = false;
-  };
-
-  return (
-    <div
-      ref={containerRef}
-      className="group/carousel mt-12 overflow-hidden cursor-grab active:cursor-grabbing select-none touch-pan-y"
-      onMouseEnter={() => { isPausedRef.current = true; }}
-      onMouseLeave={() => { if (!isDraggingRef.current) isPausedRef.current = false; }}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
-    >
-      <div
-        ref={trackRef}
-        className="flex items-stretch gap-6"
-        style={{ width: "max-content" }}
-      >
-        {[...communities, ...communities].map((community, idx) => (
-          <CommunityCard key={`${community.id}-${idx}`} community={community} />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function CommunityCard({ community }: { community: CommunityProfile }) {
   const { t } = useTranslation();
 
   return (
-    <Card className="group relative flex h-full min-h-[380px] min-w-[320px] max-w-[340px] flex-col overflow-hidden border border-border/40 bg-card/90 shadow-[0_10px_30px_-12px_hsl(var(--accent)/0.35)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-16px_hsl(var(--accent)/0.5)]">
-      <div
-        className="absolute -left-20 -top-20 h-56 w-56 rounded-full opacity-35 blur-3xl transition-all duration-500 group-hover:scale-125 group-hover:opacity-55"
-        aria-hidden
-        style={{
-          background: "hsl(var(--accent) / 0.45)",
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-60"
-        aria-hidden
-        style={{
-          background:
-            "linear-gradient(145deg, hsl(var(--accent) / 0.08) 0%, transparent 45%, hsl(var(--accent) / 0.12) 100%)",
-        }}
-      />
-      <div
-        className="absolute left-0 top-0 h-full w-1.5 opacity-85"
-        aria-hidden
-        style={{
-          background:
-            "linear-gradient(180deg, hsl(var(--accent)) 0%, hsl(var(--accent) / 0.3) 100%)",
-        }}
-      />
-      <CardContent className="relative flex flex-1 flex-col gap-5 p-6">
-        <header className="flex flex-col items-center justify-center gap-4 text-center">
-          <div className="relative">
+    <Card className="group flex h-full flex-col overflow-hidden border border-border/50 bg-card transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg">
+      <CardContent className="flex flex-1 flex-col gap-4 p-6">
+        <header className="flex flex-col items-center gap-3 text-center">
+          <div className="flex h-20 w-20 items-center justify-center">
             {community.logo_url ? (
               <img
                 src={community.logo_url}
                 alt=""
-                className="h-28 w-28 object-contain drop-shadow-[0_8px_16px_hsl(var(--accent)/0.25)] transition-transform duration-300 group-hover:scale-110"
+                className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
               />
             ) : (
-              <div className="flex h-28 w-28 items-center justify-center rounded-full bg-accent/10 text-accent">
-                <Users className="h-14 w-14" aria-hidden />
+              <div className="flex h-full w-full items-center justify-center rounded-full bg-accent/10 text-accent">
+                <Users className="h-10 w-10" aria-hidden />
               </div>
             )}
           </div>
           <div>
-            <h3 className="font-display text-xl font-bold text-foreground leading-tight tracking-tight">
+            <h3 className="font-display text-lg font-bold text-foreground">
               {community.company_name}
             </h3>
-            <span className="mt-2 inline-flex rounded-full border border-accent/35 bg-accent/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
-              {t("company.type.community")}
-            </span>
-            {(community.location || community.industry) && (
-              <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-                {community.location && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-muted/70 px-2.5 py-1 text-xs text-foreground/80">
-                    <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden />
-                    {community.location}
-                  </span>
-                )}
-                {community.industry && (
-                  <Badge variant="secondary" className="rounded-full border border-border/40 bg-secondary/80 px-2.5 py-1 text-[10px] font-semibold">
-                    {community.industry}
-                  </Badge>
-                )}
-              </div>
+            {community.location && (
+              <span className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                <MapPin className="h-3 w-3 shrink-0" aria-hidden />
+                {community.location}
+              </span>
             )}
           </div>
         </header>
 
         {community.description && (
-          <p className="flex-1 text-center text-sm leading-relaxed text-foreground/75">
+          <p className="flex-1 text-center text-sm leading-relaxed text-muted-foreground">
             {community.description}
           </p>
         )}
 
-        <footer className="flex flex-wrap items-center justify-center gap-2 border-t border-border/50 pt-4">
+        <footer className="flex flex-wrap items-center justify-center gap-2 border-t border-border/40 pt-4">
           {community.whatsapp_url && (
             <Button
               asChild
               size="sm"
-              className="gap-2 rounded-full bg-[#25D366] px-4 font-semibold text-white shadow-[0_8px_18px_rgba(37,211,102,0.35)] hover:bg-[#1fb855] hover:shadow-[0_10px_22px_rgba(37,211,102,0.45)]"
+              className="gap-2 rounded-full bg-[#25D366] px-4 font-semibold text-white shadow-sm hover:bg-[#1fb855]"
             >
               <a
                 href={community.whatsapp_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
               >
                 <MessageCircle className="h-4 w-4" aria-hidden />
-                {t("landing.community.joinWhatsApp")}
+                WhatsApp
               </a>
             </Button>
           )}
@@ -202,13 +74,12 @@ function CommunityCard({ community }: { community: CommunityProfile }) {
               asChild
               variant="outline"
               size="sm"
-              className="gap-2 rounded-full border-border/70 bg-background/60 backdrop-blur-sm"
+              className="gap-2 rounded-full"
             >
               <a
                 href={community.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink className="h-3.5 w-3.5" aria-hidden />
                 Web
@@ -231,9 +102,9 @@ export function CommunitySection() {
     <section
       id="community-section"
       aria-labelledby="community-heading"
-      className="overflow-x-hidden py-20 md:py-28"
+      className="py-20 md:py-28"
     >
-      <div className="container mx-auto min-w-0 px-4">
+      <div className="container mx-auto px-4">
         <div className="flex justify-center">
           <PillarBadge pillar="community" />
         </div>
@@ -247,53 +118,78 @@ export function CommunitySection() {
           {t("landing.community.subtitle")}
         </p>
 
-        {isLoading ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <CardContent className="p-5">
-                  <div className="flex items-center gap-3">
-                    <div className="h-12 w-12 rounded-xl bg-muted" />
-                    <div className="h-5 w-32 rounded bg-muted" />
-                  </div>
-                  <div className="mt-4 space-y-2">
-                    <div className="h-3 w-full rounded bg-muted" />
-                    <div className="h-3 w-4/5 rounded bg-muted" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : hasDynamic ? (
-          <Carousel communities={communities} />
-        ) : (
-          <p className="mt-12 text-center text-sm text-muted-foreground">
-            {t("landing.community.noCommunities")}
-          </p>
-        )}
-
-        <div className="mt-12 rounded-xl bg-slate-900 px-8 py-6 dark:bg-slate-950">
-          <h3 className="text-center font-display text-lg font-semibold text-white">
-            {t("landing.community.eventsTitle")}
-          </h3>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-8">
+        {/* Featured events — highlighted at the top */}
+        <div className="mx-auto mt-10 max-w-4xl">
+          <div className="grid gap-4 sm:grid-cols-3">
             {FEATURED_EVENTS.map((event) => (
               <a
                 key={event.name}
                 href={event.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex max-w-[280px] items-center justify-center transition-opacity hover:opacity-80"
+                className="group/event flex flex-col items-center gap-3 rounded-xl bg-slate-900 p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-900/40"
               >
-                <img
-                  src={event.logo}
-                  alt={event.name}
-                  className="h-12 w-auto max-w-[280px] object-contain md:h-14"
-                />
+                <div className="flex h-12 items-center justify-center">
+                  <img
+                    src={event.logo}
+                    alt={event.name}
+                    className="h-10 w-auto max-w-[160px] object-contain transition-transform duration-300 group-hover/event:scale-105"
+                  />
+                </div>
+                <div>
+                  <p className="font-display text-sm font-semibold text-white">
+                    {event.name}
+                  </p>
+                  <p className="mt-0.5 text-xs text-slate-400">
+                    {event.description}
+                  </p>
+                </div>
               </a>
             ))}
           </div>
         </div>
+
+        {/* Banner photo */}
+        <div className="mx-auto mt-10 max-w-5xl overflow-hidden rounded-xl">
+          <img
+            src="/events/hackaton-bquilla-2026-comunidad.jpg"
+            alt=""
+            className="aspect-[21/9] w-full object-cover"
+            loading="lazy"
+            aria-hidden
+          />
+        </div>
+
+        {/* Communities grid */}
+        {isLoading ? (
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Card key={i} className="animate-pulse">
+                <CardContent className="p-6">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="h-20 w-20 rounded-xl bg-muted" />
+                    <div className="h-5 w-28 rounded bg-muted" />
+                    <div className="h-3 w-20 rounded bg-muted" />
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    <div className="h-3 w-full rounded bg-muted" />
+                    <div className="h-3 w-3/4 rounded bg-muted" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : hasDynamic ? (
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {communities.map((community) => (
+              <CommunityCard key={community.id} community={community} />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-12 text-center text-sm text-muted-foreground">
+            {t("landing.community.noCommunities")}
+          </p>
+        )}
       </div>
     </section>
   );

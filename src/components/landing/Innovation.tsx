@@ -15,7 +15,7 @@ export function Innovation() {
         <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
           <figure className="order-last overflow-hidden rounded-xl lg:order-first">
             <img
-              src="/events/barranqui-ia-2025.webp"
+              src="/events/hackaton-bquilla-2026-innovation.jpg"
               alt=""
               className="aspect-video w-full object-cover transition-transform duration-300 hover:scale-105"
               loading="lazy"

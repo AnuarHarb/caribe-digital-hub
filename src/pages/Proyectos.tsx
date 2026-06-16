@@ -17,7 +17,7 @@ const projects: Project[] = [
   {
     title: "Barranqui-IA",
     category: "Hackathón",
-    image: "/FCA-fundacion/cover-project-barranquiia.jpg",
+    image: "/events/hackaton-bquilla-2026-proyectos.jpg",
     description:
       "Primer Hackatón de inteligencia artificial en el Caribe. Un evento de 48 horas sobre IA que reúne a builders del ecosistema Costa Digital.",
     link: "https://www.uninorte.edu.co/es/web/grupo-prensa/w/primera-hackaton-de-ia-en-el-caribe-traza-la-ruta-de-barranquilla-como-epicentro-tecnologico",

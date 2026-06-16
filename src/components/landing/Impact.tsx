@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { GraduationCap, Award, Sparkles } from "lucide-react";
+import { GraduationCap, Calendar, Sparkles } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface ImpactItem {
@@ -7,7 +7,7 @@ interface ImpactItem {
   text: string;
 }
 
-const ICONS: LucideIcon[] = [GraduationCap, Award, Sparkles];
+const ICONS: LucideIcon[] = [GraduationCap, Calendar, Sparkles];
 
 export function Impact() {
   const { t } = useTranslation();
@@ -16,12 +16,20 @@ export function Impact() {
   return (
     <section
       aria-labelledby="impact-heading"
-      className="border-y border-border bg-muted/30 py-16 md:py-20"
+      className="relative overflow-hidden py-20 md:py-28"
     >
-      <div className="container mx-auto px-4">
+      {/* Full-section background photo */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-40 dark:opacity-20"
+        style={{ backgroundImage: "url(/events/hackaton-bquilla-2026-impact.jpg)" }}
+        aria-hidden
+      />
+
+      {/* Content */}
+      <div className="container relative z-10 mx-auto px-4">
         <h2
           id="impact-heading"
-          className="text-center font-display text-3xl font-bold text-primary md:text-4xl"
+          className="text-center font-display text-3xl font-bold text-foreground md:text-4xl"
         >
           {t("landing.impact.title")}
         </h2>
@@ -35,7 +43,7 @@ export function Impact() {
             return (
               <article
                 key={item.title}
-                className="rounded-xl border border-border bg-card p-6 text-center shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-md"
+                className="rounded-xl border border-border/40 bg-card/70 backdrop-blur-sm p-6 text-center shadow-sm transition-all duration-300 hover:border-accent/40 hover:bg-card/85 hover:shadow-md"
               >
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent/20 text-accent">
                   <Icon className="h-6 w-6" aria-hidden />
