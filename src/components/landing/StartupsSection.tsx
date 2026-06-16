@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, Handshake, DollarSign } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { PillarBadge } from "@/components/landing/PillarBadge";
 
 interface ListCard {
   key: string;
@@ -30,9 +31,12 @@ export function StartupsSection() {
       className="overflow-x-hidden py-20 md:py-28"
     >
       <div className="container mx-auto min-w-0 px-4">
+        <div className="flex justify-center">
+          <PillarBadge pillar="capital" />
+        </div>
         <h2
           id="startups-heading"
-          className="text-center font-display text-3xl font-bold text-primary md:text-4xl"
+          className="mt-4 text-center font-display text-3xl font-bold text-primary md:text-4xl"
         >
           {t("landing.startups.title")}
         </h2>

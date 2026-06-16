@@ -3,7 +3,7 @@
     "home": "Inicio"
   },
   "nav": {
-    "jobs": "Empleos",
+    "jobs": "Oportunidades",
     "talent": "Talento",
     "blog": "Noticias",
     "dashboard": "Panel",
@@ -13,7 +13,15 @@
     "logout": "Cerrar Sesión",
     "talentNetwork": "Red de Talento",
     "events": "Eventos",
-    "about": "Conócenos"
+    "about": "Conócenos",
+    "ecosistema": "Ecosistema",
+    "nosotros": "Nosotros",
+    "programas": "Programas",
+    "comunidades": "Comunidades",
+    "proyectos": "Proyectos",
+    "aliados": "Aliados",
+    "equipo": "Equipo",
+    "sede": "Sede"
   },
   "talentNetwork": {
     "subtitle": "Encuentra ofertas de empleo y conecta con el talento tech del Caribe.",
@@ -62,7 +70,9 @@
     },
     "mission": {
       "title": "II. MISIÓN CENTRAL",
-      "content": ["Convertir al Caribe en el nuevo epicentro tech de Colombia:"],
+      "content": [
+        "Convertir al Caribe en el nuevo epicentro tech de Colombia:"
+      ],
       "items": [
         "formando talento de clase mundial,",
         "creando startups de alto impacto,",
@@ -620,7 +630,7 @@
       "dashboard": "Dashboard",
       "users": "Usuarios",
       "organizations": "Organizaciones",
-      "jobs": "Ofertas",
+      "jobs": "Oportunidades",
       "news": "Noticias"
     },
     "dashboard": {
@@ -813,8 +823,8 @@
     "sectionCommunity": "Comunidad",
     "profile": "Mi perfil",
     "applications": "Mis aplicaciones",
-    "jobs": "Mis ofertas",
-    "newJob": "Nueva oferta",
+    "jobs": "Mis oportunidades",
+    "newJob": "Nueva oportunidad",
     "candidates": "Candidatos",
     "welcomeProfessional": "Completa tu perfil para empezar",
     "welcomeCompany": "Configura tu empresa para publicar ofertas",
@@ -974,109 +984,45 @@
     "deleteConfirmDescription": "Esta acción no se puede deshacer. Los candidatos que aplicaron ya no podrán ver esta oferta.",
     "notFound": "Oferta no encontrada"
   },
-  "forCompanies": {
-    "badge": "Para empresas",
-    "heroTitle": "Encuentra el talento tech que necesitas",
-    "heroSubtitle": "Publica ofertas de trabajo, gestiona candidatos y conecta con profesionales del ecosistema tech del Caribe. Todo en una sola plataforma.",
-    "ctaCreateCompany": "Crear mi empresa",
-    "ctaPostJob": "Publicar oferta de trabajo",
-    "stepsTitle": "¿Cómo funciona?",
-    "stepsSubtitle": "En cuatro pasos sencillos puedes empezar a recibir candidatos calificados.",
-    "steps": [
-      {
-        "title": "Crea tu empresa",
-        "description": "Registra tu empresa con nombre, logo y descripción. Puedes administrar varias empresas desde una sola cuenta."
-      },
-      {
-        "title": "Publica ofertas",
-        "description": "Describe el puesto, requisitos, modalidad de trabajo y rango salarial. Tu oferta será visible para toda la comunidad."
-      },
-      {
-        "title": "Recibe candidatos",
-        "description": "Los profesionales aplican directamente a tus ofertas. Revisa perfiles, experiencia y habilidades de cada candidato."
-      },
-      {
-        "title": "Gestiona y contrata",
-        "description": "Filtra aplicaciones, compara candidatos y encuentra al profesional ideal para tu equipo."
-      }
-    ],
-    "benefits": {
-      "title": "¿Por qué Costa Digital?",
-      "subtitle": "Ventajas de publicar tus ofertas en la plataforma.",
-      "items": [
-        "Acceso a talento tech especializado del Caribe",
-        "Publica ofertas de trabajo ilimitadas de forma gratuita",
-        "Panel de gestión de candidatos fácil de usar",
-        "Perfil público de empresa visible en el directorio",
-        "Gestiona múltiples empresas desde una sola cuenta",
-        "Invita a miembros de tu equipo para colaborar"
-      ]
-    },
-    "bottomCta": {
-      "title": "¿Listo para encontrar talento?",
-      "subtitle": "Crea tu empresa y publica tu primera oferta en minutos."
-    }
-  },
   "landing": {
     "hero": {
-      "title": "Construyendo el Futuro Tech del Caribe",
-      "subtitle": "Un ecosistema en crecimiento que conecta talento, startups y capital en la región Caribe de Colombia.",
+      "title": "El Caribe será el nuevo epicentro tech de LATAM",
+      "subtitle": "Costa Digital es el centro de innovación que articula educación, comunidad, innovación y capital para que desde el Caribe colombiano se construyan soluciones tecnológicas de impacto global.",
       "ctaJoin": "Únete a la comunidad",
       "ctaDiscover": "Descubre qué está pasando",
       "ctaExploreCommunities": "Explorar comunidades",
       "ctaExplore": "Explora el ecosistema",
       "stats": [
-        { "value": "3000+", "label": "miembros en la comunidad" },
-        { "value": "1800+", "label": "developers en el ecosistema" },
-        { "value": "350+", "label": "participantes en hackathons" },
-        { "value": "53+", "label": "proyectos creados" }
-      ]
-    },
-    "eventsCta": {
-      "title": "Eventos de comunidad",
-      "description": "Asiste a los eventos de comunidad para hacer contactos y networking",
-      "cta": "Ver eventos"
-    },
-    "ecosystemMapCta": {
-      "title": "Mapa del ecosistema",
-      "description": "Conoce quiénes están haciendo tecnología en la región",
-      "cta": "Explorar mapa"
-    },
-    "howItWorks": {
-      "title": "¿Cómo funciona?",
-      "subtitle": "Una plataforma para profesionales y empresas del Caribe.",
-      "professionals": {
-        "title": "Para profesionales",
-        "steps": [
-          "Crea tu perfil y sube tu CV",
-          "Completa tu experiencia y habilidades",
-          "Aplica a ofertas de trabajo",
-          "Recibe recomendaciones de empresas"
-        ]
-      },
-      "companies": {
-        "title": "Para empresas",
-        "steps": [
-          "Regístrate como empresa",
-          "Publica tus ofertas de trabajo",
-          "Recibe candidatos recomendados",
-          "Encuentra el talento que necesitas"
-        ]
-      }
+        {
+          "value": "3000+",
+          "label": "miembros en la comunidad"
+        },
+        {
+          "value": "1800+",
+          "label": "developers en el ecosistema"
+        },
+        {
+          "value": "350+",
+          "label": "participantes en hackathons"
+        },
+        {
+          "value": "53+",
+          "label": "proyectos creados"
+        }
+      ],
+      "eyebrow": "Centro de Innovación y Transformación Tecnológica del Caribe",
+      "operatedBy": "Operado por Fundación Código Abierto"
     },
     "techCentre": {
       "title": "Centro de Tecnología del Caribe",
       "description": "Programas presenciales y prácticos en software, datos, diseño e inteligencia artificial, guiados por profesionales activos en el mercado.",
       "cta": "Explorar Tech Centre",
-      "programs": ["Inteligencia Artificial", "Desarrollo Web", "Cloud", "Datos"]
-    },
-    "featuredJobs": {
-      "title": "Ofertas destacadas",
-      "subtitle": "Últimas oportunidades en la región",
-      "viewJob": "Ver oferta",
-      "viewAll": "Ver todas las ofertas",
-      "empty": "Aún no hay ofertas publicadas",
-      "emptyInvite": "Sé el primero en publicar una oferta"
+      "programs": [
+        "Inteligencia Artificial",
+        "Desarrollo Web",
+        "Cloud",
+        "Datos"
+      ]
     },
     "news": {
       "title": "Costa Digital News",
@@ -1086,24 +1032,9 @@
       "empty": "Aún no hay noticias publicadas",
       "emptyInvite": "Vuelve pronto para conocer historias del ecosistema"
     },
-    "featuredTalent": {
-      "title": "Talento destacado",
-      "subtitle": "Profesionales disponibles en la región",
-      "viewProfile": "Ver perfil",
-      "viewAll": "Ver todo el talento",
-      "years": "{{count}} años de experiencia",
-      "empty": "Aún no hay profesionales registrados",
-      "emptyInvite": "Crea tu perfil y sé parte del directorio"
-    },
-    "stats": {
-      "title": "La red en números",
-      "professionals": "Profesionales",
-      "companies": "Empresas",
-      "jobs": "Ofertas activas"
-    },
     "cta": {
-      "title": "Sé parte del movimiento tech del Caribe",
-      "subtitle": "Únete a un ecosistema en crecimiento que está transformando la región.",
+      "title": "Construyamos el epicentro tech de LATAM, juntos",
+      "subtitle": "Súmate al movimiento que está transformando el Caribe colombiano: como talento, comunidad, empresa, founder, inversionista o aliado.",
       "ctaJoin": "Únete a la comunidad",
       "ctaDiscover": "Descubre qué está pasando",
       "ctaExploreCommunities": "Explorar comunidades",
@@ -1114,31 +1045,6 @@
       "events": "Eventos de comunidad",
       "ecosystemMap": "Mapa del ecosistema",
       "legal": "Legal"
-    },
-    "ecosystem": {
-      "title": "Modelo de Activación Costa Digital",
-      "subtitle": "Así estamos construyendo el ecosistema que convertirá al Caribe en un epicentro tecnológico.",
-      "ctaFca": "Conoce más sobre FCA",
-      "community": {
-        "title": "Comunidad",
-        "description": "Activamos comunidades y eventos que conectan talento y generan nuevas ideas."
-      },
-      "education": {
-        "title": "Talento",
-        "description": "Programas educativos que forman desarrolladores, diseñadores y especialistas en tecnología."
-      },
-      "build": {
-        "title": "Innovación",
-        "description": "Hackathons y espacios de experimentación donde nacen nuevos proyectos."
-      },
-      "startups": {
-        "title": "Startups",
-        "description": "Equipos y programas que ayudan a convertir ideas en productos reales."
-      },
-      "investment": {
-        "title": "Capital",
-        "description": "Fondos e inversionistas que impulsan el crecimiento de startups."
-      }
     },
     "community": {
       "title": "Comunidades Tech",
@@ -1201,12 +1107,80 @@
     },
     "talentNetwork": {
       "title": "Red de Talento",
-      "subtitle": "Conecta con desarrolladores, diseñadores e ingenieros de IA del ecosistema tech del Caribe.",
+      "subtitle": "La red de talento del ecosistema: desarrolladores, diseñadores e ingenieros de IA del Caribe, listos para construir el futuro contigo.",
       "cta": "Explora la red de talento"
     },
     "partners": {
       "title": "Partners y aliados",
-      "subtitle": "Organizaciones que apoyan el ecosistema tech del Caribe."
+      "subtitle": "Instituciones, empresas y aliados —incluido el sector público— que respaldan el movimiento tech del Caribe."
+    },
+    "pillars": {
+      "eyebrow": "Nuestro modelo",
+      "title": "Cuatro pilares, una sola misión",
+      "subtitle": "Costa Digital integra educación, comunidad, innovación y capital. Cada pilar cuenta con una institución aliada que cubre una etapa del ciclo: de formar el talento al capital que escala startups al mundo.",
+      "hint": "Toca cada pilar para conocer más",
+      "cta": "Conoce todo el ecosistema"
+    },
+    "pillarTags": {
+      "education": "Pilar 01 · Educación",
+      "community": "Pilar 02 · Comunidad",
+      "innovation": "Pilar 03 · Innovación",
+      "capital": "Pilar 04 · Capital"
+    },
+    "impact": {
+      "title": "Impacto que ya se siente en la región",
+      "subtitle": "El movimiento no es una promesa: son personas, eventos y proyectos que ya están transformando el Caribe.",
+      "items": [
+        {
+          "title": "Talento que ya trabaja en tech",
+          "text": "Más de 100 personas formadas con nosotros hoy trabajan en la industria tecnológica."
+        },
+        {
+          "title": "Becas con el sector público",
+          "text": "Junto a la Gobernación del Atlántico ofrecemos becas en diplomados de tecnología para la región."
+        },
+        {
+          "title": "El hackatón de IA más grande del Caribe",
+          "text": "Barranqui-IA reúne a cientos de builders para crear prototipos y nuevas startups."
+        }
+      ]
+    },
+    "innovation": {
+      "title": "Innovación que transforma industrias tradicionales",
+      "description": "Ciudad Inmersiva es nuestro laboratorio de innovación: ayudamos a empresas y organizaciones a resolver desafíos reales con inteligencia artificial, software y tecnologías emergentes, con equipos locales de alto nivel técnico. Así demostramos que el Caribe no solo adopta tecnología: la crea y la exporta.",
+      "tags": [
+        "Inteligencia Artificial",
+        "Software a la medida",
+        "Tecnologías emergentes",
+        "Innovación abierta"
+      ],
+      "cta": "Conoce Ciudad Inmersiva"
+    },
+    "audiences": {
+      "title": "¿Para quién es Costa Digital?",
+      "subtitle": "Un punto de entrada para cada actor del ecosistema tech del Caribe.",
+      "items": [
+        {
+          "title": "Estudiantes y talento",
+          "text": "Fórmate en tecnología y conecta con oportunidades reales del ecosistema.",
+          "cta": "Explorar formación"
+        },
+        {
+          "title": "Empresas",
+          "text": "Resuelve retos con innovación, inteligencia artificial y talento local.",
+          "cta": "Innovar con nosotros"
+        },
+        {
+          "title": "Founders y startups",
+          "text": "Encuentra comunidad, mentoría y programas para construir y escalar.",
+          "cta": "Unirme a la comunidad"
+        },
+        {
+          "title": "Inversionistas y aliados",
+          "text": "Conecta con startups del Caribe y suma tu organización al movimiento.",
+          "cta": "Ser aliado"
+        }
+      ]
     }
   },
   "legal": {

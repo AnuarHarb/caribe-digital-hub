@@ -3,7 +3,7 @@
     "home": "Home"
   },
   "nav": {
-    "jobs": "Jobs",
+    "jobs": "Opportunities",
     "talent": "Talent",
     "blog": "News",
     "dashboard": "Dashboard",
@@ -13,7 +13,15 @@
     "logout": "Logout",
     "talentNetwork": "Talent Network",
     "events": "Events",
-    "about": "About"
+    "about": "About",
+    "ecosistema": "Ecosystem",
+    "nosotros": "About us",
+    "programas": "Programs",
+    "comunidades": "Communities",
+    "proyectos": "Projects",
+    "aliados": "Partners",
+    "equipo": "Team",
+    "sede": "Location"
   },
   "talentNetwork": {
     "subtitle": "Find job offers and connect with Caribbean tech talent.",
@@ -62,7 +70,9 @@
     },
     "mission": {
       "title": "II. CENTRAL MISSION",
-      "content": ["Turn the Caribbean into Colombia's new tech epicenter:"],
+      "content": [
+        "Turn the Caribbean into Colombia's new tech epicenter:"
+      ],
       "items": [
         "training world-class talent,",
         "creating high-impact startups,",
@@ -620,7 +630,7 @@
       "dashboard": "Dashboard",
       "users": "Users",
       "organizations": "Organizations",
-      "jobs": "Jobs",
+      "jobs": "Opportunities",
       "news": "News"
     },
     "dashboard": {
@@ -813,8 +823,8 @@
     "sectionCommunity": "Community",
     "profile": "My profile",
     "applications": "My applications",
-    "jobs": "My jobs",
-    "newJob": "New job",
+    "jobs": "My opportunities",
+    "newJob": "New opportunity",
     "candidates": "Candidates",
     "welcomeProfessional": "Complete your profile to get started",
     "welcomeCompany": "Set up your company to post jobs",
@@ -974,109 +984,45 @@
     "deleteConfirmDescription": "This action cannot be undone. Applicants will no longer see this job.",
     "notFound": "Job not found"
   },
-  "forCompanies": {
-    "badge": "For companies",
-    "heroTitle": "Find the tech talent you need",
-    "heroSubtitle": "Post job offers, manage candidates, and connect with professionals from the Caribbean tech ecosystem. All in one platform.",
-    "ctaCreateCompany": "Create my company",
-    "ctaPostJob": "Post a job offer",
-    "stepsTitle": "How does it work?",
-    "stepsSubtitle": "In four simple steps you can start receiving qualified candidates.",
-    "steps": [
-      {
-        "title": "Create your company",
-        "description": "Register your company with a name, logo, and description. You can manage multiple companies from a single account."
-      },
-      {
-        "title": "Post job offers",
-        "description": "Describe the position, requirements, work mode, and salary range. Your offer will be visible to the entire community."
-      },
-      {
-        "title": "Receive candidates",
-        "description": "Professionals apply directly to your offers. Review profiles, experience, and skills of each candidate."
-      },
-      {
-        "title": "Manage and hire",
-        "description": "Filter applications, compare candidates, and find the ideal professional for your team."
-      }
-    ],
-    "benefits": {
-      "title": "Why Costa Digital?",
-      "subtitle": "Advantages of posting your job offers on the platform.",
-      "items": [
-        "Access to specialized Caribbean tech talent",
-        "Post unlimited job offers for free",
-        "Easy-to-use candidate management dashboard",
-        "Public company profile visible in the directory",
-        "Manage multiple companies from a single account",
-        "Invite team members to collaborate"
-      ]
-    },
-    "bottomCta": {
-      "title": "Ready to find talent?",
-      "subtitle": "Create your company and post your first job offer in minutes."
-    }
-  },
   "landing": {
     "hero": {
-      "title": "Building the Tech Future of the Caribbean",
-      "subtitle": "A growing ecosystem connecting talent, startups and capital in the Caribbean region of Colombia.",
+      "title": "The Caribbean will be LATAM's new tech epicenter",
+      "subtitle": "Costa Digital is the innovation center that brings together education, community, innovation and capital so that global-impact technology is built from the Colombian Caribbean.",
       "ctaJoin": "Join the community",
       "ctaDiscover": "Discover what's happening",
       "ctaExploreCommunities": "Explore communities",
       "ctaExplore": "Explore the ecosystem",
       "stats": [
-        { "value": "3000+", "label": "community members" },
-        { "value": "1800+", "label": "developers in the ecosystem" },
-        { "value": "350+", "label": "hackathon participants" },
-        { "value": "53+", "label": "projects created" }
-      ]
-    },
-    "eventsCta": {
-      "title": "Community events",
-      "description": "Attend community events to network and make connections",
-      "cta": "View events"
-    },
-    "ecosystemMapCta": {
-      "title": "Ecosystem map",
-      "description": "Discover who is building technology in the region",
-      "cta": "Explore map"
-    },
-    "howItWorks": {
-      "title": "How does it work?",
-      "subtitle": "A platform for professionals and companies in the Caribbean.",
-      "professionals": {
-        "title": "For professionals",
-        "steps": [
-          "Create your profile and upload your CV",
-          "Complete your experience and skills",
-          "Apply to job openings",
-          "Receive recommendations from companies"
-        ]
-      },
-      "companies": {
-        "title": "For companies",
-        "steps": [
-          "Register as a company",
-          "Post your job openings",
-          "Receive recommended candidates",
-          "Find the talent you need"
-        ]
-      }
+        {
+          "value": "3000+",
+          "label": "community members"
+        },
+        {
+          "value": "1800+",
+          "label": "developers in the ecosystem"
+        },
+        {
+          "value": "350+",
+          "label": "hackathon participants"
+        },
+        {
+          "value": "53+",
+          "label": "projects created"
+        }
+      ],
+      "eyebrow": "Innovation & Tech Transformation Center of the Caribbean",
+      "operatedBy": "Operated by Fundación Código Abierto"
     },
     "techCentre": {
       "title": "The Caribbean's Technology Centre",
       "description": "In-person and practical programs in software, data, design, and artificial intelligence, guided by active professionals in the market.",
       "cta": "Explore Tech Centre",
-      "programs": ["Artificial Intelligence", "Web Development", "Cloud", "Data"]
-    },
-    "featuredJobs": {
-      "title": "Featured jobs",
-      "subtitle": "Latest opportunities in the region",
-      "viewJob": "View job",
-      "viewAll": "View all jobs",
-      "empty": "No jobs posted yet",
-      "emptyInvite": "Be the first to post a job"
+      "programs": [
+        "Artificial Intelligence",
+        "Web Development",
+        "Cloud",
+        "Data"
+      ]
     },
     "news": {
       "title": "Costa Digital News",
@@ -1086,24 +1032,9 @@
       "empty": "No news published yet",
       "emptyInvite": "Come back soon for stories from the ecosystem"
     },
-    "featuredTalent": {
-      "title": "Featured talent",
-      "subtitle": "Available professionals in the region",
-      "viewProfile": "View profile",
-      "viewAll": "View all talent",
-      "years": "{{count}} years of experience",
-      "empty": "No professionals registered yet",
-      "emptyInvite": "Create your profile and join the directory"
-    },
-    "stats": {
-      "title": "The network in numbers",
-      "professionals": "Professionals",
-      "companies": "Companies",
-      "jobs": "Active jobs"
-    },
     "cta": {
-      "title": "Be part of the Caribbean tech movement",
-      "subtitle": "Join a growing ecosystem that is transforming the region.",
+      "title": "Let's build LATAM's tech epicenter, together",
+      "subtitle": "Join the movement transforming the Colombian Caribbean: as talent, community, company, founder, investor or partner.",
       "ctaJoin": "Join the community",
       "ctaDiscover": "Discover what's happening",
       "ctaExploreCommunities": "Explore communities",
@@ -1114,31 +1045,6 @@
       "events": "Community events",
       "ecosystemMap": "Ecosystem map",
       "legal": "Legal"
-    },
-    "ecosystem": {
-      "title": "Costa Digital Activation Model",
-      "subtitle": "How we're transforming the region into a tech epicenter.",
-      "ctaFca": "Learn more about FCA",
-      "community": {
-        "title": "Community",
-        "description": "We activate communities and events that connect talent and generate new ideas."
-      },
-      "education": {
-        "title": "Talent",
-        "description": "Educational programs that train developers, designers and technology specialists."
-      },
-      "build": {
-        "title": "Innovation",
-        "description": "Hackathons and experimentation spaces where new projects are born."
-      },
-      "startups": {
-        "title": "Startups",
-        "description": "Teams and programs that help turn ideas into real products."
-      },
-      "investment": {
-        "title": "Capital",
-        "description": "Funds and investors that drive startup growth."
-      }
     },
     "community": {
       "title": "Tech Communities",
@@ -1201,12 +1107,80 @@
     },
     "talentNetwork": {
       "title": "Talent Network",
-      "subtitle": "Connect with developers, designers and AI engineers from the Caribbean tech ecosystem.",
+      "subtitle": "The ecosystem's talent network: developers, designers and AI engineers from the Caribbean, ready to build the future with you.",
       "cta": "Explore the talent network"
     },
     "partners": {
       "title": "Partners & Supporters",
-      "subtitle": "Organizations supporting the Caribbean tech ecosystem."
+      "subtitle": "Institutions, companies and partners —including the public sector— that back the Caribbean tech movement."
+    },
+    "pillars": {
+      "eyebrow": "Our model",
+      "title": "Four pillars, one mission",
+      "subtitle": "Costa Digital integrates education, community, innovation and capital. Each pillar has a partner institution covering one stage of the cycle: from training talent to the capital that scales startups to the world.",
+      "hint": "Tap each pillar to learn more",
+      "cta": "Explore the full ecosystem"
+    },
+    "pillarTags": {
+      "education": "Pillar 01 · Education",
+      "community": "Pillar 02 · Community",
+      "innovation": "Pillar 03 · Innovation",
+      "capital": "Pillar 04 · Capital"
+    },
+    "impact": {
+      "title": "Impact already felt across the region",
+      "subtitle": "This is not a promise: it's people, events and projects already transforming the Caribbean.",
+      "items": [
+        {
+          "title": "Talent already working in tech",
+          "text": "Over 100 people trained with us now work in the technology industry."
+        },
+        {
+          "title": "Scholarships with the public sector",
+          "text": "Together with the Government of Atlántico we offer scholarships in technology programs for the region."
+        },
+        {
+          "title": "The Caribbean's largest AI hackathon",
+          "text": "Barranqui-IA gathers hundreds of builders to create prototypes and new startups."
+        }
+      ]
+    },
+    "innovation": {
+      "title": "Innovation that transforms traditional industries",
+      "description": "Ciudad Inmersiva is our innovation lab: we help companies and organizations solve real challenges with artificial intelligence, software and emerging technologies, with high-level local teams. We prove the Caribbean doesn't just adopt technology — it creates and exports it.",
+      "tags": [
+        "Artificial Intelligence",
+        "Custom software",
+        "Emerging tech",
+        "Open innovation"
+      ],
+      "cta": "Discover Ciudad Inmersiva"
+    },
+    "audiences": {
+      "title": "Who is Costa Digital for?",
+      "subtitle": "An entry point for every player in the Caribbean tech ecosystem.",
+      "items": [
+        {
+          "title": "Students & talent",
+          "text": "Train in technology and connect with real opportunities in the ecosystem.",
+          "cta": "Explore training"
+        },
+        {
+          "title": "Companies",
+          "text": "Solve challenges with innovation, artificial intelligence and local talent.",
+          "cta": "Innovate with us"
+        },
+        {
+          "title": "Founders & startups",
+          "text": "Find community, mentorship and programs to build and scale.",
+          "cta": "Join the community"
+        },
+        {
+          "title": "Investors & partners",
+          "text": "Connect with Caribbean startups and add your organization to the movement.",
+          "cta": "Become a partner"
+        }
+      ]
     }
   },
   "legal": {

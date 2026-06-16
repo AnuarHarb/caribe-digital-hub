@@ -61,7 +61,11 @@ export function Hero() {
           />
         </div>
 
-        <h1 className="mt-6 font-display text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl dark:text-primary">
+        <p className="mt-8 text-xs font-semibold uppercase tracking-[0.22em] text-accent md:text-sm">
+          {t("landing.hero.eyebrow")}
+        </p>
+
+        <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl dark:text-primary">
           {t("landing.hero.title")}
         </h1>
 
@@ -121,6 +125,10 @@ export function Hero() {
             {t("landing.hero.ctaExplore")}
           </Button>
         </div>
+
+        <p className="mt-8 text-xs font-medium text-white/70 dark:text-muted-foreground">
+          {t("landing.hero.operatedBy")}
+        </p>
       </div>
     </header>
   );

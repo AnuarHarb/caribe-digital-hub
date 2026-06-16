@@ -9,9 +9,35 @@ export function Footer() {
     <footer className="border-t border-border bg-muted/30 py-12 md:py-16">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-          <div className="space-y-2 text-center md:text-left">
-            <p className="text-sm text-muted-foreground">{t("home.footer.copyright")}</p>
-            <p className="text-sm text-muted-foreground">{t("home.footer.cities")}</p>
+          <div className="space-y-4 text-center md:text-left">
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">{t("home.footer.copyright")}</p>
+              <p className="text-sm text-muted-foreground">{t("home.footer.cities")}</p>
+            </div>
+            <nav
+              className="flex max-w-md flex-wrap justify-center gap-x-5 gap-y-2 md:justify-start"
+              aria-label={t("nav.ecosistema")}
+            >
+              {[
+                { to: "/programas", label: t("nav.programas") },
+                { to: "/comunidades", label: t("nav.comunidades") },
+                { to: "/talento", label: t("nav.talentNetwork") },
+                { to: "/proyectos", label: t("nav.proyectos") },
+                { to: "/aliados", label: t("nav.aliados") },
+                { to: "/conocenos", label: t("nav.about") },
+                { to: "/equipo", label: t("nav.equipo") },
+                { to: "/sede", label: t("nav.sede") },
+                { to: "/blog", label: t("nav.blog") },
+              ].map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
           </div>
           <div className="flex flex-col items-center gap-4">
             <a

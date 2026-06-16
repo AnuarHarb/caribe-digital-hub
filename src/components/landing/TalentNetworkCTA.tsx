@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Users } from "lucide-react";
+import { PillarBadge } from "@/components/landing/PillarBadge";
 
 export function TalentNetworkCTA() {
   const { t } = useTranslation();
@@ -13,7 +14,10 @@ export function TalentNetworkCTA() {
     >
       <div className="container mx-auto px-4">
         <article className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-10 text-center shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg md:p-14">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent/20 text-accent">
+          <div className="flex justify-center">
+            <PillarBadge pillar="community" />
+          </div>
+          <div className="mx-auto mt-6 flex h-14 w-14 items-center justify-center rounded-full bg-accent/20 text-accent">
             <Users className="h-7 w-7" aria-hidden />
           </div>
           <h2

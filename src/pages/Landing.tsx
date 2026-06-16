@@ -2,13 +2,16 @@ import { Navbar } from "@/components/Navbar";
 import { SEOHead } from "@/components/SEOHead";
 import { Helmet } from "react-helmet-async";
 import { Hero } from "@/components/landing/Hero";
-import { EcosystemOverview } from "@/components/landing/EcosystemOverview";
-import { CommunitySection } from "@/components/landing/CommunitySection";
+import { PillarsOverview } from "@/components/landing/PillarsOverview";
+import { Impact } from "@/components/landing/Impact";
 import { TechCentre } from "@/components/landing/TechCentre";
-import { StartupsSection } from "@/components/landing/StartupsSection";
+import { CommunitySection } from "@/components/landing/CommunitySection";
 import { TalentNetworkCTA } from "@/components/landing/TalentNetworkCTA";
-import { CostaDigitalNews } from "@/components/landing/CostaDigitalNews";
+import { Innovation } from "@/components/landing/Innovation";
+import { StartupsSection } from "@/components/landing/StartupsSection";
+import { Audiences } from "@/components/landing/Audiences";
 import { PartnersSection } from "@/components/landing/PartnersSection";
+import { CostaDigitalNews } from "@/components/landing/CostaDigitalNews";
 import { LandingCTA } from "@/components/landing/LandingCTA";
 import { Footer } from "@/components/landing/Footer";
 
@@ -20,7 +23,7 @@ export default function Landing() {
     alternateName: "Caribe Tech",
     url: "https://costadigital.org",
     description:
-      "Ecosistema tech del Caribe que conecta comunidades, talento, startups y capital.",
+      "Centro de innovación y transformación tecnológica del Caribe que articula educación, comunidad, innovación y capital para convertir al Caribe colombiano en el nuevo epicentro tech de LATAM.",
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -34,10 +37,10 @@ export default function Landing() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
       <SEOHead
-        title="Costa Digital — Ecosistema Tech del Caribe | Startups, talento y comunidad"
-        description="Costa Digital es el ecosistema tech del Caribe que conecta comunidades, talento, startups y capital en la región Caribe de Colombia. Barranquilla, Cartagena, Santa Marta."
+        title="Costa Digital — Centro de Innovación Tech del Caribe | Camino al epicentro tech de LATAM"
+        description="Costa Digital es el centro de innovación y transformación tecnológica del Caribe colombiano. Articula educación, comunidad, innovación y capital para convertir la región en el nuevo epicentro tech de LATAM. Barranquilla, Cartagena, Santa Marta."
         canonical="/"
-        keywords={["Caribe Tech", "tech del Caribe", "ecosistema tech Caribe", "startups Caribe", "comunidad tech Barranquilla", "hackathons Caribe", "innovación Caribe"]}
+        keywords={["centro de innovación Caribe", "epicentro tech LATAM", "Caribe Tech", "tech del Caribe", "ecosistema tech Caribe", "startups Caribe", "comunidad tech Barranquilla", "hackathons Caribe", "innovación Caribe"]}
       />
       <Helmet>
         <script type="application/ld+json">
@@ -47,13 +50,16 @@ export default function Landing() {
       <Navbar />
       <main>
         <Hero />
-        <EcosystemOverview />
-        <CostaDigitalNews />
-        <CommunitySection />
+        <PillarsOverview />
+        <Impact />
         <TechCentre />
-        <StartupsSection />
+        <CommunitySection />
         <TalentNetworkCTA />
+        <Innovation />
+        <StartupsSection />
+        <Audiences />
         <PartnersSection />
+        <CostaDigitalNews />
         <LandingCTA />
       </main>
       <Footer />

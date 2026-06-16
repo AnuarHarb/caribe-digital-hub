@@ -3,25 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PillarBadge } from "@/components/landing/PillarBadge";
 
-const TECH_CENTRE_URL = "https://techcentre.co";
+const CIUDAD_INMERSIVA_URL = "https://ciudadinmersiva.com";
 
-export function TechCentre() {
+export function Innovation() {
   const { t } = useTranslation();
-
-  const programs = t("landing.techCentre.programs", {
-    returnObjects: true,
-  }) as string[];
+  const tags = t("landing.innovation.tags", { returnObjects: true }) as string[];
 
   return (
-    <section
-      aria-labelledby="tech-centre-heading"
-      className="py-20 md:py-28 bg-muted/30"
-    >
+    <section aria-labelledby="innovation-heading" className="py-20 md:py-28">
       <div className="container mx-auto px-4">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 lg:items-center">
-          <figure className="overflow-hidden rounded-xl">
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-center lg:gap-12">
+          <figure className="order-last overflow-hidden rounded-xl lg:order-first">
             <img
-              src="/events/screenshot-techcentre.png"
+              src="/events/barranqui-ia-2025.webp"
               alt=""
               className="aspect-video w-full object-cover transition-transform duration-300 hover:scale-105"
               loading="lazy"
@@ -30,43 +24,38 @@ export function TechCentre() {
           </figure>
 
           <article className="rounded-xl border border-border bg-card p-8 text-center shadow-sm transition-all duration-300 hover:border-accent/30 hover:shadow-lg lg:text-left">
-            <PillarBadge pillar="education" className="mb-4" />
-            <div className="flex justify-center lg:justify-start">
+            <PillarBadge pillar="innovation" />
+            <div className="mt-4 flex justify-center lg:justify-start">
               <img
-                src="/logos/tech-centre-dark.png"
-                alt="Tech Centre"
-                className="h-14 w-auto object-contain dark:hidden"
-              />
-              <img
-                src="/logos/tech-centre-white.png"
-                alt="Tech Centre"
-                className="hidden h-14 w-auto object-contain dark:block"
+                src="/logos/ciudad-inmersiva.png"
+                alt="Ciudad Inmersiva"
+                className="h-12 w-auto object-contain dark:invert"
               />
             </div>
             <h2
-              id="tech-centre-heading"
+              id="innovation-heading"
               className="mt-4 font-display text-xl font-semibold text-foreground md:text-2xl"
             >
-              {t("landing.techCentre.title")}
+              {t("landing.innovation.title")}
             </h2>
             <p className="mt-2 text-muted-foreground">
-              {t("landing.techCentre.description")}
+              {t("landing.innovation.description")}
             </p>
             <div className="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
-              {programs.map((program) => (
-                <Badge key={program} variant="secondary" className="px-3 py-1">
-                  {program}
+              {tags.map((tag) => (
+                <Badge key={tag} variant="secondary" className="px-3 py-1">
+                  {tag}
                 </Badge>
               ))}
             </div>
             <a
-              href={TECH_CENTRE_URL}
+              href={CIUDAD_INMERSIVA_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-block"
             >
               <Button className="transition-colors">
-                {t("landing.techCentre.cta")}
+                {t("landing.innovation.cta")}
               </Button>
             </a>
           </article>

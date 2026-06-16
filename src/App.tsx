@@ -7,6 +7,12 @@ import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
 import Landing from "./pages/Landing";
 import Conocenos from "./pages/Conocenos";
+import Programas from "./pages/Programas";
+import Comunidades from "./pages/Comunidades";
+import Proyectos from "./pages/Proyectos";
+import Aliados from "./pages/Aliados";
+import Sede from "./pages/Sede";
+import Equipo from "./pages/Equipo";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -33,7 +39,6 @@ import CredentialPage from "./pages/CredentialPage";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import AdminNews from "./pages/admin/AdminNews";
-import ForCompanies from "./pages/ForCompanies";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
@@ -59,6 +64,12 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/conocenos" element={<Conocenos />} />
+            <Route path="/programas" element={<Programas />} />
+            <Route path="/comunidades" element={<Comunidades />} />
+            <Route path="/proyectos" element={<Proyectos />} />
+            <Route path="/aliados" element={<Aliados />} />
+            <Route path="/sede" element={<Sede />} />
+            <Route path="/equipo" element={<Equipo />} />
             <Route path="/auth" element={<AuthLayout />}>
               <Route index element={<Login />} />
               <Route path="signup" element={<Signup />} />
@@ -72,7 +83,7 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/perfil/:slug" element={<PublicProfile />} />
-            <Route path="/para-empresas" element={<ForCompanies />} />
+            <Route path="/para-empresas" element={<Navigate to="/aliados" replace />} />
             <Route path="/terminos" element={<TermsAndConditions />} />
             <Route path="/aviso-de-privacidad" element={<PrivacyPolicy />} />
             <Route path="/empresa/:id" element={<CompanyPublicProfile />} />

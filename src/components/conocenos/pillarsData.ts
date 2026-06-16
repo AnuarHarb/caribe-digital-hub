@@ -39,20 +39,20 @@ export const pillars: Pillar[] = [
     number: "02",
     title: "Comunidad",
     subtitle: "que impulsa el cambio",
-    institution: "Costa Digital",
-    logo: "/logos/costa-digital.png",
-    logoAlt: "Costa Digital",
+    institution: "Fundación Código Abierto",
+    logo: "/logos/fca-black.png",
+    logoAlt: "Fundación Código Abierto",
     color: "green",
     description:
       "Un ecosistema tech fuerte requiere de conexiones y colaboración entre todos sus actores. La comunidad es el tejido que une a desarrolladores, empresas, universidades y gobierno.",
     fullDescription:
-      "Un ecosistema tech fuerte requiere de conexiones y colaboración entre todos sus actores. La comunidad es el tejido que une a desarrolladores, empresas, universidades y gobierno, creando sinergias que multiplican el impacto. Costa Digital articula estos esfuerzos para construir un movimiento colectivo hacia la transformación tecnológica del Caribe.",
+      "Un ecosistema tech fuerte requiere de conexiones y colaboración entre todos sus actores. La comunidad es el tejido que une a desarrolladores, empresas, universidades y gobierno, creando sinergias que multiplican el impacto. Fundación Código Abierto —operadora de Costa Digital— articula estos esfuerzos y promueve la adopción social de la tecnología para construir un movimiento colectivo hacia la transformación tecnológica del Caribe.",
     features: [
       "Conecta con mentores y aliados",
       "Participa en eventos y talleres",
       "Únete a iniciativas de innovación",
     ],
-    website: "https://costadigital.org",
+    website: "https://www.codigoabierto.tech",
   },
   {
     id: "innovacion",
@@ -67,6 +67,11 @@ export const pillars: Pillar[] = [
       "La innovación es el motor que convierte el conocimiento en valor real. Transformamos ideas en soluciones que resuelven problemas reales de empresas y emprendedores.",
     fullDescription:
       "La innovación es el motor que convierte el conocimiento en valor real. Un ecosistema tech sin capacidad de innovación se queda en teoría. A través de nuestro laboratorio, transformamos ideas en soluciones concretas que resuelven problemas reales de empresas y emprendedores, demostrando que el Caribe no solo puede adoptar tecnología, sino crearla y exportarla.",
+    features: [
+      "Laboratorio de innovación aplicada",
+      "IA, software y tecnologías emergentes",
+      "Equipos locales de alto nivel técnico",
+    ],
     website: "https://ciudadinmersiva.com",
   },
   {
@@ -82,6 +87,11 @@ export const pillars: Pillar[] = [
       "El capital es el combustible que permite que las ideas escalen y generen impacto. Sin acceso a financiamiento, incluso las mejores startups no pueden alcanzar su potencial.",
     fullDescription:
       "El capital es el combustible que permite que las ideas escalen y generen impacto. Sin acceso a financiamiento, incluso las mejores startups y proyectos tecnológicos no pueden alcanzar su potencial. Caribe Ventures cierra este círculo esencial del ecosistema, conectando el talento y la innovación con los recursos necesarios para crecer, escalar y competir a nivel nacional e internacional.",
+    features: [
+      "Venture studio y fondo pre-seed",
+      "Mentoría y acompañamiento a fundadores",
+      "Capital para escalar desde el Caribe al mundo",
+    ],
     website: "https://caribe.ventures",
   },
 ];

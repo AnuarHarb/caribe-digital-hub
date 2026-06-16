@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Users, MessageCircle, ExternalLink, MapPin } from "lucide-react";
 import { useCommunities } from "@/hooks/useCommunities";
 import type { CommunityProfile } from "@/hooks/useCommunities";
+import { PillarBadge } from "@/components/landing/PillarBadge";
 
 const SCROLL_SPEED = 0.4;
 
@@ -233,9 +234,12 @@ export function CommunitySection() {
       className="overflow-x-hidden py-20 md:py-28"
     >
       <div className="container mx-auto min-w-0 px-4">
+        <div className="flex justify-center">
+          <PillarBadge pillar="community" />
+        </div>
         <h2
           id="community-heading"
-          className="text-center font-display text-3xl font-bold text-primary md:text-4xl"
+          className="mt-4 text-center font-display text-3xl font-bold text-primary md:text-4xl"
         >
           {t("landing.community.title")}
         </h2>

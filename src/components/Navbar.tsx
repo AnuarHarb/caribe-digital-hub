@@ -129,79 +129,136 @@ export function Navbar() {
 
   const closeMobile = () => setMobileMenuOpen(false);
 
-  const NavLinks = () => (
-    <>
-      <Link to="/conocenos" onClick={closeMobile} className={isMobile ? "block w-full" : undefined}>
-        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
-          {t("nav.about")}
-        </Button>
-      </Link>
-      <Link to="/talento" onClick={closeMobile} className={isMobile ? "block w-full" : undefined}>
-        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
-          {t("nav.talentNetwork")}
-        </Button>
-      </Link>
-      <a
-        href="https://www.codigoabierto.tech/eventos"
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={closeMobile}
-        className={isMobile ? "block w-full" : undefined}
-      >
-        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
-          {t("nav.events")}
-        </Button>
-      </a>
-      <Link to="/blog" onClick={closeMobile} className={isMobile ? "block w-full" : undefined}>
-        <Button variant="ghost" className={isMobile ? "w-full justify-start" : undefined}>
-          {t("nav.blog")}
-        </Button>
-      </Link>
-      {user ? (
-        isMobile ? (
-          <>
-            <div className="my-3 border-t border-border" aria-hidden />
-            <Link to="/dashboard" onClick={closeMobile} className="block w-full">
-              <Button variant="ghost" className="gap-2 justify-start w-full">
-                <LayoutDashboard className="h-4 w-4" />
-                {t("nav.dashboard")}
-              </Button>
-            </Link>
-            <Link to="/dashboard/credencial" onClick={closeMobile} className="block w-full">
-              <Button variant="ghost" className="gap-2 justify-start w-full">
-                <CreditCard className="h-4 w-4" />
-                {t("dashboard.credential")}
-              </Button>
-            </Link>
-            {isAdmin && (
-              <Link to="/admin" onClick={closeMobile} className="block w-full">
-                <Button variant="ghost" className="gap-2 justify-start w-full">
-                  <Settings className="h-4 w-4" />
-                  {t("nav.admin")}
+  const EVENTS_URL = "https://www.codigoabierto.tech/eventos";
+  const navGroups = [
+    {
+      label: t("nav.ecosistema"),
+      items: [
+        { to: "/programas", label: t("nav.programas") },
+        { to: "/comunidades", label: t("nav.comunidades") },
+        { to: "/talento", label: t("nav.talentNetwork") },
+        { to: "/aliados", label: t("nav.aliados") },
+      ],
+    },
+    {
+      label: t("nav.nosotros"),
+      items: [
+        { to: "/conocenos", label: t("nav.about") },
+        { to: "/proyectos", label: t("nav.proyectos") },
+        { to: "/equipo", label: t("nav.equipo") },
+        { to: "/sede", label: t("nav.sede") },
+      ],
+    },
+  ];
+
+  const NavLinks = () =>
+    isMobile ? (
+      <>
+        {navGroups.map((group) => (
+          <div key={group.label} className="w-full">
+            <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              {group.label}
+            </p>
+            {group.items.map((item) => (
+              <Link key={item.to} to={item.to} onClick={closeMobile} className="block w-full">
+                <Button variant="ghost" className="w-full justify-start">
+                  {item.label}
                 </Button>
               </Link>
-            )}
-            <Button
-              variant="ghost"
-              className="gap-2 justify-start w-full text-destructive hover:text-destructive hover:bg-destructive/10"
-              onClick={() => {
-                closeMobile();
-                handleLogout();
-              }}
-            >
-              <LogOut className="h-4 w-4" />
-              {t("nav.logout")}
-            </Button>
-          </>
-        ) : (
-          <UserMenu onItemClick={closeMobile} />
-        )
-      ) : (
-        <Link to={authUrl} onClick={closeMobile}>
-          <Button variant="default">{t("nav.login")}</Button>
+            ))}
+          </div>
+        ))}
+        <div className="my-2 border-t border-border" aria-hidden />
+        <a href={EVENTS_URL} target="_blank" rel="noopener noreferrer" onClick={closeMobile} className="block w-full">
+          <Button variant="ghost" className="w-full justify-start">
+            {t("nav.events")}
+          </Button>
+        </a>
+        <Link to="/blog" onClick={closeMobile} className="block w-full">
+          <Button variant="ghost" className="w-full justify-start">
+            {t("nav.blog")}
+          </Button>
+        </Link>
+        {mobileAuthSection}
+      </>
+    ) : (
+      <>
+        {navGroups.map((group) => (
+          <DropdownMenu key={group.label}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="gap-1">
+                {group.label}
+                <ChevronDown className="h-4 w-4 opacity-50" aria-hidden />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48">
+              {group.items.map((item) => (
+                <DropdownMenuItem key={item.to} asChild>
+                  <Link to={item.to} className="cursor-pointer">
+                    {item.label}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ))}
+        <a href={EVENTS_URL} target="_blank" rel="noopener noreferrer">
+          <Button variant="ghost">{t("nav.events")}</Button>
+        </a>
+        <Link to="/blog">
+          <Button variant="ghost">{t("nav.blog")}</Button>
+        </Link>
+        {desktopAuthSection}
+      </>
+    );
+
+  const desktopAuthSection = user ? (
+    <UserMenu onItemClick={closeMobile} />
+  ) : (
+    <Link to={authUrl}>
+      <Button variant="default">{t("nav.login")}</Button>
+    </Link>
+  );
+
+  const mobileAuthSection = user ? (
+    <>
+      <div className="my-3 border-t border-border" aria-hidden />
+      <Link to="/dashboard" onClick={closeMobile} className="block w-full">
+        <Button variant="ghost" className="gap-2 justify-start w-full">
+          <LayoutDashboard className="h-4 w-4" />
+          {t("nav.dashboard")}
+        </Button>
+      </Link>
+      <Link to="/dashboard/credencial" onClick={closeMobile} className="block w-full">
+        <Button variant="ghost" className="gap-2 justify-start w-full">
+          <CreditCard className="h-4 w-4" />
+          {t("dashboard.credential")}
+        </Button>
+      </Link>
+      {isAdmin && (
+        <Link to="/admin" onClick={closeMobile} className="block w-full">
+          <Button variant="ghost" className="gap-2 justify-start w-full">
+            <Settings className="h-4 w-4" />
+            {t("nav.admin")}
+          </Button>
         </Link>
       )}
+      <Button
+        variant="ghost"
+        className="gap-2 justify-start w-full text-destructive hover:text-destructive hover:bg-destructive/10"
+        onClick={() => {
+          closeMobile();
+          handleLogout();
+        }}
+      >
+        <LogOut className="h-4 w-4" />
+        {t("nav.logout")}
+      </Button>
     </>
+  ) : (
+    <Link to={authUrl} onClick={closeMobile} className="block w-full">
+      <Button variant="default" className="w-full">{t("nav.login")}</Button>
+    </Link>
   );
 
   return (
