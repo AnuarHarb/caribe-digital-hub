@@ -11,6 +11,13 @@ export interface BlogDraftData {
   cover_image_url: string;
   status: "draft" | "published";
   tags: string[];
+  familia: string;
+  pilar: string;
+  formato: string;
+  destacado: boolean;
+  video_url: string;
+  cta_texto: string;
+  cta_url: string;
   savedAt: string;
 }
 
@@ -79,15 +86,7 @@ export function useDraftAutoSave(
   useEffect(() => {
     if (!enabled || !key || !userId) return;
 
-    const serialized = JSON.stringify({
-      title: formData.title,
-      slug: formData.slug,
-      excerpt: formData.excerpt,
-      content: formData.content,
-      cover_image_url: formData.cover_image_url,
-      status: formData.status,
-      tags: formData.tags,
-    });
+    const serialized = JSON.stringify(formData);
 
     if (serialized === prevFormDataRef.current) return;
     prevFormDataRef.current = serialized;

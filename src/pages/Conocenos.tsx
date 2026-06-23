@@ -1,22 +1,40 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/Navbar";
 import { SEOHead } from "@/components/SEOHead";
 import { Footer } from "@/components/landing/Footer";
 import { ConocenosHero } from "@/components/conocenos/Hero";
 import { ConocenosMission } from "@/components/conocenos/Mission";
-import { EcosystemPillars } from "@/components/conocenos/EcosystemPillars";
-import { ConocenosLocation } from "@/components/conocenos/Location";
+import { ConocenosTeam } from "@/components/conocenos/Team";
 import { ConocenosImpactProjects } from "@/components/conocenos/ImpactProjects";
+import { ConocenosLocation } from "@/components/conocenos/Location";
 import { ConocenosFAQ } from "@/components/conocenos/FAQ";
+import { AboutCTA } from "@/components/conocenos/AboutCTA";
 
 export default function Conocenos() {
+  const { hash } = useLocation();
+
+  // Desplaza a la sección correspondiente (#equipo, #proyectos, #sede, #faq)
+  // cuando se llega con un hash, incluido el de las redirecciones legacy.
+  useEffect(() => {
+    if (!hash) return;
+    const id = hash.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      requestAnimationFrame(() =>
+        el.scrollIntoView({ behavior: "smooth", block: "start" }),
+      );
+    }
+  }, [hash]);
+
   const aboutJsonLd = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    name: "Conócenos — Costa Digital",
+    name: "Sobre nosotros — Costa Digital",
     url: "https://costadigital.org/conocenos",
     description:
-      "Conoce el movimiento Costa Digital y Fundación Código Abierto: misión, pilares, sede e impacto en el ecosistema tech del Caribe colombiano.",
+      "Conoce el movimiento Costa Digital y Fundación Código Abierto: misión, equipo, proyectos, sede e impacto en el ecosistema tech del Caribe colombiano.",
     mainEntity: {
       "@type": "NonprofitOrganization",
       name: "Fundación Código Abierto",
@@ -42,18 +60,18 @@ export default function Conocenos() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
       <SEOHead
-        title="Conócenos — Costa Digital"
-        description="Conoce el movimiento Costa Digital y Fundación Código Abierto: misión, pilares (Tech Centre, Costa Digital, Ciudad Inmersiva, Caribe Ventures), sede en Barranquilla e impacto en el ecosistema tech del Caribe."
+        title="Sobre nosotros — Costa Digital"
+        description="Conoce el movimiento Costa Digital y Fundación Código Abierto: misión, equipo, proyectos e impacto, y nuestra sede en Barranquilla, corazón del ecosistema tech del Caribe."
         canonical="/conocenos"
         keywords={[
           "Costa Digital",
           "Fundación Código Abierto",
           "ecosistema tech Caribe",
-          "misión",
-          "Barranquilla tech",
-          "Tech Centre",
-          "Ciudad Inmersiva",
-          "Caribe Ventures",
+          "equipo Costa Digital",
+          "proyectos tech Caribe",
+          "sede Barranquilla",
+          "Anuar Harb",
+          "Grace Torres",
           "epicentro tecnológico Caribe",
         ]}
       />
@@ -64,10 +82,11 @@ export default function Conocenos() {
       <main>
         <ConocenosHero />
         <ConocenosMission />
-        <EcosystemPillars />
-        <ConocenosLocation />
+        <ConocenosTeam />
         <ConocenosImpactProjects />
+        <ConocenosLocation />
         <ConocenosFAQ />
+        <AboutCTA />
       </main>
       <Footer />
     </div>

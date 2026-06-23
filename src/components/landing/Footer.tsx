@@ -22,12 +22,9 @@ export function Footer() {
                 { to: "/programas", label: t("nav.programas") },
                 { to: "/comunidades", label: t("nav.comunidades") },
                 { to: "/talento", label: t("nav.talentNetwork") },
-                { to: "/proyectos", label: t("nav.proyectos") },
                 { to: "/aliados", label: t("nav.aliados") },
-                { to: "/conocenos", label: t("nav.about") },
-                { to: "/equipo", label: t("nav.equipo") },
-                { to: "/sede", label: t("nav.sede") },
-                { to: "/blog", label: t("nav.blog") },
+                { to: "/conocenos", label: t("nav.nosotros") },
+                { to: "/noticias", label: t("nav.marea") },
               ].map((item) => (
                 <Link
                   key={item.to}

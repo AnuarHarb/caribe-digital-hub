@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -25,12 +26,24 @@ import { useTranslation } from "react-i18next";
 import { Plus, Pencil, Trash2, ImageIcon, ArrowLeft, Eye, X, Newspaper } from "lucide-react";
 import { TipTapEditor } from "@/components/blog/TipTapEditor";
 import { TagInput } from "@/components/blog/TagInput";
+import { FamilyBadge } from "@/components/noticias/FamilyBadge";
+import { PillarBadge } from "@/components/noticias/PillarBadge";
+import { FormatTag } from "@/components/noticias/FormatTag";
+import { toYouTubeEmbed } from "@/lib/youtube";
 import { useAuth, useProfile } from "@/hooks/useAuth";
 import { useBlogImageUpload } from "@/hooks/useBlogImageUpload";
 import { useDraftAutoSave } from "@/hooks/useDraftAutoSave";
 import { format } from "date-fns";
 import { es, enUS } from "date-fns/locale";
 import type { Database } from "@/integrations/supabase/types";
+import {
+  FAMILIA_LIST,
+  PILAR_LIST,
+  FORMATO_LIST,
+  type FamiliaId,
+  type PilarId,
+  type FormatoId,
+} from "@/content/taxonomies";
 
 type BlogPostRow = Database["public"]["Tables"]["blog_posts"]["Row"];
 type BlogStatus = Database["public"]["Enums"]["blog_status"];
@@ -56,6 +69,59 @@ function countWords(html: string): number {
   return text ? text.split(/\s+/).length : 0;
 }
 
+type EditorFormData = {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  cover_image_url: string;
+  status: BlogStatus;
+  tags: string[];
+  familia: FamiliaId;
+  pilar: PilarId;
+  formato: FormatoId;
+  destacado: boolean;
+  video_url: string;
+  cta_texto: string;
+  cta_url: string;
+};
+
+// Instantánea de campos editables (excluye status) para detectar cambios sin guardar.
+function formSnapshot(d: EditorFormData): string {
+  return JSON.stringify({
+    title: d.title,
+    slug: d.slug,
+    excerpt: d.excerpt,
+    content: d.content,
+    cover_image_url: d.cover_image_url,
+    tags: d.tags,
+    familia: d.familia,
+    pilar: d.pilar,
+    formato: d.formato,
+    destacado: d.destacado,
+    video_url: d.video_url,
+    cta_texto: d.cta_texto,
+    cta_url: d.cta_url,
+  });
+}
+
+const EMPTY_FORM: EditorFormData = {
+  title: "",
+  slug: "",
+  excerpt: "",
+  content: "<p></p>",
+  cover_image_url: "",
+  status: "draft",
+  tags: [],
+  familia: "pulso",
+  pilar: "comunidad",
+  formato: "news-semanal",
+  destacado: false,
+  video_url: "",
+  cta_texto: "",
+  cta_url: "",
+};
+
 type ViewMode = "list" | "editor";
 
 export default function AdminBlog() {
@@ -80,15 +146,7 @@ export default function AdminBlog() {
   const initialFormDataRef = useRef<string>("");
   const submitActionRef = useRef<"draft" | "publish" | null>(null);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    excerpt: "",
-    content: "<p></p>",
-    cover_image_url: "",
-    status: "draft" as BlogStatus,
-    tags: [] as string[],
-  });
+  const [formData, setFormData] = useState<EditorFormData>({ ...EMPTY_FORM });
 
   const draftAutoSave = useDraftAutoSave(
     user?.id,
@@ -101,13 +159,19 @@ export default function AdminBlog() {
       cover_image_url: formData.cover_image_url,
       status: formData.status,
       tags: formData.tags,
+      familia: formData.familia,
+      pilar: formData.pilar,
+      formato: formData.formato,
+      destacado: formData.destacado,
+      video_url: formData.video_url,
+      cta_texto: formData.cta_texto,
+      cta_url: formData.cta_url,
     },
     { enabled: viewMode === "editor" }
   );
 
   const hasUnsavedChanges = useMemo(() => {
-    const current = JSON.stringify({ title: formData.title, slug: formData.slug, excerpt: formData.excerpt, content: formData.content, cover_image_url: formData.cover_image_url, tags: formData.tags });
-    return current !== initialFormDataRef.current;
+    return formSnapshot(formData) !== initialFormDataRef.current;
   }, [formData]);
 
   const editingPost = editingId ? posts.find((p) => p.id === editingId) : null;
@@ -188,21 +252,20 @@ export default function AdminBlog() {
   };
 
   const resetForm = () => {
-    const empty = { title: "", slug: "", excerpt: "", content: "<p></p>", cover_image_url: "", status: "draft" as BlogStatus, tags: [] as string[] };
+    const empty = { ...EMPTY_FORM };
     setFormData(empty);
     setEditingId(null);
     setShowPreview(false);
-    initialFormDataRef.current = JSON.stringify({ ...empty, status: undefined });
+    initialFormDataRef.current = formSnapshot(empty);
   };
 
   const openCreate = () => {
     resetForm();
-    initialFormDataRef.current = JSON.stringify({ title: "", slug: "", excerpt: "", content: "<p></p>", cover_image_url: "", tags: [] });
     setViewMode("editor");
   };
 
   const openEdit = (post: BlogPostRow) => {
-    const data = {
+    const data: EditorFormData = {
       title: post.title,
       slug: post.slug,
       excerpt: post.excerpt ?? "",
@@ -210,10 +273,17 @@ export default function AdminBlog() {
       cover_image_url: post.cover_image_url ?? "",
       status: post.status as BlogStatus,
       tags: post.tags ?? [],
+      familia: post.familia as FamiliaId,
+      pilar: post.pilar as PilarId,
+      formato: post.formato as FormatoId,
+      destacado: post.destacado ?? false,
+      video_url: post.video_url ?? "",
+      cta_texto: post.cta_texto ?? "",
+      cta_url: post.cta_url ?? "",
     };
     setFormData(data);
     setEditingId(post.id);
-    initialFormDataRef.current = JSON.stringify({ title: data.title, slug: data.slug, excerpt: data.excerpt, content: data.content, cover_image_url: data.cover_image_url, tags: data.tags });
+    initialFormDataRef.current = formSnapshot(data);
     setViewMode("editor");
   };
 
@@ -248,6 +318,13 @@ export default function AdminBlog() {
       cover_image_url: formData.cover_image_url || null,
       status: status as BlogStatus,
       tags: formData.tags.length > 0 ? formData.tags : [],
+      familia: formData.familia,
+      pilar: formData.pilar,
+      formato: formData.formato,
+      destacado: formData.destacado,
+      video_url: formData.video_url || null,
+      cta_texto: formData.cta_texto || null,
+      cta_url: formData.cta_url || null,
     };
 
     if (editingId) {
@@ -301,7 +378,7 @@ export default function AdminBlog() {
   const handleRestoreDraft = () => {
     const draft = draftAutoSave.restoreDraft();
     if (draft) {
-      setFormData({
+      const data: EditorFormData = {
         title: draft.title,
         slug: draft.slug,
         excerpt: draft.excerpt,
@@ -309,8 +386,16 @@ export default function AdminBlog() {
         cover_image_url: draft.cover_image_url,
         status: draft.status as BlogStatus,
         tags: draft.tags,
-      });
-      initialFormDataRef.current = JSON.stringify({ title: draft.title, slug: draft.slug, excerpt: draft.excerpt, content: draft.content, cover_image_url: draft.cover_image_url, tags: draft.tags });
+        familia: (draft.familia ?? "pulso") as FamiliaId,
+        pilar: (draft.pilar ?? "comunidad") as PilarId,
+        formato: (draft.formato ?? "news-semanal") as FormatoId,
+        destacado: draft.destacado ?? false,
+        video_url: draft.video_url ?? "",
+        cta_texto: draft.cta_texto ?? "",
+        cta_url: draft.cta_url ?? "",
+      };
+      setFormData(data);
+      initialFormDataRef.current = formSnapshot(data);
       toast.success(t("admin.blog.autoSaveRestored"));
     }
   };
@@ -495,10 +580,110 @@ export default function AdminBlog() {
                     </div>
                   </div>
                   <div className="space-y-2">
+                    <Label>{t("admin.blog.familia")}</Label>
+                    <Select
+                      value={formData.familia}
+                      onValueChange={(v) => setFormData((p) => ({ ...p, familia: v as FamiliaId }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {FAMILIA_LIST.map((f) => (
+                          <SelectItem key={f.id} value={f.id}>
+                            {f.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t("admin.blog.pilar")}</Label>
+                    <Select
+                      value={formData.pilar}
+                      onValueChange={(v) => setFormData((p) => ({ ...p, pilar: v as PilarId }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PILAR_LIST.map((p) => (
+                          <SelectItem key={p.id} value={p.id}>
+                            {p.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t("admin.blog.formato")}</Label>
+                    <Select
+                      value={formData.formato}
+                      onValueChange={(v) => setFormData((p) => ({ ...p, formato: v as FormatoId }))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {FORMATO_LIST.map((f) => (
+                          <SelectItem key={f.id} value={f.id}>
+                            {f.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 rounded-lg border border-border p-3">
+                    <div className="space-y-0.5">
+                      <Label htmlFor="destacado">{t("admin.blog.featured")}</Label>
+                      <p className="text-xs text-muted-foreground">
+                        {t("admin.blog.featuredHint")}
+                      </p>
+                    </div>
+                    <Switch
+                      id="destacado"
+                      checked={formData.destacado}
+                      onCheckedChange={(checked) => setFormData((p) => ({ ...p, destacado: checked }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="video_url">{t("admin.blog.videoUrl")}</Label>
+                    <Input
+                      id="video_url"
+                      value={formData.video_url}
+                      onChange={(e) => setFormData((p) => ({ ...p, video_url: e.target.value }))}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      className="bg-muted/50"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {t("admin.blog.videoUrlHint")}
+                    </p>
+                  </div>
+                  <div className="space-y-2">
                     <Label>{t("admin.blog.tags")}</Label>
                     <TagInput
                       value={formData.tags}
                       onChange={(tags) => setFormData((p) => ({ ...p, tags }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cta_texto">{t("admin.blog.ctaText")}</Label>
+                    <Input
+                      id="cta_texto"
+                      value={formData.cta_texto}
+                      onChange={(e) => setFormData((p) => ({ ...p, cta_texto: e.target.value }))}
+                      placeholder={t("admin.blog.ctaTextPlaceholder")}
+                      className="bg-muted/50"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="cta_url">{t("admin.blog.ctaUrl")}</Label>
+                    <Input
+                      id="cta_url"
+                      value={formData.cta_url}
+                      onChange={(e) => setFormData((p) => ({ ...p, cta_url: e.target.value }))}
+                      placeholder="/programas"
+                      className="bg-muted/50"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -529,6 +714,11 @@ export default function AdminBlog() {
               <div className="mt-6">
                 <article>
                   <header className="space-y-6">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <FamilyBadge familia={formData.familia} />
+                      <PillarBadge pilar={formData.pilar} />
+                      <FormatTag formato={formData.formato} />
+                    </div>
                     <h1 className="font-display text-3xl font-bold text-foreground md:text-4xl leading-tight">
                       {formData.title || t("admin.blog.titlePlaceholder")}
                     </h1>
@@ -565,6 +755,17 @@ export default function AdminBlog() {
                       </div>
                     )}
                   </header>
+                  {toYouTubeEmbed(formData.video_url) && (
+                    <div className="mt-8 aspect-video w-full overflow-hidden rounded-lg bg-muted">
+                      <iframe
+                        src={toYouTubeEmbed(formData.video_url) ?? undefined}
+                        title={formData.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="h-full w-full"
+                      />
+                    </div>
+                  )}
                   <div
                     className="prose prose-lg dark:prose-invert max-w-none mt-8 prose-headings:font-display prose-img:rounded-lg"
                     dangerouslySetInnerHTML={{ __html: formData.content || "<p></p>" }}

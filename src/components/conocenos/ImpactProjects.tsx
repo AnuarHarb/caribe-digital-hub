@@ -37,19 +37,31 @@ const projects: Project[] = [
     category: "Educación",
     link: "https://www.instagram.com/atlanticotic/p/C_yUGeqvM5i/",
   },
+  {
+    id: 4,
+    title: "Tech Nights",
+    description:
+      "Encuentros mensuales sobre IA, innovación y networking que conectan al talento tech del Caribe.",
+    image: "/events/1.webp",
+    category: "Comunidad",
+    link: "https://www.codigoabierto.tech/eventos",
+  },
 ];
 
 export function ConocenosImpactProjects() {
   return (
-    <section id="impacto">
-      <div className="mx-auto flex max-w-6xl flex-col gap-7 px-5 py-16">
+    <section id="proyectos" className="bg-muted/30 py-16 md:py-24">
+      <div className="mx-auto flex max-w-6xl flex-col gap-7 px-5">
         <header className="text-center">
-          <h2 className="text-3xl font-bold text-primary md:text-4xl">
-            Proyectos Impactantes
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+            Impacto real
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold text-primary md:text-4xl">
+            Proyectos que transforman el Caribe
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-            Descubre nuestra colección de proyectos que están transformando
-            comunidades y acelerando el ecosistema tech del Caribe.
+            Eventos, programas e iniciativas que demuestran que desde el Caribe
+            colombiano se crea tecnología de impacto.
           </p>
         </header>
 

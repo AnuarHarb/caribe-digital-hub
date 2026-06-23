@@ -43,7 +43,7 @@ export function LandingCTA() {
             </Link>
           ) : (
             <>
-              <Link to="/blog">
+              <Link to="/noticias">
                 <Button
                   size="lg"
                   variant="secondary"

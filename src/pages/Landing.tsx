@@ -14,8 +14,13 @@ import { PartnersSection } from "@/components/landing/PartnersSection";
 import { CostaDigitalNews } from "@/components/landing/CostaDigitalNews";
 import { LandingCTA } from "@/components/landing/LandingCTA";
 import { Footer } from "@/components/landing/Footer";
+import { PulsoBanner } from "@/components/noticias/PulsoBanner";
+import { useNoticias } from "@/hooks/useNoticias";
+import { pickUltimoPulso } from "@/content/noticias";
 
 export default function Landing() {
+  const { data: notes = [] } = useNoticias();
+  const ultimoPulso = pickUltimoPulso(notes);
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -59,6 +64,9 @@ export default function Landing() {
         <Audiences />
         <PartnersSection />
         <CostaDigitalNews />
+        <section className="container mx-auto px-4 py-12">
+          <PulsoBanner note={ultimoPulso} />
+        </section>
         <LandingCTA />
       </main>
       <Footer />

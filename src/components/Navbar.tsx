@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import logoImage from "@/assets/costa-digital-logo.png";
+import { TechCaribeRibbon } from "@/components/TechCaribeRibbon";
 import { Menu, ChevronDown, LayoutDashboard, Settings, LogOut, Newspaper, CreditCard } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -144,9 +145,9 @@ export function Navbar() {
       label: t("nav.nosotros"),
       items: [
         { to: "/conocenos", label: t("nav.about") },
-        { to: "/proyectos", label: t("nav.proyectos") },
-        { to: "/equipo", label: t("nav.equipo") },
-        { to: "/sede", label: t("nav.sede") },
+        { to: "/conocenos#equipo", label: t("nav.equipo") },
+        { to: "/conocenos#proyectos", label: t("nav.proyectos") },
+        { to: "/conocenos#sede", label: t("nav.sede") },
       ],
       hidden: true,
     },
@@ -175,9 +176,14 @@ export function Navbar() {
             {t("nav.events")}
           </Button>
         </a>
-        <Link to="/blog" onClick={closeMobile} className="block w-full">
+        <Link to="/noticias" onClick={closeMobile} className="block w-full">
           <Button variant="ghost" className="w-full justify-start">
-            {t("nav.blog")}
+            {t("nav.marea")}
+          </Button>
+        </Link>
+        <Link to="/conocenos" onClick={closeMobile} className="block w-full">
+          <Button variant="ghost" className="w-full justify-start">
+            {t("nav.nosotros")}
           </Button>
         </Link>
         {mobileAuthSection}
@@ -206,8 +212,11 @@ export function Navbar() {
         <a href={EVENTS_URL} target="_blank" rel="noopener noreferrer">
           <Button variant="ghost">{t("nav.events")}</Button>
         </a>
-        <Link to="/blog">
-          <Button variant="ghost">{t("nav.blog")}</Button>
+        <Link to="/noticias">
+          <Button variant="ghost">{t("nav.marea")}</Button>
+        </Link>
+        <Link to="/conocenos">
+          <Button variant="ghost">{t("nav.nosotros")}</Button>
         </Link>
         {desktopAuthSection}
       </>
@@ -263,6 +272,7 @@ export function Navbar() {
   );
 
   return (
+    <>
     <nav className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
@@ -299,5 +309,7 @@ export function Navbar() {
         )}
       </div>
     </nav>
+    <TechCaribeRibbon />
+    </>
   );
 }

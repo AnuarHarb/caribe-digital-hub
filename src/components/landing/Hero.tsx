@@ -98,7 +98,7 @@ export function Hero() {
             </Link>
           ) : (
             <>
-              <Link to="/blog">
+              <Link to="/noticias">
                 <Button
                   size="lg"
                   className="w-full transition-all duration-300 hover:shadow-lg sm:w-auto"

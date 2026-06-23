@@ -96,7 +96,7 @@ export function CostaDigitalNews() {
           )}
         </div>
         <div className="mt-10 text-center">
-          <Link to="/blog">
+          <Link to="/noticias">
             <Button variant="outline" className="transition-colors">
               {t("landing.news.viewAll")}
             </Button>

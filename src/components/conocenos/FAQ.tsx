@@ -110,23 +110,26 @@ const faqsData: FAQItem[] = [
   {
     question: "¿Quién está detrás de Costa Digital y FCA?",
     answerText:
-      "Anuar Harb y Grace Torres lideran esta visión junto a un equipo comprometido con transformar la historia tecnológica del Caribe colombiano.",
+      "Anuar Harb y Grace Torres son los cofundadores. Anuar sostiene la visión y lidera la transformación del Caribe como General Partner de Caribe Ventures; Grace, directora de operaciones, abogada y directora del Tech Centre, hace que todo esté en orden y suceda como debe.",
     answer: (
       <>
         <p className="mb-2">
-          Detrás de este movimiento están Anuar Harb y Grace Torres, una pareja
-          de soñadores que decidió transformar la historia tecnológica del
-          Caribe colombiano.
+          Detrás de este movimiento están Anuar Harb y Grace Torres, cofundadores
+          que decidieron transformar la historia tecnológica del Caribe
+          colombiano.
         </p>
         <p className="mb-2">
           Anuar es desarrollador de software, líder del Google Developer Group
-          Barranquilla y fundador de Fundación Código Abierto, con más de 10
-          años de experiencia impulsando comunidades y proyectos de innovación.
+          Barranquilla y fundador de Fundación Código Abierto. Es quien sostiene
+          la visión y lidera la transformación del Caribe en el nuevo epicentro
+          tech, y como General Partner de Caribe Ventures impulsa el capital del
+          ecosistema.
         </p>
         <p className="mb-2">
-          Grace es cantante, artista y gestora cultural, comprometida con unir
-          el arte, la creatividad y la tecnología para inspirar a nuevas
-          generaciones.
+          Grace es cofundadora, directora de operaciones y abogada, y directora
+          del Tech Centre. Es quien hace que todo esté en orden y que las cosas
+          sucedan como deben suceder, convirtiendo la visión en realidad cada
+          día.
         </p>
         <p className="mb-2">
           Juntos lideran la visión de convertir al Caribe en el nuevo epicentro

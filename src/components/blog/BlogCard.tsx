@@ -42,7 +42,7 @@ export function BlogCard({ post, variant = "full" }: BlogCardProps) {
 
   if (variant === "compact") {
     return (
-      <Link to={`/blog/${post.slug}`} className="block">
+      <Link to={`/noticias/${post.slug}`} className="block">
         <Card className="overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg h-full flex flex-col">
           <div className="aspect-video w-full bg-muted overflow-hidden">
             {post.cover_image_url ? (
@@ -107,7 +107,7 @@ export function BlogCard({ post, variant = "full" }: BlogCardProps) {
   }
 
   return (
-    <Link to={`/blog/${post.slug}`} className="block">
+    <Link to={`/noticias/${post.slug}`} className="block">
       <Card className="overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg h-full flex flex-col">
         <div className="aspect-video w-full bg-muted overflow-hidden">
           {post.cover_image_url ? (

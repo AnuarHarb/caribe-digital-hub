@@ -118,8 +118,11 @@ export function CommunitySection() {
           {t("landing.community.subtitle")}
         </p>
 
-        {/* Featured events — highlighted at the top */}
-        <div className="mx-auto mt-10 max-w-4xl">
+        {/* Eventos insignia */}
+        <h3 className="mt-12 text-center font-display text-xl font-bold text-primary md:text-2xl">
+          {t("landing.community.eventsHeading")}
+        </h3>
+        <div className="mx-auto mt-6 max-w-4xl">
           <div className="grid gap-4 sm:grid-cols-3">
             {FEATURED_EVENTS.map((event) => (
               <a
@@ -160,9 +163,14 @@ export function CommunitySection() {
           />
         </div>
 
+        {/* Comunidades tech */}
+        <h3 className="mt-16 text-center font-display text-xl font-bold text-primary md:text-2xl">
+          {t("landing.community.communitiesHeading")}
+        </h3>
+
         {/* Communities grid */}
         {isLoading ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 3 }).map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardContent className="p-6">
@@ -180,13 +188,13 @@ export function CommunitySection() {
             ))}
           </div>
         ) : hasDynamic ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {communities.map((community) => (
               <CommunityCard key={community.id} community={community} />
             ))}
           </div>
         ) : (
-          <p className="mt-12 text-center text-sm text-muted-foreground">
+          <p className="mt-8 text-center text-sm text-muted-foreground">
             {t("landing.community.noCommunities")}
           </p>
         )}

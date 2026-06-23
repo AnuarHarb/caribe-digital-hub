@@ -2,17 +2,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
 import Landing from "./pages/Landing";
 import Conocenos from "./pages/Conocenos";
 import Programas from "./pages/Programas";
 import Comunidades from "./pages/Comunidades";
-import Proyectos from "./pages/Proyectos";
 import Aliados from "./pages/Aliados";
-import Sede from "./pages/Sede";
-import Equipo from "./pages/Equipo";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -36,8 +33,8 @@ import EditJob from "./pages/EditJob";
 import ViewApplicants from "./pages/ViewApplicants";
 import CompanySettings from "./pages/CompanySettings";
 import CredentialPage from "./pages/CredentialPage";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
+import Noticias from "./pages/Noticias";
+import NoticiaDetalle from "./pages/NoticiaDetalle";
 import AdminNews from "./pages/admin/AdminNews";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -53,6 +50,12 @@ import { GoogleAnalytics } from "./components/GoogleAnalytics";
 
 const queryClient = new QueryClient();
 
+// La Marea unifica el blog: /blog redirige a /noticias conservando el slug.
+const BlogSlugRedirect = () => {
+  const { slug } = useParams<{ slug: string }>();
+  return <Navigate to={`/noticias/${slug ?? ""}`} replace />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -66,10 +69,11 @@ const App = () => (
             <Route path="/conocenos" element={<Conocenos />} />
             <Route path="/programas" element={<Programas />} />
             <Route path="/comunidades" element={<Comunidades />} />
-            <Route path="/proyectos" element={<Proyectos />} />
             <Route path="/aliados" element={<Aliados />} />
-            <Route path="/sede" element={<Sede />} />
-            <Route path="/equipo" element={<Equipo />} />
+            {/* «Sobre nosotros» unificado en /conocenos; rutas antiguas redirigen a su sección */}
+            <Route path="/proyectos" element={<Navigate to="/conocenos#proyectos" replace />} />
+            <Route path="/equipo" element={<Navigate to="/conocenos#equipo" replace />} />
+            <Route path="/sede" element={<Navigate to="/conocenos#sede" replace />} />
             <Route path="/auth" element={<AuthLayout />}>
               <Route index element={<Login />} />
               <Route path="signup" element={<Signup />} />
@@ -80,8 +84,10 @@ const App = () => (
             <Route path="/talento" element={<TalentNetwork />} />
             <Route path="/empleos" element={<Navigate to="/talento" replace />} />
             <Route path="/empleos/:slug" element={<JobDetail />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
+            <Route path="/blog" element={<Navigate to="/noticias" replace />} />
+            <Route path="/blog/:slug" element={<BlogSlugRedirect />} />
+            <Route path="/noticias" element={<Noticias />} />
+            <Route path="/noticias/:slug" element={<NoticiaDetalle />} />
             <Route path="/perfil/:slug" element={<PublicProfile />} />
             <Route path="/para-empresas" element={<Navigate to="/aliados" replace />} />
             <Route path="/terminos" element={<TermsAndConditions />} />

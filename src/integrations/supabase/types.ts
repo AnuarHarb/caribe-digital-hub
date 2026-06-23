@@ -242,6 +242,13 @@ export type Database = {
           status: Database["public"]["Enums"]["blog_status"]
           published_at: string | null
           tags: string[]
+          familia: string
+          pilar: string
+          formato: string
+          destacado: boolean
+          video_url: string | null
+          cta_texto: string | null
+          cta_url: string | null
           created_at: string | null
           updated_at: string | null
         }
@@ -256,6 +263,13 @@ export type Database = {
           status?: Database["public"]["Enums"]["blog_status"]
           published_at?: string | null
           tags?: string[]
+          familia?: string
+          pilar?: string
+          formato?: string
+          destacado?: boolean
+          video_url?: string | null
+          cta_texto?: string | null
+          cta_url?: string | null
           created_at?: string | null
           updated_at?: string | null
         }
@@ -270,6 +284,13 @@ export type Database = {
           status?: Database["public"]["Enums"]["blog_status"]
           published_at?: string | null
           tags?: string[]
+          familia?: string
+          pilar?: string
+          formato?: string
+          destacado?: boolean
+          video_url?: string | null
+          cta_texto?: string | null
+          cta_url?: string | null
           created_at?: string | null
           updated_at?: string | null
         }

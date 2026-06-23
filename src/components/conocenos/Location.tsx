@@ -1,8 +1,31 @@
-import { MapPin } from "lucide-react";
+import { MapPin, Wifi, Users, Coffee, Presentation } from "lucide-react";
+
+const features = [
+  {
+    icon: Presentation,
+    title: "Espacios para eventos",
+    description: "Charlas, talleres y meetups del ecosistema.",
+  },
+  {
+    icon: Users,
+    title: "Zonas de comunidad",
+    description: "Lugares para conectar, colaborar y crear.",
+  },
+  {
+    icon: Wifi,
+    title: "Conectividad",
+    description: "Todo listo para construir y aprender.",
+  },
+  {
+    icon: Coffee,
+    title: "Ambiente acogedor",
+    description: "Un espacio pensado para la comunidad tech del Caribe.",
+  },
+];
 
 export function ConocenosLocation() {
   return (
-    <section id="ubicacion" className="bg-[#E1F3FE] dark:bg-blue-950/30">
+    <section id="sede" className="bg-[#E1F3FE] dark:bg-blue-950/30">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-5 py-16">
         <div className="flex flex-col gap-8">
           <header className="text-center">
@@ -84,6 +107,28 @@ export function ConocenosLocation() {
                 />
               </figure>
             </div>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={feature.title}
+                  className="rounded-xl border border-border bg-card p-6 text-center shadow-sm"
+                >
+                  <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent/20 text-accent">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                  <h3 className="mt-4 font-display text-lg font-bold text-foreground">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

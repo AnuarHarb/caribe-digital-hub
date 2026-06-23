@@ -2,10 +2,18 @@
   "breadcrumb": {
     "home": "Home"
   },
+  "ribbon": {
+    "badge": "Season",
+    "text": "It's TechCaribe Fest 2026 season · August 8\u20139, Barranquilla",
+    "textShort": "TechCaribe Fest 2026 · August 8\u20139",
+    "cta": "Get tickets",
+    "dismiss": "Dismiss announcement"
+  },
   "nav": {
     "jobs": "Opportunities",
     "talent": "Talent",
     "blog": "News",
+    "marea": "La Marea",
     "dashboard": "Dashboard",
     "settings": "Settings",
     "admin": "Admin",
@@ -749,6 +757,16 @@
       "tagsPlaceholder": "Type and press Enter to add",
       "addTag": "Add tag",
       "removeTag": "Remove tag",
+      "familia": "Family",
+      "pilar": "Pillar",
+      "formato": "Format",
+      "featured": "Featured",
+      "featuredHint": "Candidate for La Marea hero",
+      "videoUrl": "YouTube video",
+      "videoUrlHint": "Paste a YouTube link to embed it in the note",
+      "ctaText": "CTA text",
+      "ctaTextPlaceholder": "Join the cohort",
+      "ctaUrl": "CTA URL",
       "preview": "Preview",
       "backToList": "Back to list",
       "scheduledAt": "Schedule publication",
@@ -1003,11 +1021,11 @@
         },
         {
           "value": "+400",
-          "label": "students"
+          "label": "graduated students"
         },
         {
           "value": "+5000",
-          "label": "event attendees"
+          "label": "people impacted"
         }
       ],
       "eyebrow": "Innovation & Tech Transformation Center of the Caribbean",
@@ -1071,6 +1089,8 @@
       },
       "joinWhatsApp": "Join group",
       "noCommunities": "Active ecosystem communities will appear here soon.",
+      "eventsHeading": "Flagship events",
+      "communitiesHeading": "Tech communities",
       "eventsTitle": "Featured Events",
       "events": {
         "barranquiIA": "Barranqui-IA",

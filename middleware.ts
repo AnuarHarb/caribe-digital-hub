@@ -1,6 +1,6 @@
 /**
  * Vercel Edge Middleware: serves a self-contained HTML page with dynamic meta
- * tags when social-media crawlers request /blog/:slug.
+ * tags when social-media crawlers request /noticias/:slug (o el legacy /blog/:slug).
  *
  * Builds a minimal HTML document from scratch so crawlers see the correct
  * title, description, and cover image without needing to execute JavaScript.
@@ -9,7 +9,7 @@
 const SITE_URL = "https://costadigital.org";
 
 export const config = {
-  matcher: "/blog/:slug*",
+  matcher: ["/noticias/:slug*", "/blog/:slug*"],
 };
 
 const CRAWLER_AGENTS = [
@@ -115,7 +115,7 @@ function buildCrawlerHtml(meta: {
 
 export default async function middleware(request: Request): Promise<Response> {
   const url = new URL(request.url);
-  const pathMatch = url.pathname.match(/^\/blog\/([^/]+?)\/?$/);
+  const pathMatch = url.pathname.match(/^\/(?:noticias|blog)\/([^/]+?)\/?$/);
   const userAgent = request.headers.get("user-agent") ?? "";
 
   const passThrough = () =>
@@ -156,7 +156,7 @@ export default async function middleware(request: Request): Promise<Response> {
       return passThrough();
     }
 
-    const articleUrl = `${SITE_URL}/blog/${slug}`;
+    const articleUrl = `${SITE_URL}/noticias/${slug}`;
     const title = `${post.title} | Costa Digital`;
     const description = post.excerpt || post.title;
 

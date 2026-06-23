@@ -2,10 +2,18 @@
   "breadcrumb": {
     "home": "Inicio"
   },
+  "ribbon": {
+    "badge": "Temporada",
+    "text": "Estamos en temporada TechCaribe Fest 2026 · 8 y 9 de agosto, Barranquilla",
+    "textShort": "TechCaribe Fest 2026 · 8 y 9 de agosto",
+    "cta": "Comprar entradas",
+    "dismiss": "Cerrar anuncio"
+  },
   "nav": {
     "jobs": "Oportunidades",
     "talent": "Talento",
     "blog": "Noticias",
+    "marea": "La Marea",
     "dashboard": "Panel",
     "settings": "Configuración",
     "admin": "Admin",
@@ -15,7 +23,7 @@
     "events": "Eventos",
     "about": "Conócenos",
     "ecosistema": "Ecosistema",
-    "nosotros": "Nosotros",
+    "nosotros": "Sobre nosotros",
     "programas": "Programas",
     "comunidades": "Comunidades",
     "proyectos": "Proyectos",
@@ -749,6 +757,16 @@
       "tagsPlaceholder": "Escribe y presiona Enter para agregar",
       "addTag": "Agregar etiqueta",
       "removeTag": "Quitar etiqueta",
+      "familia": "Familia",
+      "pilar": "Pilar",
+      "formato": "Formato",
+      "featured": "Destacado",
+      "featuredHint": "Candidato a portada de La Marea",
+      "videoUrl": "Video de YouTube",
+      "videoUrlHint": "Pega un enlace de YouTube para embeberlo en la nota",
+      "ctaText": "Texto del CTA",
+      "ctaTextPlaceholder": "Inscríbete a la cohorte",
+      "ctaUrl": "URL del CTA",
       "preview": "Vista previa",
       "backToList": "Volver al listado",
       "scheduledAt": "Programar publicación",
@@ -1003,11 +1021,11 @@
         },
         {
           "value": "+400",
-          "label": "estudiantes"
+          "label": "estudiantes graduados"
         },
         {
           "value": "+5000",
-          "label": "asistentes a eventos"
+          "label": "personas impactadas"
         }
       ],
       "eyebrow": "Centro de Innovación y Transformación Tecnológica del Caribe",
@@ -1071,6 +1089,8 @@
       },
       "joinWhatsApp": "Unirse al grupo",
       "noCommunities": "Pronto verás las comunidades activas del ecosistema.",
+      "eventsHeading": "Eventos insignia",
+      "communitiesHeading": "Comunidades tech",
       "eventsTitle": "Eventos destacados",
       "events": {
         "barranquiIA": "Barranqui-IA",

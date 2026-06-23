@@ -18,12 +18,12 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/talento?lang=en" />
   </url>
   <url>
-    <loc>https://costadigital.org/blog</loc>
-    <lastmod>2026-06-16</lastmod>
+    <loc>https://costadigital.org/noticias</loc>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/blog" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/blog?lang=en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/noticias" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/noticias?lang=en" />
   </url>
   <url>
     <loc>https://costadigital.org/comunidades</loc>
@@ -56,30 +56,6 @@
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/conocenos" />
     <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/conocenos?lang=en" />
-  </url>
-  <url>
-    <loc>https://costadigital.org/proyectos</loc>
-    <lastmod>2026-06-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/proyectos" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/proyectos?lang=en" />
-  </url>
-  <url>
-    <loc>https://costadigital.org/equipo</loc>
-    <lastmod>2026-06-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/equipo" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/equipo?lang=en" />
-  </url>
-  <url>
-    <loc>https://costadigital.org/sede</loc>
-    <lastmod>2026-06-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://costadigital.org/sede" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://costadigital.org/sede?lang=en" />
   </url>
   <url>
     <loc>https://costadigital.org/terminos</loc>
