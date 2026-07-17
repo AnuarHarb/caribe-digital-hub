@@ -679,7 +679,21 @@
       "created": "Usuario creado exitosamente",
       "createError": "Error al crear usuario",
       "roleUpdated": "Rol actualizado",
-      "roleError": "Error al actualizar rol"
+      "roleError": "Error al actualizar rol",
+      "exportCsv": "Descargar CSV",
+      "exporting": "Exportando...",
+      "exportSuccess": "Lista de usuarios descargada",
+      "exportError": "Error al exportar usuarios",
+      "phone": "Teléfono",
+      "city": "Ciudad",
+      "address": "Dirección",
+      "statsLabel": "Resumen de usuarios",
+      "statTotal": "Usuarios totales",
+      "statAdmins": "admins",
+      "statProfessionals": "Profesionales",
+      "statOrganizations": "Organizaciones",
+      "statVisibility": "Perfiles profesionales",
+      "statWithPhone": "Con teléfono"
     },
     "organizations": {
       "title": "Organizaciones",

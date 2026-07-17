@@ -679,7 +679,21 @@
       "created": "User created successfully",
       "createError": "Error creating user",
       "roleUpdated": "Role updated",
-      "roleError": "Error updating role"
+      "roleError": "Error updating role",
+      "exportCsv": "Download CSV",
+      "exporting": "Exporting...",
+      "exportSuccess": "User list downloaded",
+      "exportError": "Error exporting users",
+      "phone": "Phone",
+      "city": "City",
+      "address": "Address",
+      "statsLabel": "Users overview",
+      "statTotal": "Total users",
+      "statAdmins": "admins",
+      "statProfessionals": "Professionals",
+      "statOrganizations": "Organizations",
+      "statVisibility": "Professional profiles",
+      "statWithPhone": "With phone"
     },
     "organizations": {
       "title": "Organizations",

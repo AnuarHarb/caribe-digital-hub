@@ -30,7 +30,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { UserPlus, Shield, Search } from "lucide-react";
+import {
+  UserPlus,
+  Shield,
+  Search,
+  Download,
+  Users,
+  Building2,
+  Eye,
+  Phone,
+} from "lucide-react";
 import { z } from "zod";
 import { format } from "date-fns";
 
@@ -48,12 +57,39 @@ interface UserRow {
   created_at: string | null;
   role: string;
   is_public: boolean | null;
+  phone: string | null;
+}
+
+function escapeCsvValue(value: string | null | undefined): string {
+  const str = value ?? "";
+  if (/[",\n\r]/.test(str)) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function downloadCsv(filename: string, headers: string[], rows: string[][]) {
+  const bom = "\uFEFF";
+  const lines = [
+    headers.map(escapeCsvValue).join(","),
+    ...rows.map((row) => row.map(escapeCsvValue).join(",")),
+  ];
+  const blob = new Blob([bom + lines.join("\n")], {
+    type: "text/csv;charset=utf-8;",
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 export default function AdminUsers() {
   const { t } = useTranslation();
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [formData, setFormData] = useState({
@@ -71,7 +107,9 @@ export default function AdminUsers() {
     try {
       const [{ data: profiles }, { data: roles }, { data: profs }] =
         await Promise.all([
-          supabase.from("profiles").select("id, full_name, account_type, created_at"),
+          supabase
+            .from("profiles")
+            .select("id, full_name, account_type, created_at, phone"),
           supabase.from("user_roles").select("user_id, role"),
           supabase.from("professional_profiles").select("user_id, is_public"),
         ]);
@@ -91,6 +129,7 @@ export default function AdminUsers() {
           created_at: p.created_at,
           role: (roleMap.get(p.id) as string) ?? "user",
           is_public: profMap.get(p.id) ?? null,
+          phone: p.phone,
         }))
       );
     } catch {
@@ -144,6 +183,48 @@ export default function AdminUsers() {
     }
   };
 
+  const handleExportCsv = async () => {
+    setExporting(true);
+    try {
+      const { data, error } = await supabase.rpc("admin_list_user_contacts");
+      if (error) throw error;
+
+      const headers = [
+        t("admin.users.name"),
+        "Email",
+        t("admin.users.phone"),
+        t("admin.users.city"),
+        t("admin.users.address"),
+        t("admin.users.accountType"),
+        t("admin.users.role"),
+        t("admin.users.createdAt"),
+      ];
+
+      const rows = (data ?? []).map((row) => [
+        row.full_name ?? "",
+        row.email ?? "",
+        row.phone ?? "",
+        row.city ?? "",
+        row.address ?? "",
+        row.account_type ?? "professional",
+        row.role === "admin"
+          ? t("admin.users.roleAdmin")
+          : t("admin.users.roleUser"),
+        row.created_at
+          ? format(new Date(row.created_at), "dd/MM/yyyy")
+          : "",
+      ]);
+
+      const dateStamp = format(new Date(), "yyyy-MM-dd");
+      downloadCsv(`usuarios-costa-digital-${dateStamp}.csv`, headers, rows);
+      toast.success(t("admin.users.exportSuccess"));
+    } catch {
+      toast.error(t("admin.users.exportError"));
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const filtered = useMemo(() => {
     if (!search) return users;
     const q = search.toLowerCase();
@@ -153,6 +234,63 @@ export default function AdminUsers() {
         (u.account_type ?? "").toLowerCase().includes(q)
     );
   }, [users, search]);
+
+  const stats = useMemo(() => {
+    const total = users.length;
+    const admins = users.filter((u) => u.role === "admin").length;
+    const professionals = users.filter(
+      (u) => !u.account_type || u.account_type === "professional"
+    ).length;
+    const organizations = users.filter(
+      (u) => u.account_type === "company" || u.account_type === "community"
+    ).length;
+    const publicProfiles = users.filter((u) => u.is_public === true).length;
+    const privateProfiles = users.filter((u) => u.is_public === false).length;
+    const withPhone = users.filter((u) => !!u.phone?.trim()).length;
+
+    return {
+      total,
+      admins,
+      professionals,
+      organizations,
+      publicProfiles,
+      privateProfiles,
+      withPhone,
+    };
+  }, [users]);
+
+  const statCards = [
+    {
+      title: t("admin.users.statTotal"),
+      value: stats.total,
+      icon: Users,
+      sub: `${stats.admins} ${t("admin.users.statAdmins")}`,
+    },
+    {
+      title: t("admin.users.statProfessionals"),
+      value: stats.professionals,
+      icon: Users,
+      sub: null,
+    },
+    {
+      title: t("admin.users.statOrganizations"),
+      value: stats.organizations,
+      icon: Building2,
+      sub: null,
+    },
+    {
+      title: t("admin.users.statVisibility"),
+      value: stats.publicProfiles + stats.privateProfiles,
+      icon: Eye,
+      sub: `${stats.publicProfiles} ${t("admin.dashboard.public")} / ${stats.privateProfiles} ${t("admin.dashboard.private")}`,
+    },
+    {
+      title: t("admin.users.statWithPhone"),
+      value: stats.withPhone,
+      icon: Phone,
+      sub: `${stats.total ? Math.round((stats.withPhone / stats.total) * 100) : 0}%`,
+    },
+  ];
 
   return (
     <article className="space-y-6">
@@ -165,78 +303,122 @@ export default function AdminUsers() {
             {t("admin.users.subtitle")}
           </p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <UserPlus className="mr-2 h-4 w-4" />
-              {t("admin.users.create")}
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t("admin.users.createTitle")}</DialogTitle>
-              <DialogDescription>{t("admin.users.createDescription")}</DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleCreateUser} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">{t("admin.users.name")}</Label>
-                <Input
-                  id="fullName"
-                  value={formData.fullName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">{t("admin.users.password")}</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>{t("admin.users.role")}</Label>
-                <Select
-                  value={formData.role}
-                  onValueChange={(v: "admin" | "user") =>
-                    setFormData({ ...formData, role: v })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="user">{t("admin.users.roleUser")}</SelectItem>
-                    <SelectItem value="admin">{t("admin.users.roleAdmin")}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button type="submit" className="w-full">
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            onClick={handleExportCsv}
+            disabled={loading || exporting || users.length === 0}
+          >
+            <Download className="mr-2 h-4 w-4" aria-hidden />
+            {exporting ? t("admin.users.exporting") : t("admin.users.exportCsv")}
+          </Button>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <UserPlus className="mr-2 h-4 w-4" />
                 {t("admin.users.create")}
               </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t("admin.users.createTitle")}</DialogTitle>
+                <DialogDescription>{t("admin.users.createDescription")}</DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleCreateUser} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="fullName">{t("admin.users.name")}</Label>
+                  <Input
+                    id="fullName"
+                    value={formData.fullName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, fullName: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password">{t("admin.users.password")}</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>{t("admin.users.role")}</Label>
+                  <Select
+                    value={formData.role}
+                    onValueChange={(v: "admin" | "user") =>
+                      setFormData({ ...formData, role: v })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user">{t("admin.users.roleUser")}</SelectItem>
+                      <SelectItem value="admin">{t("admin.users.roleAdmin")}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button type="submit" className="w-full">
+                  {t("admin.users.create")}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </header>
+
+      <section aria-label={t("admin.users.statsLabel")}>
+        {loading ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Card key={i} className="animate-pulse">
+                <CardContent className="p-6">
+                  <div className="h-4 w-24 rounded bg-muted" />
+                  <div className="mt-3 h-8 w-16 rounded bg-muted" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {statCards.map((card) => (
+              <Card key={card.title}>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    {card.title}
+                  </CardTitle>
+                  <card.icon className="h-5 w-5 text-muted-foreground/60" aria-hidden />
+                </CardHeader>
+                <CardContent>
+                  <p className="text-3xl font-bold">{card.value}</p>
+                  {card.sub && (
+                    <p className="mt-1 text-xs text-muted-foreground">{card.sub}</p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </section>
 
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden />

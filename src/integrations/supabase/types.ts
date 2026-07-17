@@ -640,6 +640,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_list_user_contacts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          full_name: string | null
+          email: string | null
+          phone: string | null
+          city: string | null
+          address: string | null
+          account_type: string | null
+          role: string | null
+          created_at: string | null
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
