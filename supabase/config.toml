@@ -1,7 +1,16 @@
-project_id = "vldlyrzeyejgjkkdajvj"
+project_id = "zjelwgmivqxchdtdyniu"
 
 [functions.ai-curriculum-assistant]
 verify_jwt = false
 
 [functions.process-curriculum]
+verify_jwt = false
+
+[functions.newsletter-subscribe]
+verify_jwt = false
+
+[functions.newsletter-send]
+verify_jwt = true
+
+[functions.newsletter-unsubscribe]
 verify_jwt = false

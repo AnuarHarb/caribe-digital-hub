@@ -15,7 +15,7 @@
 - Talent Network: /talento — Developers, designers, and AI engineers from the Caribbean
 - Communities: /comunidades — Tech communities in the ecosystem
 - Programs: /programas — Education and training programs
-- La Marea (editorial): /noticias — Technology news and ecosystem chronicle
+- Costa Digital News (editorial): /noticias — Technology news and ecosystem chronicle
 - Allies: /aliados — Partner organizations
 - About us: /conocenos — Mission, team, projects, impact and HQ (single page)
 

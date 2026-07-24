@@ -36,6 +36,8 @@ import CredentialPage from "./pages/CredentialPage";
 import Noticias from "./pages/Noticias";
 import NoticiaDetalle from "./pages/NoticiaDetalle";
 import AdminNews from "./pages/admin/AdminNews";
+import AdminNewsletter from "./pages/admin/AdminNewsletter";
+import NewsletterUnsubscribe from "./pages/NewsletterUnsubscribe";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
@@ -50,7 +52,7 @@ import { GoogleAnalytics } from "./components/GoogleAnalytics";
 
 const queryClient = new QueryClient();
 
-// La Marea unifica el blog: /blog redirige a /noticias conservando el slug.
+// Costa Digital News unifica el blog: /blog redirige a /noticias conservando el slug.
 const BlogSlugRedirect = () => {
   const { slug } = useParams<{ slug: string }>();
   return <Navigate to={`/noticias/${slug ?? ""}`} replace />;
@@ -92,6 +94,7 @@ const App = () => (
             <Route path="/para-empresas" element={<Navigate to="/aliados" replace />} />
             <Route path="/terminos" element={<TermsAndConditions />} />
             <Route path="/aviso-de-privacidad" element={<PrivacyPolicy />} />
+            <Route path="/newsletter/baja" element={<NewsletterUnsubscribe />} />
             <Route path="/empresa/:id" element={<CompanyPublicProfile />} />
             <Route
               path="/dashboard"
@@ -131,6 +134,14 @@ const App = () => (
                 element={
                   <ErrorBoundary>
                     <AdminNews />
+                  </ErrorBoundary>
+                }
+              />
+              <Route
+                path="newsletter"
+                element={
+                  <ErrorBoundary>
+                    <AdminNewsletter />
                   </ErrorBoundary>
                 }
               />

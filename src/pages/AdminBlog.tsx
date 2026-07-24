@@ -23,7 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import { Plus, Pencil, Trash2, ImageIcon, ArrowLeft, Eye, X, Newspaper } from "lucide-react";
+import { Plus, Pencil, Trash2, ImageIcon, ArrowLeft, Eye, X, Newspaper, Star } from "lucide-react";
 import { TipTapEditor } from "@/components/blog/TipTapEditor";
 import { TagInput } from "@/components/blog/TagInput";
 import { FamilyBadge } from "@/components/noticias/FamilyBadge";
@@ -82,8 +82,6 @@ type EditorFormData = {
   formato: FormatoId;
   destacado: boolean;
   video_url: string;
-  cta_texto: string;
-  cta_url: string;
 };
 
 // Instantánea de campos editables (excluye status) para detectar cambios sin guardar.
@@ -100,8 +98,6 @@ function formSnapshot(d: EditorFormData): string {
     formato: d.formato,
     destacado: d.destacado,
     video_url: d.video_url,
-    cta_texto: d.cta_texto,
-    cta_url: d.cta_url,
   });
 }
 
@@ -118,8 +114,6 @@ const EMPTY_FORM: EditorFormData = {
   formato: "news-semanal",
   destacado: false,
   video_url: "",
-  cta_texto: "",
-  cta_url: "",
 };
 
 type ViewMode = "list" | "editor";
@@ -164,8 +158,8 @@ export default function AdminBlog() {
       formato: formData.formato,
       destacado: formData.destacado,
       video_url: formData.video_url,
-      cta_texto: formData.cta_texto,
-      cta_url: formData.cta_url,
+      cta_texto: "",
+      cta_url: "",
     },
     { enabled: viewMode === "editor" }
   );
@@ -278,8 +272,6 @@ export default function AdminBlog() {
       formato: post.formato as FormatoId,
       destacado: post.destacado ?? false,
       video_url: post.video_url ?? "",
-      cta_texto: post.cta_texto ?? "",
-      cta_url: post.cta_url ?? "",
     };
     setFormData(data);
     setEditingId(post.id);
@@ -323,8 +315,8 @@ export default function AdminBlog() {
       formato: formData.formato,
       destacado: formData.destacado,
       video_url: formData.video_url || null,
-      cta_texto: formData.cta_texto || null,
-      cta_url: formData.cta_url || null,
+      cta_texto: null,
+      cta_url: null,
     };
 
     if (editingId) {
@@ -343,6 +335,9 @@ export default function AdminBlog() {
         toast.error(error.message);
         return;
       }
+      if (formData.destacado) {
+        await clearOtherFeatured(editingId);
+      }
       toast.success(t("admin.blog.updated"));
     } else {
       const insertPayload = {
@@ -350,15 +345,56 @@ export default function AdminBlog() {
         author_id: user.id,
         published_at: status === "published" ? new Date().toISOString() : null,
       };
-      const { error } = await supabase.from("blog_posts").insert(insertPayload);
+      const { data: created, error } = await supabase
+        .from("blog_posts")
+        .insert(insertPayload)
+        .select("id")
+        .single();
       if (error) {
         toast.error(error.message);
         return;
+      }
+      if (formData.destacado && created?.id) {
+        await clearOtherFeatured(created.id);
       }
       toast.success(t("admin.blog.created"));
     }
     draftAutoSave.clearDraft();
     doBackToList();
+  };
+
+  /** Solo una nota puede ser portada: quita destacado del resto. */
+  const clearOtherFeatured = async (keepId: string) => {
+    const { error } = await supabase
+      .from("blog_posts")
+      .update({ destacado: false })
+      .neq("id", keepId)
+      .eq("destacado", true);
+    if (error) {
+      console.error("[AdminBlog] clearOtherFeatured", error);
+    }
+  };
+
+  const setAsFeatured = async (post: BlogPostRow) => {
+    if (post.status !== "published") {
+      toast.error(t("admin.blog.featuredMustBePublished"));
+      return;
+    }
+    if (post.destacado) {
+      toast.message(t("admin.blog.alreadyFeatured"));
+      return;
+    }
+    const { error } = await supabase
+      .from("blog_posts")
+      .update({ destacado: true })
+      .eq("id", post.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await clearOtherFeatured(post.id);
+    toast.success(t("admin.blog.featuredSet"));
+    await loadPosts();
   };
 
   const handleDelete = async (id: string) => {
@@ -391,8 +427,6 @@ export default function AdminBlog() {
         formato: (draft.formato ?? "news-semanal") as FormatoId,
         destacado: draft.destacado ?? false,
         video_url: draft.video_url ?? "",
-        cta_texto: draft.cta_texto ?? "",
-        cta_url: draft.cta_url ?? "",
       };
       setFormData(data);
       initialFormDataRef.current = formSnapshot(data);
@@ -481,6 +515,20 @@ export default function AdminBlog() {
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="excerpt">{t("admin.blog.excerpt")}</Label>
+                <Textarea
+                  id="excerpt"
+                  value={formData.excerpt}
+                  onChange={(e) => setFormData((p) => ({ ...p, excerpt: e.target.value }))}
+                  placeholder={t("admin.blog.excerptPlaceholder")}
+                  rows={3}
+                  className="bg-muted/50"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {t("admin.blog.excerptHint")}
+                </p>
+              </div>
+              <div className="space-y-2">
                 <Label>{t("admin.blog.content")}</Label>
                 <TipTapEditor
                   content={formData.content}
@@ -492,17 +540,6 @@ export default function AdminBlog() {
                   <span>{t("admin.blog.wordCount", { count: wordCount })}</span>
                   <span>{t("admin.blog.charCount", { count: charCount })}</span>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="excerpt">{t("admin.blog.excerpt")}</Label>
-                <Textarea
-                  id="excerpt"
-                  value={formData.excerpt}
-                  onChange={(e) => setFormData((p) => ({ ...p, excerpt: e.target.value }))}
-                  placeholder={t("admin.blog.excerptPlaceholder")}
-                  rows={3}
-                  className="bg-muted/50"
-                />
               </div>
             </div>
 
@@ -633,9 +670,12 @@ export default function AdminBlog() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="flex items-center justify-between gap-2 rounded-lg border border-border p-3">
+                  <div className="flex items-center justify-between gap-2 rounded-lg border border-rose-200/70 bg-rose-50/50 p-3 dark:border-rose-500/20 dark:bg-rose-500/10">
                     <div className="space-y-0.5">
-                      <Label htmlFor="destacado">{t("admin.blog.featured")}</Label>
+                      <Label htmlFor="destacado" className="flex items-center gap-1.5">
+                        <Star className="h-3.5 w-3.5 text-rose-600" aria-hidden />
+                        {t("admin.blog.featured")}
+                      </Label>
                       <p className="text-xs text-muted-foreground">
                         {t("admin.blog.featuredHint")}
                       </p>
@@ -664,26 +704,6 @@ export default function AdminBlog() {
                     <TagInput
                       value={formData.tags}
                       onChange={(tags) => setFormData((p) => ({ ...p, tags }))}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="cta_texto">{t("admin.blog.ctaText")}</Label>
-                    <Input
-                      id="cta_texto"
-                      value={formData.cta_texto}
-                      onChange={(e) => setFormData((p) => ({ ...p, cta_texto: e.target.value }))}
-                      placeholder={t("admin.blog.ctaTextPlaceholder")}
-                      className="bg-muted/50"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="cta_url">{t("admin.blog.ctaUrl")}</Label>
-                    <Input
-                      id="cta_url"
-                      value={formData.cta_url}
-                      onChange={(e) => setFormData((p) => ({ ...p, cta_url: e.target.value }))}
-                      placeholder="/programas"
-                      className="bg-muted/50"
                     />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -861,7 +881,7 @@ export default function AdminBlog() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
               <Card key={post.id} className="flex flex-col overflow-hidden transition-all hover:shadow-md">
-                <div className="aspect-video w-full overflow-hidden bg-muted">
+                <div className="relative aspect-video w-full overflow-hidden bg-muted">
                   {post.cover_image_url ? (
                     <img
                       src={post.cover_image_url}
@@ -872,6 +892,12 @@ export default function AdminBlog() {
                     <div className="flex h-full w-full items-center justify-center">
                       <Newspaper className="h-12 w-12 text-muted-foreground" aria-hidden />
                     </div>
+                  )}
+                  {post.destacado && (
+                    <Badge className="absolute left-2 top-2 gap-1 bg-rose-600 text-white hover:bg-rose-600">
+                      <Star className="h-3 w-3 fill-current" aria-hidden />
+                      {t("admin.blog.featuredBadge")}
+                    </Badge>
                   )}
                 </div>
                 <CardHeader className="flex-1 pb-2">
@@ -894,11 +920,32 @@ export default function AdminBlog() {
                     {formatDate(post.published_at ?? post.created_at)}
                   </p>
                 </CardHeader>
-                <CardContent className="flex gap-2 pt-0">
+                <CardContent className="flex flex-wrap gap-2 pt-0">
                   <Button variant="outline" size="sm" className="flex-1 gap-1" onClick={() => openEdit(post)}>
                     <Pencil className="h-3.5 w-3.5" aria-hidden />
                     {t("common.edit")}
                   </Button>
+                  {post.status === "published" && (
+                    <Button
+                      type="button"
+                      variant={post.destacado ? "default" : "outline"}
+                      size="sm"
+                      className={
+                        post.destacado
+                          ? "gap-1 bg-rose-600 text-white hover:bg-rose-700"
+                          : "gap-1"
+                      }
+                      onClick={() => setAsFeatured(post)}
+                      disabled={post.destacado}
+                      title={t("admin.blog.setFeatured")}
+                    >
+                      <Star
+                        className={`h-3.5 w-3.5 ${post.destacado ? "fill-current" : ""}`}
+                        aria-hidden
+                      />
+                      {post.destacado ? t("admin.blog.featuredBadge") : t("admin.blog.setFeatured")}
+                    </Button>
+                  )}
                   <Button
                     variant="outline"
                     size="sm"

@@ -25,7 +25,7 @@ const SELECT = `
   profiles(full_name)
 `;
 
-/** Lista de notas publicadas (La Marea), ordenadas por fecha desc. */
+/** Lista de notas publicadas (Costa Digital News), ordenadas por fecha desc. */
 export function useNoticias() {
   return useQuery({
     queryKey: ["noticias"],

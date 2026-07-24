@@ -2,7 +2,6 @@ import { useSearchParams } from "react-router-dom";
 import {
   filterNotes,
   pickHeroNote,
-  pickUltimoPulso,
   type Note,
 } from "@/content/noticias";
 import { isFamiliaId, isPilarId, MAREA } from "@/content/taxonomies";
@@ -15,12 +14,11 @@ interface NewsLandingProps {
   notes: Note[];
 }
 
-/** Landing de «La Marea»: hero ancla + banner de El Pulso + grid filtrable. */
+/** Landing de «Costa Digital News»: hero ancla + banner de El Pulso + grid filtrable. */
 export function NewsLanding({ notes }: NewsLandingProps) {
   const [searchParams] = useSearchParams();
 
   const heroNote = pickHeroNote(notes);
-  const ultimoPulso = pickUltimoPulso(notes);
 
   const familiaParam = searchParams.get("familia");
   const pilarParam = searchParams.get("pilar");
@@ -46,7 +44,7 @@ export function NewsLanding({ notes }: NewsLandingProps) {
 
       {heroNote && <NewsHero note={heroNote} />}
 
-      <PulsoBanner note={ultimoPulso} />
+      <PulsoBanner />
 
       <section aria-labelledby="grid-heading" className="space-y-6">
         <h2 id="grid-heading" className="sr-only">
@@ -55,7 +53,7 @@ export function NewsLanding({ notes }: NewsLandingProps) {
         <NewsFilters />
         <NewsGrid
           notes={filtered}
-          emptyLabel="Pronto publicaremos más notas. Sube la marea."
+          emptyLabel="Pronto publicaremos más notas. Mantente al día."
         />
       </section>
     </div>

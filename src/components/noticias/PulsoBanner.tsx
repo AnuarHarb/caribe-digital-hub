@@ -1,25 +1,18 @@
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, Waves } from "lucide-react";
+import { Waves } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MAREA } from "@/content/taxonomies";
-import type { Note } from "@/content/noticias";
+import { subscribeToNewsletter } from "@/lib/newsletter";
 
 interface PulsoBannerProps {
-  /** Último News semanal, para mostrar el resumen de la semana. */
-  note?: Note;
-  /**
-   * Handler de suscripción. Si no se pasa, usa un stub.
-   * TODO(backend): conectar a integración de correo/WhatsApp real.
-   */
+  /** Handler opcional; por defecto suscribe vía edge function + Resend. */
   onSubscribe?: (email: string) => void | Promise<void>;
   className?: string;
 }
 
-/** Banner ancla de El Pulso, reutilizable dentro y fuera de /noticias. */
-export function PulsoBanner({ note, onSubscribe, className }: PulsoBannerProps) {
+/** Franja de suscripción a El Pulso (newsletter semanal). */
+export function PulsoBanner({ onSubscribe, className }: PulsoBannerProps) {
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -31,10 +24,9 @@ export function PulsoBanner({ note, onSubscribe, className }: PulsoBannerProps) 
       if (onSubscribe) {
         await onSubscribe(email.trim());
       } else {
-        // TODO(backend): reemplazar stub por suscripción real (correo/WhatsApp).
-        console.info("[PulsoBanner] onSubscribe stub:", email.trim());
+        await subscribeToNewsletter(email.trim(), { source: "pulso-banner" });
       }
-      toast.success("¡Listo! Te llega El Pulso. Sube la marea.");
+      toast.success("¡Listo! Te suscribiste al newsletter El Pulso.");
       setEmail("");
     } catch {
       toast.error("No pudimos suscribirte. Intenta de nuevo.");
@@ -46,38 +38,32 @@ export function PulsoBanner({ note, onSubscribe, className }: PulsoBannerProps) 
   return (
     <section
       aria-labelledby="pulso-banner-heading"
-      className={`overflow-hidden rounded-2xl border border-rose-200/60 bg-rose-50 p-6 dark:border-rose-500/20 dark:bg-rose-500/10 md:p-8 ${className ?? ""}`}
+      className={`rounded-xl border border-rose-200/70 bg-gradient-to-r from-rose-50 via-rose-50/80 to-orange-50/40 px-5 py-4 dark:border-rose-500/25 dark:from-rose-500/15 dark:via-rose-500/10 dark:to-orange-500/5 md:px-6 ${className ?? ""}`}
     >
-      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-xl">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-semibold text-rose-700 dark:bg-rose-500/20 dark:text-rose-300">
-            <Waves className="h-3.5 w-3.5" aria-hidden />
-            El Pulso · semanal
-          </span>
-          <h2
-            id="pulso-banner-heading"
-            className="mt-3 font-display text-xl font-bold text-foreground md:text-2xl"
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:gap-6">
+        <div className="flex min-w-0 flex-1 items-start gap-3 md:items-center">
+          <span
+            className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-rose-500/15 text-rose-600 dark:bg-rose-500/25 dark:text-rose-300 md:mt-0"
+            aria-hidden
           >
-            {MAREA.grito} Recibe El Pulso.
-          </h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-            {note?.resumen ??
-              "El resumen de lo que mueve la vaina tech en el Caribe, cada semana en tu correo."}
-          </p>
-          {note && (
-            <Link
-              to={`/noticias/${note.slug}`}
-              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-rose-600 hover:underline dark:text-rose-400"
+            <Waves className="h-4 w-4" />
+          </span>
+          <div className="min-w-0">
+            <h2
+              id="pulso-banner-heading"
+              className="font-display text-base font-semibold text-foreground md:text-lg"
             >
-              Leer la última edición
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-          )}
+              El Pulso — newsletter semanal
+            </h2>
+            <p className="mt-0.5 text-sm text-rose-800/70 dark:text-rose-200/70">
+              Lo que mueve la vaina tech en el Caribe, en tu correo.
+            </p>
+          </div>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="flex w-full max-w-sm flex-col gap-2 sm:flex-row"
+          className="flex w-full flex-col gap-2 sm:flex-row md:w-auto md:max-w-md md:shrink-0"
         >
           <label htmlFor="pulso-email" className="sr-only">
             Correo electrónico
@@ -89,14 +75,14 @@ export function PulsoBanner({ note, onSubscribe, className }: PulsoBannerProps) 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@correo.com"
-            className="bg-background"
+            className="border-rose-200/80 bg-background/90 dark:border-rose-500/30"
           />
           <Button
             type="submit"
             disabled={submitting}
-            className="shrink-0 bg-rose-600 text-white hover:bg-rose-700"
+            className="shrink-0 bg-rose-600 text-white hover:bg-rose-700 dark:bg-rose-500 dark:hover:bg-rose-400"
           >
-            Recibe El Pulso
+            Suscribirme
           </Button>
         </form>
       </div>

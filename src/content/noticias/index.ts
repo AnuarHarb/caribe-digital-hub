@@ -1,5 +1,5 @@
 /**
- * Modelo de contenido de «La Marea».
+ * Modelo de contenido de «Costa Digital News».
  *
  * La sección está unificada con el blog: la fuente de verdad es la tabla
  * `blog_posts` de Supabase (ver `src/hooks/useNoticias.ts`). Este módulo define
@@ -82,15 +82,11 @@ export function sortByFechaDesc(notes: Note[]): Note[] {
 }
 
 /**
- * Nota ancla para el hero: el News semanal más reciente y, si no hay, la nota
- * destacada; como último recurso, la más reciente.
+ * Nota ancla para el hero de Costa Digital News.
+ * Prioriza la marcada como «destacado» en el admin; si no hay, la más reciente.
  */
 export function pickHeroNote(notes: Note[]): Note | undefined {
-  return (
-    notes.find((n) => n.formato === "news-semanal") ??
-    notes.find((n) => n.destacado) ??
-    notes[0]
-  );
+  return notes.find((n) => n.destacado) ?? notes[0];
 }
 
 /** El último News semanal (para el PulsoBanner). */

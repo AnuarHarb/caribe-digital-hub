@@ -635,6 +635,123 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscribers: {
+        Row: {
+          id: string
+          email: string
+          name: string | null
+          status: Database["public"]["Enums"]["newsletter_subscriber_status"]
+          source: string
+          unsubscribe_token: string
+          created_at: string
+          updated_at: string
+          unsubscribed_at: string | null
+        }
+        Insert: {
+          id?: string
+          email: string
+          name?: string | null
+          status?: Database["public"]["Enums"]["newsletter_subscriber_status"]
+          source?: string
+          unsubscribe_token?: string
+          created_at?: string
+          updated_at?: string
+          unsubscribed_at?: string | null
+        }
+        Update: {
+          id?: string
+          email?: string
+          name?: string | null
+          status?: Database["public"]["Enums"]["newsletter_subscriber_status"]
+          source?: string
+          unsubscribe_token?: string
+          created_at?: string
+          updated_at?: string
+          unsubscribed_at?: string | null
+        }
+        Relationships: []
+      }
+      newsletter_campaigns: {
+        Row: {
+          id: string
+          subject: string
+          html_body: string
+          status: Database["public"]["Enums"]["newsletter_campaign_status"]
+          created_by: string | null
+          recipient_count: number
+          sent_count: number
+          failed_count: number
+          error_message: string | null
+          sent_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          subject: string
+          html_body: string
+          status?: Database["public"]["Enums"]["newsletter_campaign_status"]
+          created_by?: string | null
+          recipient_count?: number
+          sent_count?: number
+          failed_count?: number
+          error_message?: string | null
+          sent_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          subject?: string
+          html_body?: string
+          status?: Database["public"]["Enums"]["newsletter_campaign_status"]
+          created_by?: string | null
+          recipient_count?: number
+          sent_count?: number
+          failed_count?: number
+          error_message?: string | null
+          sent_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      newsletter_sends: {
+        Row: {
+          id: string
+          campaign_id: string
+          subscriber_id: string | null
+          email: string
+          resend_id: string | null
+          status: Database["public"]["Enums"]["newsletter_send_status"]
+          error_message: string | null
+          sent_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          campaign_id: string
+          subscriber_id?: string | null
+          email: string
+          resend_id?: string | null
+          status?: Database["public"]["Enums"]["newsletter_send_status"]
+          error_message?: string | null
+          sent_at?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          campaign_id?: string
+          subscriber_id?: string | null
+          email?: string
+          resend_id?: string | null
+          status?: Database["public"]["Enums"]["newsletter_send_status"]
+          error_message?: string | null
+          sent_at?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -679,6 +796,9 @@ export type Database = {
       company_member_role: "owner" | "admin" | "member"
       invitation_status: "pending" | "accepted" | "declined"
       blog_status: "draft" | "published"
+      newsletter_subscriber_status: "active" | "unsubscribed"
+      newsletter_campaign_status: "draft" | "sending" | "sent" | "failed"
+      newsletter_send_status: "pending" | "sent" | "failed"
       application_status: "pending" | "reviewed" | "interview" | "accepted" | "rejected"
       availability_status: "available" | "open_to_offers" | "not_looking"
       company_size: "startup" | "solo_founder" | "small" | "medium" | "large" | "enterprise"
@@ -819,6 +939,9 @@ export const Constants = {
       company_member_role: ["owner", "admin", "member"],
       invitation_status: ["pending", "accepted", "declined"],
       blog_status: ["draft", "published"],
+      newsletter_subscriber_status: ["active", "unsubscribed"],
+      newsletter_campaign_status: ["draft", "sending", "sent", "failed"],
+      newsletter_send_status: ["pending", "sent", "failed"],
       application_status: ["pending", "reviewed", "interview", "accepted", "rejected"],
       availability_status: ["available", "open_to_offers", "not_looking"],
       company_size: ["startup", "solo_founder", "small", "medium", "large", "enterprise"],

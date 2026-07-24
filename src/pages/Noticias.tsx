@@ -30,7 +30,7 @@ export default function Noticias() {
     <div className="min-h-screen bg-background">
       <SEOHead
         title={`${MAREA.nombre} — ${MAREA.descriptor}`}
-        description="La crónica del ecosistema tech del Caribe: El Pulso, A Fondo, Voces e Historias de la Costa."
+        description="La crónica del ecosistema tech del Caribe: El Pulso (newsletter semanal), A Fondo, Voces e Historias de la Costa."
         canonical="/noticias"
         keywords={["noticias tech Caribe", "ecosistema tech Caribe", "TechCaribe", "Costa Digital"]}
       />

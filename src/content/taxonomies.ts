@@ -1,5 +1,5 @@
 /**
- * Taxonomías de la sección editorial «La Marea».
+ * Taxonomías de la sección editorial «Costa Digital News».
  *
  * Convenciones del proyecto a las que se adhiere este módulo:
  * - Alias `@/` → `src/`.
@@ -14,11 +14,7 @@
  */
 
 export type FamiliaId = "pulso" | "profundidad" | "voces" | "pruebas";
-export type PilarId =
-  | "tech-centre"
-  | "comunidad"
-  | "ciudad-inmersiva"
-  | "caribe-ventures";
+export type PilarId = "comunidad" | "educacion" | "startups" | "ciudad";
 export type FormatoId =
   | "news-semanal"
   | "anuncio"
@@ -70,7 +66,7 @@ export const FAMILIAS: Record<FamiliaId, FamiliaDef> = {
   pulso: {
     id: "pulso",
     label: "El Pulso",
-    descriptor: "ritmo rápido · comunidad",
+    descriptor: "newsletter semanal",
     voz: "comunidad",
     color: {
       badge: "bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300",
@@ -120,15 +116,6 @@ export const FAMILIAS: Record<FamiliaId, FamiliaDef> = {
 };
 
 export const PILARES: Record<PilarId, PilarDef> = {
-  "tech-centre": {
-    id: "tech-centre",
-    label: "Tech Centre",
-    color: {
-      badge: "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300",
-      badgeActive: "bg-blue-600 text-white border-blue-600",
-      dot: "bg-blue-500",
-    },
-  },
   comunidad: {
     id: "comunidad",
     label: "Comunidad",
@@ -139,24 +126,33 @@ export const PILARES: Record<PilarId, PilarDef> = {
       dot: "bg-emerald-500",
     },
   },
-  "ciudad-inmersiva": {
-    id: "ciudad-inmersiva",
-    label: "Ciudad Inmersiva",
+  educacion: {
+    id: "educacion",
+    label: "Educación",
     color: {
-      badge:
-        "bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-300",
-      badgeActive: "bg-purple-600 text-white border-purple-600",
-      dot: "bg-purple-500",
+      badge: "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300",
+      badgeActive: "bg-blue-600 text-white border-blue-600",
+      dot: "bg-blue-500",
     },
   },
-  "caribe-ventures": {
-    id: "caribe-ventures",
-    label: "Caribe Ventures",
+  startups: {
+    id: "startups",
+    label: "Startups",
     color: {
       badge:
         "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300",
       badgeActive: "bg-orange-600 text-white border-orange-600",
       dot: "bg-orange-500",
+    },
+  },
+  ciudad: {
+    id: "ciudad",
+    label: "Ciudad",
+    color: {
+      badge:
+        "bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-300",
+      badgeActive: "bg-purple-600 text-white border-purple-600",
+      dot: "bg-purple-500",
     },
   },
 };
@@ -189,9 +185,9 @@ export function isFormatoId(value: string | null | undefined): value is FormatoI
   return !!value && value in FORMATOS;
 }
 
-/** Marca editorial de la sección (cabezote «La Marea»). */
+/** Marca editorial de la sección (cabezote «Costa Digital News»). */
 export const MAREA = {
-  nombre: "La Marea",
+  nombre: "Costa Digital News",
   descriptor: "Lo que mueve la vaina tech en el Caribe.",
-  grito: "Sube la marea.",
+  grito: "Mantente al día.",
 } as const;

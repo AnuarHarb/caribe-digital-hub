@@ -7,7 +7,7 @@ interface PillarBadgeProps {
 }
 
 /**
- * Badge de pilar para «La Marea». Independiente del PillarBadge de landing
+ * Badge de pilar para «Costa Digital News». Independiente del PillarBadge de landing
  * (que usa otros pilares) para no chocar.
  */
 export function PillarBadge({ pilar, className }: PillarBadgeProps) {

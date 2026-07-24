@@ -16,6 +16,7 @@ import {
   Building2,
   Briefcase,
   Newspaper,
+  Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoImage from "@/assets/costa-digital-logo.png";
@@ -29,6 +30,7 @@ export function AdminSidebar() {
     { to: "/admin/organizaciones", label: t("admin.nav.organizations"), icon: Building2, end: false },
     { to: "/admin/ofertas", label: t("admin.nav.jobs"), icon: Briefcase, end: false },
     { to: "/admin/noticias", label: t("admin.nav.news"), icon: Newspaper, end: false },
+    { to: "/admin/newsletter", label: t("admin.nav.newsletter"), icon: Mail, end: false },
   ];
 
   return (
