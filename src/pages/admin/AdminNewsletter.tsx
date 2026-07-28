@@ -18,14 +18,20 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
+  cancelStaggeredCampaign,
   estimateFilteredRecipients,
   fetchAllNewsletterSubscribers,
+  fetchCampaignSendCounts,
+  fetchCampaignSendsPage,
   fetchExistingSubscriberEmails,
   fetchNewsletterUserLinks,
   importNewsletterSubscribers,
   parseSubscriberCsvDetailed,
   processNewsletterBatch,
   sendNewsletter,
+  updateCampaignSchedule,
+  type CampaignSendCounts,
+  type CampaignSendStatus,
   type NewsletterSendMode,
   type NewsletterUserLink,
   type NewsletterValidationFilter,
@@ -77,7 +83,7 @@ type Campaign = {
   id: string;
   subject: string;
   html_body: string;
-  status: "draft" | "sending" | "sent" | "failed";
+  status: "draft" | "sending" | "sent" | "failed" | "cancelled";
   recipient_count: number;
   sent_count: number;
   failed_count: number;
@@ -93,12 +99,34 @@ type Campaign = {
 type SendRow = {
   id: string;
   email: string;
-  status: "pending" | "sent" | "failed";
+  status: CampaignSendStatus;
   resend_id: string | null;
   error_message: string | null;
   sent_at: string | null;
   created_at: string;
 };
+
+const SENDS_PAGE_SIZE = 50;
+
+function toDatetimeLocalValue(iso: string | null): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function fromDatetimeLocalValue(local: string): string {
+  return new Date(local).toISOString();
+}
+
+function getScheduleState(campaign: Campaign): "scheduled" | "ready" | "cancelled" | "done" | "none" {
+  if (campaign.send_mode !== "staggered") return "none";
+  if (campaign.status === "cancelled") return "cancelled";
+  if (campaign.status === "sent" || campaign.status === "failed") return "done";
+  if (campaign.status !== "sending") return "none";
+  if (!campaign.next_batch_at) return "ready";
+  return new Date(campaign.next_batch_at).getTime() <= Date.now() ? "ready" : "scheduled";
+}
 
 function escapeCsvValue(value: string | null | undefined): string {
   const str = value ?? "";
@@ -143,8 +171,15 @@ export default function AdminNewsletter() {
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
   const [sends, setSends] = useState<SendRow[]>([]);
+  const [sendCounts, setSendCounts] = useState<CampaignSendCounts | null>(null);
+  const [sendsFilter, setSendsFilter] = useState<CampaignSendStatus | "all">("sent");
+  const [sendsPage, setSendsPage] = useState(0);
+  const [sendsTotal, setSendsTotal] = useState(0);
   const [loadingSends, setLoadingSends] = useState(false);
   const [previewCampaign, setPreviewCampaign] = useState<Campaign | null>(null);
+  const [scheduleDraft, setScheduleDraft] = useState("");
+  const [savingSchedule, setSavingSchedule] = useState(false);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -180,6 +215,14 @@ export default function AdminNewsletter() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    if (!selectedCampaignId) return;
+    const campaign = campaigns.find((c) => c.id === selectedCampaignId);
+    if (campaign) {
+      setScheduleDraft(toDatetimeLocalValue(campaign.next_batch_at));
+    }
+  }, [campaigns, selectedCampaignId]);
 
   const activeCount = useMemo(
     () => subscribers.filter((s) => s.status === "active").length,
@@ -459,7 +502,7 @@ export default function AdminNewsletter() {
       }
       await loadData();
       if (selectedCampaignId === campaignId) {
-        await loadSends(campaignId);
+        await loadSends(campaignId, { resetPage: true });
       }
     } catch (err) {
       console.error(err);
@@ -469,17 +512,39 @@ export default function AdminNewsletter() {
     }
   };
 
-  const loadSends = async (campaignId: string) => {
+  const loadSends = async (
+    campaignId: string,
+    options?: {
+      resetPage?: boolean;
+      filter?: CampaignSendStatus | "all";
+      page?: number;
+    }
+  ) => {
+    const nextFilter = options?.filter ?? sendsFilter;
+    const nextPage = options?.resetPage ? 0 : (options?.page ?? sendsPage);
+
     setSelectedCampaignId(campaignId);
+    setSendsFilter(nextFilter);
+    setSendsPage(nextPage);
     setLoadingSends(true);
+
+    const campaign = campaigns.find((c) => c.id === campaignId);
+    if (campaign) {
+      setScheduleDraft(toDatetimeLocalValue(campaign.next_batch_at));
+    }
+
     try {
-      const { data, error } = await supabase
-        .from("newsletter_sends")
-        .select("id, email, status, resend_id, error_message, sent_at, created_at")
-        .eq("campaign_id", campaignId)
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      setSends((data ?? []) as SendRow[]);
+      const [pageResult, counts] = await Promise.all([
+        fetchCampaignSendsPage(campaignId, {
+          status: nextFilter,
+          page: nextPage,
+          pageSize: SENDS_PAGE_SIZE,
+        }),
+        fetchCampaignSendCounts(campaignId),
+      ]);
+      setSends(pageResult.rows as SendRow[]);
+      setSendsTotal(pageResult.total);
+      setSendCounts(counts);
     } catch (err) {
       console.error(err);
       toast.error(t("admin.newsletter.sendsLoadError"));
@@ -488,15 +553,72 @@ export default function AdminNewsletter() {
     }
   };
 
+  const handleSaveSchedule = async (campaignId: string) => {
+    if (!scheduleDraft) {
+      toast.error(t("admin.newsletter.scheduleRequired"));
+      return;
+    }
+    setSavingSchedule(true);
+    try {
+      await updateCampaignSchedule(campaignId, fromDatetimeLocalValue(scheduleDraft));
+      toast.success(t("admin.newsletter.scheduleUpdated"));
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      toast.error(t("admin.newsletter.scheduleUpdateError"));
+    } finally {
+      setSavingSchedule(false);
+    }
+  };
+
+  const handleCancelCampaign = async (campaignId: string) => {
+    const confirmed = window.confirm(t("admin.newsletter.cancelConfirm"));
+    if (!confirmed) return;
+    setCancellingId(campaignId);
+    try {
+      await cancelStaggeredCampaign(campaignId);
+      toast.success(t("admin.newsletter.cancelSuccess"));
+      await loadData();
+      if (selectedCampaignId === campaignId) {
+        await loadSends(campaignId, { resetPage: true, filter: "cancelled" });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(t("admin.newsletter.cancelError"));
+    } finally {
+      setCancellingId(null);
+    }
+  };
+
+  const selectedCampaign = useMemo(
+    () => campaigns.find((c) => c.id === selectedCampaignId) ?? null,
+    [campaigns, selectedCampaignId]
+  );
+
   const statusBadge = (status: string) => {
     const variant =
       status === "active" || status === "sent"
         ? "default"
-        : status === "failed" || status === "unsubscribed"
+        : status === "failed" || status === "unsubscribed" || status === "cancelled"
           ? "destructive"
           : "secondary";
     return <Badge variant={variant}>{t(`admin.newsletter.status.${status}`)}</Badge>;
   };
+
+  const scheduleBadge = (campaign: Campaign) => {
+    const state = getScheduleState(campaign);
+    if (state === "none") return null;
+    const label = t(`admin.newsletter.scheduleState.${state}`);
+    const variant =
+      state === "ready"
+        ? "default"
+        : state === "cancelled"
+          ? "destructive"
+          : "secondary";
+    return <Badge variant={variant}>{label}</Badge>;
+  };
+
+  const sendsPageCount = Math.max(1, Math.ceil(sendsTotal / SENDS_PAGE_SIZE));
 
   return (
     <main className="min-w-0 space-y-5 sm:space-y-6">
@@ -1058,20 +1180,36 @@ export default function AdminNewsletter() {
                           {format(new Date(c.sent_at ?? c.created_at), "dd MMM yyyy HH:mm")}
                         </TableCell>
                         <TableCell className="text-right">
-                          <div className="flex flex-col items-stretch justify-end gap-1 sm:flex-row sm:items-center">
+                          <div className="flex flex-col items-stretch justify-end gap-1 sm:flex-row sm:flex-wrap sm:items-center">
+                            {c.send_mode === "staggered" && scheduleBadge(c)}
                             {c.status === "sending" && c.send_mode === "staggered" && (
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                disabled={processingBatchId === c.id}
-                                onClick={() => handleProcessBatch(c.id)}
-                              >
-                                {processingBatchId === c.id ? (
-                                  <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" aria-hidden />
-                                ) : null}
-                                {t("admin.newsletter.processBatch")}
-                              </Button>
+                              <>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  disabled={processingBatchId === c.id}
+                                  onClick={() => handleProcessBatch(c.id)}
+                                >
+                                  {processingBatchId === c.id ? (
+                                    <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" aria-hidden />
+                                  ) : null}
+                                  {t("admin.newsletter.sendNow")}
+                                </Button>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-destructive"
+                                  disabled={cancellingId === c.id}
+                                  onClick={() => handleCancelCampaign(c.id)}
+                                >
+                                  {cancellingId === c.id ? (
+                                    <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" aria-hidden />
+                                  ) : null}
+                                  {t("admin.newsletter.cancelCampaign")}
+                                </Button>
+                              </>
                             )}
                             <Button
                               type="button"
@@ -1087,7 +1225,12 @@ export default function AdminNewsletter() {
                               type="button"
                               variant="ghost"
                               size="sm"
-                              onClick={() => loadSends(c.id)}
+                              onClick={() =>
+                                loadSends(c.id, {
+                                  resetPage: true,
+                                  filter: c.status === "sending" ? "pending" : "sent",
+                                })
+                              }
                             >
                               {t("admin.newsletter.viewSends")}
                             </Button>
@@ -1103,9 +1246,14 @@ export default function AdminNewsletter() {
                                       ? format(new Date(c.next_batch_at), "dd MMM HH:mm")
                                       : "—",
                                   })
-                                : t("admin.newsletter.staggeredDone", {
-                                    daily: c.daily_limit ?? "—",
-                                  })}
+                                : c.status === "cancelled"
+                                  ? t("admin.newsletter.staggeredCancelled", {
+                                      sent: c.sent_count,
+                                      total: c.recipient_count,
+                                    })
+                                  : t("admin.newsletter.staggeredDone", {
+                                      daily: c.daily_limit ?? "—",
+                                    })}
                             </p>
                           )}
                         </TableCell>
@@ -1150,57 +1298,224 @@ export default function AdminNewsletter() {
             </DialogContent>
           </Dialog>
 
-          {selectedCampaignId && (
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("admin.newsletter.sendsTitle")}</CardTitle>
-                <CardDescription>
-                  {t("admin.newsletter.sendsDescription")} · Resend IDs
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="p-0">
-                {loadingSends ? (
-                  <p className="p-6 text-sm text-muted-foreground">
-                    {t("admin.newsletter.loading")}
-                  </p>
-                ) : sends.length === 0 ? (
-                  <p className="p-6 text-sm text-muted-foreground">
-                    {t("admin.newsletter.noSends")}
-                  </p>
-                ) : (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>{t("admin.newsletter.email")}</TableHead>
-                        <TableHead>{t("admin.newsletter.statusLabel")}</TableHead>
-                        <TableHead>Resend ID</TableHead>
-                        <TableHead>{t("admin.newsletter.date")}</TableHead>
-                        <TableHead>{t("admin.newsletter.error")}</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sends.map((s) => (
-                        <TableRow key={s.id}>
-                          <TableCell>{s.email}</TableCell>
-                          <TableCell>{statusBadge(s.status)}</TableCell>
-                          <TableCell className="font-mono text-xs">
-                            {s.resend_id ?? "—"}
-                          </TableCell>
-                          <TableCell>
-                            {s.sent_at
-                              ? format(new Date(s.sent_at), "dd MMM yyyy HH:mm")
-                              : "—"}
-                          </TableCell>
-                          <TableCell className="max-w-xs truncate text-sm text-muted-foreground">
-                            {s.error_message ?? "—"}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+          {selectedCampaign && (
+            <section className="space-y-4">
+              {selectedCampaign.send_mode === "staggered" &&
+                selectedCampaign.status === "sending" && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>{t("admin.newsletter.scheduleTitle")}</CardTitle>
+                      <CardDescription>
+                        {t("admin.newsletter.scheduleDescription")}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {scheduleBadge(selectedCampaign)}
+                        <span className="text-sm text-muted-foreground">
+                          {t("admin.newsletter.scheduleDaily", {
+                            daily: selectedCampaign.daily_limit ?? "—",
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                        <div className="w-full space-y-1.5 sm:max-w-xs">
+                          <Label htmlFor="next-batch-at">
+                            {t("admin.newsletter.nextBatchAt")}
+                          </Label>
+                          <Input
+                            id="next-batch-at"
+                            type="datetime-local"
+                            value={scheduleDraft}
+                            onChange={(e) => setScheduleDraft(e.target.value)}
+                          />
+                        </div>
+                        <div className="flex flex-col gap-2 sm:flex-row">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            disabled={savingSchedule}
+                            onClick={() => handleSaveSchedule(selectedCampaign.id)}
+                          >
+                            {savingSchedule ? (
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                            ) : null}
+                            {t("admin.newsletter.saveSchedule")}
+                          </Button>
+                          <Button
+                            type="button"
+                            disabled={processingBatchId === selectedCampaign.id}
+                            onClick={() => handleProcessBatch(selectedCampaign.id)}
+                          >
+                            {processingBatchId === selectedCampaign.id ? (
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                            ) : null}
+                            {t("admin.newsletter.sendNow")}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            disabled={cancellingId === selectedCampaign.id}
+                            onClick={() => handleCancelCampaign(selectedCampaign.id)}
+                          >
+                            {cancellingId === selectedCampaign.id ? (
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                            ) : null}
+                            {t("admin.newsletter.cancelCampaign")}
+                          </Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 )}
-              </CardContent>
-            </Card>
+
+              <Card className="min-w-0 overflow-hidden">
+                <CardHeader>
+                  <CardTitle>{t("admin.newsletter.sendsTitle")}</CardTitle>
+                  <CardDescription>
+                    {selectedCampaign.subject} · {t("admin.newsletter.sendsDescription")}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {sendCounts && (
+                    <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                      <div className="rounded-md border px-3 py-2">
+                        <p className="text-xs text-muted-foreground">
+                          {t("admin.newsletter.status.sent")}
+                        </p>
+                        <p className="text-lg font-semibold">{sendCounts.sent}</p>
+                      </div>
+                      <div className="rounded-md border px-3 py-2">
+                        <p className="text-xs text-muted-foreground">
+                          {t("admin.newsletter.status.pending")}
+                        </p>
+                        <p className="text-lg font-semibold">{sendCounts.pending}</p>
+                      </div>
+                      <div className="rounded-md border px-3 py-2">
+                        <p className="text-xs text-muted-foreground">
+                          {t("admin.newsletter.status.failed")}
+                        </p>
+                        <p className="text-lg font-semibold">{sendCounts.failed}</p>
+                      </div>
+                      <div className="rounded-md border px-3 py-2">
+                        <p className="text-xs text-muted-foreground">
+                          {t("admin.newsletter.status.cancelled")}
+                        </p>
+                        <p className="text-lg font-semibold">{sendCounts.cancelled}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                    <Select
+                      value={sendsFilter}
+                      onValueChange={(v) =>
+                        loadSends(selectedCampaign.id, {
+                          resetPage: true,
+                          filter: v as CampaignSendStatus | "all",
+                        })
+                      }
+                    >
+                      <SelectTrigger className="w-full sm:w-[200px]">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">{t("admin.newsletter.filterAll")}</SelectItem>
+                        <SelectItem value="sent">{t("admin.newsletter.status.sent")}</SelectItem>
+                        <SelectItem value="pending">
+                          {t("admin.newsletter.status.pending")}
+                        </SelectItem>
+                        <SelectItem value="failed">
+                          {t("admin.newsletter.status.failed")}
+                        </SelectItem>
+                        <SelectItem value="cancelled">
+                          {t("admin.newsletter.status.cancelled")}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                      {t("admin.newsletter.sendsPageInfo", {
+                        page: sendsPage + 1,
+                        pages: sendsPageCount,
+                        total: sendsTotal,
+                      })}
+                    </p>
+                  </div>
+
+                  {sendsFilter === "pending" && (
+                    <p className="text-xs text-muted-foreground">
+                      {t("admin.newsletter.pendingHint")}
+                    </p>
+                  )}
+
+                  {loadingSends ? (
+                    <p className="text-sm text-muted-foreground">{t("admin.newsletter.loading")}</p>
+                  ) : sends.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">{t("admin.newsletter.noSends")}</p>
+                  ) : (
+                    <div className="overflow-x-auto rounded-md border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>{t("admin.newsletter.email")}</TableHead>
+                            <TableHead>{t("admin.newsletter.statusLabel")}</TableHead>
+                            <TableHead>Resend ID</TableHead>
+                            <TableHead>{t("admin.newsletter.date")}</TableHead>
+                            <TableHead>{t("admin.newsletter.error")}</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {sends.map((s) => (
+                            <TableRow key={s.id}>
+                              <TableCell className="max-w-[14rem] break-all">{s.email}</TableCell>
+                              <TableCell>{statusBadge(s.status)}</TableCell>
+                              <TableCell className="font-mono text-xs">
+                                {s.resend_id ?? "—"}
+                              </TableCell>
+                              <TableCell>
+                                {s.sent_at
+                                  ? format(new Date(s.sent_at), "dd MMM yyyy HH:mm")
+                                  : "—"}
+                              </TableCell>
+                              <TableCell className="max-w-xs truncate text-sm text-muted-foreground">
+                                {s.error_message ?? "—"}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
+
+                  {sendsTotal > SENDS_PAGE_SIZE && (
+                    <div className="flex items-center justify-end gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={loadingSends || sendsPage === 0}
+                        onClick={() =>
+                          loadSends(selectedCampaign.id, { page: sendsPage - 1 })
+                        }
+                      >
+                        {t("admin.newsletter.prevPage")}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={loadingSends || sendsPage + 1 >= sendsPageCount}
+                        onClick={() =>
+                          loadSends(selectedCampaign.id, { page: sendsPage + 1 })
+                        }
+                      >
+                        {t("admin.newsletter.nextPage")}
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </section>
           )}
         </TabsContent>
       </Tabs>

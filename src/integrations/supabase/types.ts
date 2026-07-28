@@ -820,8 +820,8 @@ export type Database = {
       invitation_status: "pending" | "accepted" | "declined"
       blog_status: "draft" | "published"
       newsletter_subscriber_status: "active" | "unsubscribed"
-      newsletter_campaign_status: "draft" | "sending" | "sent" | "failed"
-      newsletter_send_status: "pending" | "sent" | "failed"
+      newsletter_campaign_status: "draft" | "sending" | "sent" | "failed" | "cancelled"
+      newsletter_send_status: "pending" | "sent" | "failed" | "cancelled"
       application_status: "pending" | "reviewed" | "interview" | "accepted" | "rejected"
       availability_status: "available" | "open_to_offers" | "not_looking"
       company_size: "startup" | "solo_founder" | "small" | "medium" | "large" | "enterprise"
@@ -963,8 +963,8 @@ export const Constants = {
       invitation_status: ["pending", "accepted", "declined"],
       blog_status: ["draft", "published"],
       newsletter_subscriber_status: ["active", "unsubscribed"],
-      newsletter_campaign_status: ["draft", "sending", "sent", "failed"],
-      newsletter_send_status: ["pending", "sent", "failed"],
+      newsletter_campaign_status: ["draft", "sending", "sent", "failed", "cancelled"],
+      newsletter_send_status: ["pending", "sent", "failed", "cancelled"],
       application_status: ["pending", "reviewed", "interview", "accepted", "rejected"],
       availability_status: ["available", "open_to_offers", "not_looking"],
       company_size: ["startup", "solo_founder", "small", "medium", "large", "enterprise"],

@@ -163,6 +163,126 @@ export async function fetchNewsletterUserLinks() {
   return all;
 }
 
+export type CampaignSendStatus = "pending" | "sent" | "failed" | "cancelled";
+
+export type CampaignSendRow = {
+  id: string;
+  email: string;
+  status: CampaignSendStatus;
+  resend_id: string | null;
+  error_message: string | null;
+  sent_at: string | null;
+  created_at: string;
+};
+
+export type CampaignSendCounts = {
+  pending: number;
+  sent: number;
+  failed: number;
+  cancelled: number;
+  total: number;
+};
+
+async function countSends(campaignId: string, status?: CampaignSendStatus) {
+  let query = supabase
+    .from("newsletter_sends")
+    .select("id", { count: "exact", head: true })
+    .eq("campaign_id", campaignId);
+  if (status) query = query.eq("status", status);
+  const { count, error } = await query;
+  if (error) throw error;
+  return count ?? 0;
+}
+
+export async function fetchCampaignSendCounts(
+  campaignId: string
+): Promise<CampaignSendCounts> {
+  const [pending, sent, failed, cancelled, total] = await Promise.all([
+    countSends(campaignId, "pending"),
+    countSends(campaignId, "sent"),
+    countSends(campaignId, "failed"),
+    countSends(campaignId, "cancelled"),
+    countSends(campaignId),
+  ]);
+  return { pending, sent, failed, cancelled, total };
+}
+
+export async function fetchCampaignSendsPage(
+  campaignId: string,
+  options?: {
+    status?: CampaignSendStatus | "all";
+    page?: number;
+    pageSize?: number;
+  }
+) {
+  const page = options?.page ?? 0;
+  const pageSize = options?.pageSize ?? 50;
+  const status = options?.status ?? "all";
+  const from = page * pageSize;
+  const to = from + pageSize - 1;
+
+  let query = supabase
+    .from("newsletter_sends")
+    .select("id, email, status, resend_id, error_message, sent_at, created_at", {
+      count: "exact",
+    })
+    .eq("campaign_id", campaignId);
+
+  if (status !== "all") {
+    query = query.eq("status", status);
+  }
+
+  // Prefer recently sent first, then pending queue, then the rest.
+  const { data, error, count } = await query
+    .order("sent_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false })
+    .range(from, to);
+
+  if (error) throw error;
+
+  return {
+    rows: (data ?? []) as CampaignSendRow[],
+    total: count ?? 0,
+    page,
+    pageSize,
+  };
+}
+
+export async function updateCampaignSchedule(
+  campaignId: string,
+  nextBatchAt: string
+) {
+  const { error } = await supabase
+    .from("newsletter_campaigns")
+    .update({ next_batch_at: nextBatchAt })
+    .eq("id", campaignId)
+    .eq("status", "sending");
+  if (error) throw error;
+}
+
+export async function cancelStaggeredCampaign(campaignId: string) {
+  const { error: sendsError } = await supabase
+    .from("newsletter_sends")
+    .update({
+      status: "cancelled",
+      error_message: "Cancelado por administrador",
+    })
+    .eq("campaign_id", campaignId)
+    .eq("status", "pending");
+  if (sendsError) throw sendsError;
+
+  const { error: campaignError } = await supabase
+    .from("newsletter_campaigns")
+    .update({
+      status: "cancelled",
+      next_batch_at: null,
+      error_message: "Campaña cancelada: envíos pendientes detenidos",
+    })
+    .eq("id", campaignId)
+    .eq("status", "sending");
+  if (campaignError) throw campaignError;
+}
+
 export async function processNewsletterBatch(options?: {
   campaignId?: string;
   force?: boolean;
