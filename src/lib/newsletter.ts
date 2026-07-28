@@ -109,6 +109,21 @@ export async function sendNewsletter(payload: {
   };
 }
 
+export type NewsletterUserLink = {
+  subscriber_id: string;
+  email: string;
+  subscriber_status: string;
+  subscriber_name: string | null;
+  user_id: string;
+  full_name: string | null;
+};
+
+export async function fetchNewsletterUserLinks() {
+  const { data, error } = await supabase.rpc("admin_list_newsletter_user_links");
+  if (error) throw error;
+  return (data ?? []) as NewsletterUserLink[];
+}
+
 export async function processNewsletterBatch(options?: {
   campaignId?: string;
   force?: boolean;

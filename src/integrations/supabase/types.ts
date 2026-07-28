@@ -769,6 +769,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_list_newsletter_user_links: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          subscriber_id: string
+          email: string
+          subscriber_status: string
+          subscriber_name: string | null
+          user_id: string
+          full_name: string | null
+        }[]
+      }
       admin_list_user_contacts: {
         Args: Record<PropertyKey, never>
         Returns: {

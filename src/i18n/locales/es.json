@@ -696,7 +696,13 @@
       "statProfessionals": "Profesionales",
       "statOrganizations": "Organizaciones",
       "statVisibility": "Perfiles profesionales",
-      "statWithPhone": "Con teléfono"
+      "statWithPhone": "Con teléfono",
+      "statNewsletter": "En newsletter",
+      "statNewsletterActive": "activos",
+      "newsletter": "Newsletter",
+      "newsletterActive": "Suscrito",
+      "newsletterUnsubscribed": "Dado de baja",
+      "newsletterNo": "No suscrito"
     },
     "organizations": {
       "title": "Organizaciones",
@@ -836,6 +842,10 @@
         "history": "Historial"
       },
       "activeCount": "{{count}} activos",
+      "registeredCount": "{{count}} con cuenta",
+      "registeredUser": "Usuario registrado",
+      "registeredYes": "Con cuenta",
+      "registeredNo": "Sin cuenta",
       "campaignCount": "{{count}} campañas",
       "searchPlaceholder": "Buscar por correo o nombre…",
       "filterAll": "Todos",

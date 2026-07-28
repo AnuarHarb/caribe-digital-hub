@@ -696,7 +696,13 @@
       "statProfessionals": "Professionals",
       "statOrganizations": "Organizations",
       "statVisibility": "Professional profiles",
-      "statWithPhone": "With phone"
+      "statWithPhone": "With phone",
+      "statNewsletter": "On newsletter",
+      "statNewsletterActive": "active",
+      "newsletter": "Newsletter",
+      "newsletterActive": "Subscribed",
+      "newsletterUnsubscribed": "Unsubscribed",
+      "newsletterNo": "Not subscribed"
     },
     "organizations": {
       "title": "Organizations",
@@ -836,6 +842,10 @@
         "history": "History"
       },
       "activeCount": "{{count}} active",
+      "registeredCount": "{{count}} with account",
+      "registeredUser": "Registered user",
+      "registeredYes": "Has account",
+      "registeredNo": "No account",
       "campaignCount": "{{count}} campaigns",
       "searchPlaceholder": "Search by email or name…",
       "filterAll": "All",

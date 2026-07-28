@@ -17,12 +17,15 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
   estimateFilteredRecipients,
+  fetchNewsletterUserLinks,
   parseSubscriberCsv,
   processNewsletterBatch,
   sendNewsletter,
   type NewsletterSendMode,
+  type NewsletterUserLink,
   type NewsletterValidationFilter,
 } from "@/lib/newsletter";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -104,6 +107,7 @@ export default function AdminNewsletter() {
   const { t } = useTranslation();
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [userLinks, setUserLinks] = useState<NewsletterUserLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "unsubscribed">("all");
@@ -136,7 +140,7 @@ export default function AdminNewsletter() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [{ data: subs, error: subErr }, { data: camps, error: campErr }] =
+      const [{ data: subs, error: subErr }, { data: camps, error: campErr }, links] =
         await Promise.all([
           supabase
             .from("newsletter_subscribers")
@@ -149,6 +153,10 @@ export default function AdminNewsletter() {
             )
             .order("created_at", { ascending: false })
             .limit(50),
+          fetchNewsletterUserLinks().catch((err) => {
+            console.error(err);
+            return [] as NewsletterUserLink[];
+          }),
         ]);
 
       if (subErr) throw subErr;
@@ -156,6 +164,7 @@ export default function AdminNewsletter() {
 
       setSubscribers((subs ?? []) as Subscriber[]);
       setCampaigns((camps ?? []) as Campaign[]);
+      setUserLinks(links);
     } catch (err) {
       console.error(err);
       toast.error(t("admin.newsletter.loadError"));
@@ -172,6 +181,16 @@ export default function AdminNewsletter() {
     () => subscribers.filter((s) => s.status === "active").length,
     [subscribers]
   );
+
+  const userLinkBySubscriberId = useMemo(() => {
+    const map = new Map<string, NewsletterUserLink>();
+    for (const link of userLinks) {
+      map.set(link.subscriber_id, link);
+    }
+    return map;
+  }, [userLinks]);
+
+  const registeredSubscriberCount = userLinks.length;
 
   const filteredRecipientCount = useMemo(
     () => estimateFilteredRecipients(subscribers, validationFilter),
@@ -450,6 +469,12 @@ export default function AdminNewsletter() {
             {t("admin.newsletter.activeCount", { count: activeCount })}
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1">
+            <Users className="h-3.5 w-3.5" aria-hidden />
+            {t("admin.newsletter.registeredCount", {
+              count: registeredSubscriberCount,
+            })}
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1">
             <History className="h-3.5 w-3.5" aria-hidden />
             {t("admin.newsletter.campaignCount", { count: campaigns.length })}
           </span>
@@ -556,42 +581,79 @@ export default function AdminNewsletter() {
                       <TableHead>{t("admin.newsletter.email")}</TableHead>
                       <TableHead className="hidden sm:table-cell">{t("admin.newsletter.name")}</TableHead>
                       <TableHead>{t("admin.newsletter.statusLabel")}</TableHead>
-                      <TableHead className="hidden md:table-cell">{t("admin.newsletter.source")}</TableHead>
-                      <TableHead className="hidden lg:table-cell">{t("admin.newsletter.date")}</TableHead>
+                      <TableHead className="hidden md:table-cell">
+                        {t("admin.newsletter.registeredUser")}
+                      </TableHead>
+                      <TableHead className="hidden lg:table-cell">{t("admin.newsletter.source")}</TableHead>
+                      <TableHead className="hidden xl:table-cell">{t("admin.newsletter.date")}</TableHead>
                       <TableHead className="text-right">{t("admin.newsletter.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filtered.map((sub) => (
-                      <TableRow key={sub.id}>
-                        <TableCell className="max-w-[11rem] font-medium sm:max-w-none">
-                          <span className="break-all">{sub.email}</span>
-                          {sub.name ? (
-                            <span className="mt-0.5 block text-xs text-muted-foreground sm:hidden">
-                              {sub.name}
+                    {filtered.map((sub) => {
+                      const linkedUser = userLinkBySubscriberId.get(sub.id);
+                      return (
+                        <TableRow key={sub.id}>
+                          <TableCell className="max-w-[11rem] font-medium sm:max-w-none">
+                            <span className="break-all">{sub.email}</span>
+                            {sub.name ? (
+                              <span className="mt-0.5 block text-xs text-muted-foreground sm:hidden">
+                                {sub.name}
+                              </span>
+                            ) : null}
+                            <span className="mt-1 block md:hidden">
+                              {linkedUser ? (
+                                <Badge variant="outline" className="text-xs">
+                                  {linkedUser.full_name || t("admin.newsletter.registeredYes")}
+                                </Badge>
+                              ) : (
+                                <span className="text-xs text-muted-foreground">
+                                  {t("admin.newsletter.registeredNo")}
+                                </span>
+                              )}
                             </span>
-                          ) : null}
-                        </TableCell>
-                        <TableCell className="hidden sm:table-cell">{sub.name ?? "—"}</TableCell>
-                        <TableCell>{statusBadge(sub.status)}</TableCell>
-                        <TableCell className="hidden md:table-cell">{sub.source}</TableCell>
-                        <TableCell className="hidden lg:table-cell">
-                          {format(new Date(sub.created_at), "dd MMM yyyy")}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => toggleSubscriberStatus(sub)}
-                          >
-                            {sub.status === "active"
-                              ? t("admin.newsletter.unsubscribe")
-                              : t("admin.newsletter.reactivate")}
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          </TableCell>
+                          <TableCell className="hidden sm:table-cell">{sub.name ?? "—"}</TableCell>
+                          <TableCell>{statusBadge(sub.status)}</TableCell>
+                          <TableCell className="hidden md:table-cell">
+                            {linkedUser ? (
+                              <Link
+                                to="/admin/usuarios"
+                                className="inline-flex max-w-full"
+                                title={linkedUser.email}
+                              >
+                                <Badge
+                                  variant="outline"
+                                  className="max-w-full truncate text-xs hover:bg-muted"
+                                >
+                                  {linkedUser.full_name || t("admin.newsletter.registeredYes")}
+                                </Badge>
+                              </Link>
+                            ) : (
+                              <span className="text-xs text-muted-foreground">
+                                {t("admin.newsletter.registeredNo")}
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell className="hidden lg:table-cell">{sub.source}</TableCell>
+                          <TableCell className="hidden xl:table-cell">
+                            {format(new Date(sub.created_at), "dd MMM yyyy")}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => toggleSubscriberStatus(sub)}
+                            >
+                              {sub.status === "active"
+                                ? t("admin.newsletter.unsubscribe")
+                                : t("admin.newsletter.reactivate")}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               )}

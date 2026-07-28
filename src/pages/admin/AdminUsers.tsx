@@ -38,10 +38,15 @@ import {
   Users,
   Building2,
   Eye,
-  Phone,
+  Mail,
 } from "lucide-react";
 import { z } from "zod";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
+import {
+  fetchNewsletterUserLinks,
+  type NewsletterUserLink,
+} from "@/lib/newsletter";
 
 const userSchema = z.object({
   email: z.string().email(),
@@ -58,6 +63,7 @@ interface UserRow {
   role: string;
   is_public: boolean | null;
   phone: string | null;
+  newsletter: NewsletterUserLink | null;
 }
 
 function escapeCsvValue(value: string | null | undefined): string {
@@ -105,13 +111,17 @@ export default function AdminUsers() {
 
   const loadUsers = async () => {
     try {
-      const [{ data: profiles }, { data: roles }, { data: profs }] =
+      const [{ data: profiles }, { data: roles }, { data: profs }, links] =
         await Promise.all([
           supabase
             .from("profiles")
             .select("id, full_name, account_type, created_at, phone"),
           supabase.from("user_roles").select("user_id, role"),
           supabase.from("professional_profiles").select("user_id, is_public"),
+          fetchNewsletterUserLinks().catch((err) => {
+            console.error(err);
+            return [] as NewsletterUserLink[];
+          }),
         ]);
 
       const roleMap = new Map(
@@ -119,6 +129,9 @@ export default function AdminUsers() {
       );
       const profMap = new Map(
         (profs ?? []).map((p) => [p.user_id, p.is_public])
+      );
+      const newsletterByUserId = new Map(
+        links.map((link) => [link.user_id, link])
       );
 
       setUsers(
@@ -130,6 +143,7 @@ export default function AdminUsers() {
           role: (roleMap.get(p.id) as string) ?? "user",
           is_public: profMap.get(p.id) ?? null,
           phone: p.phone,
+          newsletter: newsletterByUserId.get(p.id) ?? null,
         }))
       );
     } catch {
@@ -246,7 +260,10 @@ export default function AdminUsers() {
     ).length;
     const publicProfiles = users.filter((u) => u.is_public === true).length;
     const privateProfiles = users.filter((u) => u.is_public === false).length;
-    const withPhone = users.filter((u) => !!u.phone?.trim()).length;
+    const newsletterSubscribers = users.filter((u) => !!u.newsletter).length;
+    const newsletterActive = users.filter(
+      (u) => u.newsletter?.subscriber_status === "active"
+    ).length;
 
     return {
       total,
@@ -255,7 +272,8 @@ export default function AdminUsers() {
       organizations,
       publicProfiles,
       privateProfiles,
-      withPhone,
+      newsletterSubscribers,
+      newsletterActive,
     };
   }, [users]);
 
@@ -285,10 +303,10 @@ export default function AdminUsers() {
       sub: `${stats.publicProfiles} ${t("admin.dashboard.public")} / ${stats.privateProfiles} ${t("admin.dashboard.private")}`,
     },
     {
-      title: t("admin.users.statWithPhone"),
-      value: stats.withPhone,
-      icon: Phone,
-      sub: `${stats.total ? Math.round((stats.withPhone / stats.total) * 100) : 0}%`,
+      title: t("admin.users.statNewsletter"),
+      value: stats.newsletterSubscribers,
+      icon: Mail,
+      sub: `${stats.newsletterActive} ${t("admin.users.statNewsletterActive")}`,
     },
   ];
 
@@ -390,7 +408,7 @@ export default function AdminUsers() {
       <section aria-label={t("admin.users.statsLabel")}>
         {loading ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: statCards.length }).map((_, i) => (
               <Card key={i} className="animate-pulse">
                 <CardContent className="p-6">
                   <div className="h-4 w-24 rounded bg-muted" />
@@ -444,8 +462,9 @@ export default function AdminUsers() {
                   <TableHead>{t("admin.users.name")}</TableHead>
                   <TableHead className="hidden md:table-cell">{t("admin.users.accountType")}</TableHead>
                   <TableHead className="hidden lg:table-cell">{t("admin.users.visibility")}</TableHead>
-                  <TableHead className="hidden sm:table-cell">{t("admin.users.role")}</TableHead>
-                  <TableHead className="hidden xl:table-cell">{t("admin.users.createdAt")}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t("admin.users.newsletter")}</TableHead>
+                  <TableHead className="hidden xl:table-cell">{t("admin.users.role")}</TableHead>
+                  <TableHead className="hidden 2xl:table-cell">{t("admin.users.createdAt")}</TableHead>
                   <TableHead>{t("admin.users.actions")}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -458,6 +477,12 @@ export default function AdminUsers() {
                         {user.role === "admin"
                           ? t("admin.users.roleAdmin")
                           : t("admin.users.roleUser")}
+                        {" · "}
+                        {user.newsletter
+                          ? user.newsletter.subscriber_status === "active"
+                            ? t("admin.users.newsletterActive")
+                            : t("admin.users.newsletterUnsubscribed")
+                          : t("admin.users.newsletterNo")}
                       </span>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
@@ -479,6 +504,29 @@ export default function AdminUsers() {
                       )}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
+                      {user.newsletter ? (
+                        <Link to="/admin/newsletter" className="inline-flex">
+                          <Badge
+                            variant={
+                              user.newsletter.subscriber_status === "active"
+                                ? "default"
+                                : "secondary"
+                            }
+                            className="text-xs hover:opacity-90"
+                          >
+                            <Mail className="mr-1 h-3 w-3" aria-hidden />
+                            {user.newsletter.subscriber_status === "active"
+                              ? t("admin.users.newsletterActive")
+                              : t("admin.users.newsletterUnsubscribed")}
+                          </Badge>
+                        </Link>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          {t("admin.users.newsletterNo")}
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell className="hidden xl:table-cell">
                       <div className="flex items-center gap-1">
                         {user.role === "admin" && (
                           <Shield className="h-3.5 w-3.5 text-primary" aria-hidden />
@@ -490,7 +538,7 @@ export default function AdminUsers() {
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
+                    <TableCell className="hidden text-sm text-muted-foreground 2xl:table-cell">
                       {user.created_at
                         ? format(new Date(user.created_at), "dd/MM/yyyy")
                         : "-"}
