@@ -15,7 +15,14 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { parseSubscriberCsv, sendNewsletter } from "@/lib/newsletter";
+import {
+  estimateFilteredRecipients,
+  parseSubscriberCsv,
+  processNewsletterBatch,
+  sendNewsletter,
+  type NewsletterSendMode,
+  type NewsletterValidationFilter,
+} from "@/lib/newsletter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,6 +53,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 type Subscriber = {
   id: string;
@@ -68,6 +76,10 @@ type Campaign = {
   sent_at: string | null;
   created_at: string;
   error_message: string | null;
+  send_mode: NewsletterSendMode | string;
+  daily_limit: number | null;
+  validation_filter: NewsletterValidationFilter | string;
+  next_batch_at: string | null;
 };
 
 type SendRow = {
@@ -110,6 +122,11 @@ export default function AdminNewsletter() {
   );
   const [testEmail, setTestEmail] = useState("");
   const [sending, setSending] = useState(false);
+  const [sendMode, setSendMode] = useState<NewsletterSendMode>("immediate");
+  const [dailyLimit, setDailyLimit] = useState("100");
+  const [validationFilter, setValidationFilter] =
+    useState<NewsletterValidationFilter>("all_active");
+  const [processingBatchId, setProcessingBatchId] = useState<string | null>(null);
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(null);
   const [sends, setSends] = useState<SendRow[]>([]);
@@ -128,7 +145,7 @@ export default function AdminNewsletter() {
           supabase
             .from("newsletter_campaigns")
             .select(
-              "id, subject, html_body, status, recipient_count, sent_count, failed_count, sent_at, created_at, error_message"
+              "id, subject, html_body, status, recipient_count, sent_count, failed_count, sent_at, created_at, error_message, send_mode, daily_limit, validation_filter, next_batch_at"
             )
             .order("created_at", { ascending: false })
             .limit(50),
@@ -155,6 +172,18 @@ export default function AdminNewsletter() {
     () => subscribers.filter((s) => s.status === "active").length,
     [subscribers]
   );
+
+  const filteredRecipientCount = useMemo(
+    () => estimateFilteredRecipients(subscribers, validationFilter),
+    [subscribers, validationFilter]
+  );
+
+  const estimatedDays = useMemo(() => {
+    if (sendMode !== "staggered") return 1;
+    const limit = Number(dailyLimit);
+    if (!Number.isFinite(limit) || limit < 1) return null;
+    return Math.ceil(filteredRecipientCount / limit);
+  }, [sendMode, dailyLimit, filteredRecipientCount]);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -294,9 +323,18 @@ export default function AdminNewsletter() {
       toast.error(t("admin.newsletter.testEmailRequired"));
       return;
     }
-    if (!asTest && activeCount === 0) {
-      toast.error(t("admin.newsletter.noActiveSubscribers"));
+    if (!asTest && filteredRecipientCount === 0) {
+      toast.error(t("admin.newsletter.noFilteredSubscribers"));
       return;
+    }
+
+    let parsedDailyLimit: number | undefined;
+    if (!asTest && sendMode === "staggered") {
+      parsedDailyLimit = Number(dailyLimit);
+      if (!Number.isFinite(parsedDailyLimit) || parsedDailyLimit < 1) {
+        toast.error(t("admin.newsletter.dailyLimitRequired"));
+        return;
+      }
     }
 
     setSending(true);
@@ -305,9 +343,22 @@ export default function AdminNewsletter() {
         subject: subject.trim(),
         htmlBody,
         testEmail: asTest ? testEmail.trim() : undefined,
+        sendMode: asTest ? undefined : sendMode,
+        dailyLimit: asTest ? undefined : parsedDailyLimit,
+        validationFilter: asTest ? undefined : validationFilter,
       });
       if (result.test) {
         toast.success(t("admin.newsletter.testSent"));
+      } else if (result.sendMode === "staggered") {
+        toast.success(
+          t("admin.newsletter.campaignStaggered", {
+            sent: result.sentCount ?? 0,
+            pending: result.pendingCount ?? 0,
+            daily: result.dailyLimit ?? parsedDailyLimit ?? 0,
+          })
+        );
+        setSubject("");
+        await loadData();
       } else {
         toast.success(
           t("admin.newsletter.campaignSent", {
@@ -323,6 +374,35 @@ export default function AdminNewsletter() {
       toast.error(err instanceof Error ? err.message : t("admin.newsletter.sendError"));
     } finally {
       setSending(false);
+    }
+  };
+
+  const handleProcessBatch = async (campaignId: string) => {
+    setProcessingBatchId(campaignId);
+    try {
+      const result = await processNewsletterBatch({ campaignId, force: true });
+      const batch = result.results?.[0];
+      if (!batch) {
+        toast.message(result.message ?? t("admin.newsletter.noPendingBatch"));
+      } else if (batch.done) {
+        toast.success(t("admin.newsletter.batchDone"));
+      } else {
+        toast.success(
+          t("admin.newsletter.batchProcessed", {
+            sent: batch.sentCount,
+            pending: batch.pendingCount,
+          })
+        );
+      }
+      await loadData();
+      if (selectedCampaignId === campaignId) {
+        await loadSends(campaignId);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err instanceof Error ? err.message : t("admin.newsletter.batchError"));
+    } finally {
+      setProcessingBatchId(null);
     }
   };
 
@@ -356,8 +436,8 @@ export default function AdminNewsletter() {
   };
 
   return (
-    <main className="space-y-6 p-6">
-      <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <main className="min-w-0 space-y-5 sm:space-y-6">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold tracking-tight">
             {t("admin.newsletter.title")}
@@ -377,17 +457,19 @@ export default function AdminNewsletter() {
       </header>
 
       <Tabs defaultValue="subscribers">
-        <TabsList>
-          <TabsTrigger value="subscribers">{t("admin.newsletter.tabs.subscribers")}</TabsTrigger>
-          <TabsTrigger value="import">{t("admin.newsletter.tabs.import")}</TabsTrigger>
-          <TabsTrigger value="send">{t("admin.newsletter.tabs.send")}</TabsTrigger>
-          <TabsTrigger value="history">{t("admin.newsletter.tabs.history")}</TabsTrigger>
-        </TabsList>
+        <div className="-mx-1 overflow-x-auto px-1 pb-1">
+          <TabsList className="w-max">
+            <TabsTrigger value="subscribers">{t("admin.newsletter.tabs.subscribers")}</TabsTrigger>
+            <TabsTrigger value="import">{t("admin.newsletter.tabs.import")}</TabsTrigger>
+            <TabsTrigger value="send">{t("admin.newsletter.tabs.send")}</TabsTrigger>
+            <TabsTrigger value="history">{t("admin.newsletter.tabs.history")}</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="subscribers" className="space-y-4">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center">
-              <div className="relative max-w-sm flex-1">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <div className="relative w-full flex-1 sm:max-w-sm">
                 <Search
                   className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
                   aria-hidden
@@ -403,7 +485,7 @@ export default function AdminNewsletter() {
                 value={statusFilter}
                 onValueChange={(v) => setStatusFilter(v as typeof statusFilter)}
               >
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-full sm:w-[180px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -415,14 +497,14 @@ export default function AdminNewsletter() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex gap-2">
-              <Button type="button" variant="outline" onClick={exportSubscribers}>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Button type="button" variant="outline" className="w-full sm:w-auto" onClick={exportSubscribers}>
                 <Download className="mr-2 h-4 w-4" aria-hidden />
                 {t("admin.newsletter.export")}
               </Button>
               <Dialog open={addOpen} onOpenChange={setAddOpen}>
                 <DialogTrigger asChild>
-                  <Button type="button">
+                  <Button type="button" className="w-full sm:w-auto">
                     <UserPlus className="mr-2 h-4 w-4" aria-hidden />
                     {t("admin.newsletter.add")}
                   </Button>
@@ -461,7 +543,7 @@ export default function AdminNewsletter() {
             </div>
           </div>
 
-          <Card>
+          <Card className="min-w-0 overflow-hidden">
             <CardContent className="p-0">
               {loading ? (
                 <p className="p-6 text-sm text-muted-foreground">{t("admin.newsletter.loading")}</p>
@@ -472,21 +554,28 @@ export default function AdminNewsletter() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>{t("admin.newsletter.email")}</TableHead>
-                      <TableHead>{t("admin.newsletter.name")}</TableHead>
+                      <TableHead className="hidden sm:table-cell">{t("admin.newsletter.name")}</TableHead>
                       <TableHead>{t("admin.newsletter.statusLabel")}</TableHead>
-                      <TableHead>{t("admin.newsletter.source")}</TableHead>
-                      <TableHead>{t("admin.newsletter.date")}</TableHead>
+                      <TableHead className="hidden md:table-cell">{t("admin.newsletter.source")}</TableHead>
+                      <TableHead className="hidden lg:table-cell">{t("admin.newsletter.date")}</TableHead>
                       <TableHead className="text-right">{t("admin.newsletter.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filtered.map((sub) => (
                       <TableRow key={sub.id}>
-                        <TableCell className="font-medium">{sub.email}</TableCell>
-                        <TableCell>{sub.name ?? "—"}</TableCell>
+                        <TableCell className="max-w-[11rem] font-medium sm:max-w-none">
+                          <span className="break-all">{sub.email}</span>
+                          {sub.name ? (
+                            <span className="mt-0.5 block text-xs text-muted-foreground sm:hidden">
+                              {sub.name}
+                            </span>
+                          ) : null}
+                        </TableCell>
+                        <TableCell className="hidden sm:table-cell">{sub.name ?? "—"}</TableCell>
                         <TableCell>{statusBadge(sub.status)}</TableCell>
-                        <TableCell>{sub.source}</TableCell>
-                        <TableCell>
+                        <TableCell className="hidden md:table-cell">{sub.source}</TableCell>
+                        <TableCell className="hidden lg:table-cell">
                           {format(new Date(sub.created_at), "dd MMM yyyy")}
                         </TableCell>
                         <TableCell className="text-right">
@@ -589,8 +678,105 @@ export default function AdminNewsletter() {
                   className="font-mono text-sm"
                 />
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                <div className="max-w-sm flex-1 space-y-1.5">
+
+              <fieldset className="space-y-3 rounded-md border p-4">
+                <legend className="px-1 text-sm font-medium">
+                  {t("admin.newsletter.deliveryOptions")}
+                </legend>
+
+                <div className="space-y-2">
+                  <Label htmlFor="nl-filter">{t("admin.newsletter.validationFilter")}</Label>
+                  <Select
+                    value={validationFilter}
+                    onValueChange={(v) =>
+                      setValidationFilter(v as NewsletterValidationFilter)
+                    }
+                  >
+                    <SelectTrigger id="nl-filter" className="w-full sm:max-w-md">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all_active">
+                        {t("admin.newsletter.filters.all_active")}
+                      </SelectItem>
+                      <SelectItem value="strict_email">
+                        {t("admin.newsletter.filters.strict_email")}
+                      </SelectItem>
+                      <SelectItem value="has_name">
+                        {t("admin.newsletter.filters.has_name")}
+                      </SelectItem>
+                      <SelectItem value="exclude_recent_30d">
+                        {t("admin.newsletter.filters.exclude_recent_30d")}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    {t(`admin.newsletter.filterHelp.${validationFilter}`)}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>{t("admin.newsletter.sendMode")}</Label>
+                  <RadioGroup
+                    value={sendMode}
+                    onValueChange={(v) => setSendMode(v as NewsletterSendMode)}
+                    className="gap-3"
+                  >
+                    <div className="flex items-start gap-2">
+                      <RadioGroupItem value="immediate" id="mode-immediate" className="mt-0.5" />
+                      <div>
+                        <Label htmlFor="mode-immediate" className="font-normal">
+                          {t("admin.newsletter.modeImmediate")}
+                        </Label>
+                        <p className="text-xs text-muted-foreground">
+                          {t("admin.newsletter.modeImmediateHelp")}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <RadioGroupItem value="staggered" id="mode-staggered" className="mt-0.5" />
+                      <div>
+                        <Label htmlFor="mode-staggered" className="font-normal">
+                          {t("admin.newsletter.modeStaggered")}
+                        </Label>
+                        <p className="text-xs text-muted-foreground">
+                          {t("admin.newsletter.modeStaggeredHelp")}
+                        </p>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {sendMode === "staggered" && (
+                  <div className="w-full space-y-1.5 sm:max-w-xs">
+                    <Label htmlFor="nl-daily-limit">{t("admin.newsletter.dailyLimit")}</Label>
+                    <Input
+                      id="nl-daily-limit"
+                      type="number"
+                      min={1}
+                      max={5000}
+                      value={dailyLimit}
+                      onChange={(e) => setDailyLimit(e.target.value)}
+                    />
+                  </div>
+                )}
+
+                <p className="text-sm text-muted-foreground">
+                  {sendMode === "staggered" && estimatedDays
+                    ? t("admin.newsletter.recipientEstimateStaggered", {
+                        count: filteredRecipientCount,
+                        daily: Number(dailyLimit) || 0,
+                        days: estimatedDays,
+                      })
+                    : t("admin.newsletter.recipientEstimate", {
+                        count: filteredRecipientCount,
+                        total: activeCount,
+                      })}
+                </p>
+              </fieldset>
+
+              <div className="flex flex-col gap-3">
+                <div className="w-full space-y-1.5 sm:max-w-sm">
                   <Label htmlFor="nl-test">{t("admin.newsletter.testEmail")}</Label>
                   <Input
                     id="nl-test"
@@ -600,30 +786,44 @@ export default function AdminNewsletter() {
                     placeholder="tu@correo.com"
                   />
                 </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={sending}
-                  onClick={() => handleSend(true)}
-                >
-                  <Mail className="mr-2 h-4 w-4" aria-hidden />
-                  {t("admin.newsletter.sendTest")}
-                </Button>
-                <Button type="button" disabled={sending} onClick={() => handleSend(false)}>
-                  {sending ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-                  ) : (
-                    <Send className="mr-2 h-4 w-4" aria-hidden />
-                  )}
-                  {t("admin.newsletter.sendAll", { count: activeCount })}
-                </Button>
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full sm:w-auto"
+                    disabled={sending}
+                    onClick={() => handleSend(true)}
+                  >
+                    <Mail className="mr-2 h-4 w-4" aria-hidden />
+                    {t("admin.newsletter.sendTest")}
+                  </Button>
+                  <Button
+                    type="button"
+                    className="w-full sm:w-auto"
+                    disabled={sending}
+                    onClick={() => handleSend(false)}
+                  >
+                    {sending ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
+                    ) : (
+                      <Send className="mr-2 h-4 w-4" aria-hidden />
+                    )}
+                    {sendMode === "staggered"
+                      ? t("admin.newsletter.startStaggered", {
+                          count: filteredRecipientCount,
+                        })
+                      : t("admin.newsletter.sendAll", {
+                          count: filteredRecipientCount,
+                        })}
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="history" className="space-y-4">
-          <Card>
+          <Card className="min-w-0 overflow-hidden">
             <CardHeader>
               <CardTitle>{t("admin.newsletter.historyTitle")}</CardTitle>
               <CardDescription>{t("admin.newsletter.historyDescription")}</CardDescription>
@@ -639,26 +839,45 @@ export default function AdminNewsletter() {
                     <TableRow>
                       <TableHead>{t("admin.newsletter.subject")}</TableHead>
                       <TableHead>{t("admin.newsletter.statusLabel")}</TableHead>
-                      <TableHead>{t("admin.newsletter.recipients")}</TableHead>
+                      <TableHead className="hidden sm:table-cell">{t("admin.newsletter.recipients")}</TableHead>
                       <TableHead>{t("admin.newsletter.sent")}</TableHead>
-                      <TableHead>{t("admin.newsletter.failed")}</TableHead>
-                      <TableHead>{t("admin.newsletter.date")}</TableHead>
+                      <TableHead className="hidden md:table-cell">{t("admin.newsletter.failed")}</TableHead>
+                      <TableHead className="hidden lg:table-cell">{t("admin.newsletter.date")}</TableHead>
                       <TableHead className="text-right">{t("admin.newsletter.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {campaigns.map((c) => (
                       <TableRow key={c.id}>
-                        <TableCell className="font-medium">{c.subject}</TableCell>
+                        <TableCell className="max-w-[10rem] font-medium sm:max-w-xs">
+                          <span className="line-clamp-2">{c.subject}</span>
+                          <span className="mt-1 block text-xs text-muted-foreground lg:hidden">
+                            {format(new Date(c.sent_at ?? c.created_at), "dd MMM yyyy HH:mm")}
+                          </span>
+                        </TableCell>
                         <TableCell>{statusBadge(c.status)}</TableCell>
-                        <TableCell>{c.recipient_count}</TableCell>
+                        <TableCell className="hidden sm:table-cell">{c.recipient_count}</TableCell>
                         <TableCell>{c.sent_count}</TableCell>
-                        <TableCell>{c.failed_count}</TableCell>
-                        <TableCell>
+                        <TableCell className="hidden md:table-cell">{c.failed_count}</TableCell>
+                        <TableCell className="hidden lg:table-cell">
                           {format(new Date(c.sent_at ?? c.created_at), "dd MMM yyyy HH:mm")}
                         </TableCell>
                         <TableCell className="text-right">
-                          <div className="flex justify-end gap-1">
+                          <div className="flex flex-col items-stretch justify-end gap-1 sm:flex-row sm:items-center">
+                            {c.status === "sending" && c.send_mode === "staggered" && (
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                disabled={processingBatchId === c.id}
+                                onClick={() => handleProcessBatch(c.id)}
+                              >
+                                {processingBatchId === c.id ? (
+                                  <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" aria-hidden />
+                                ) : null}
+                                {t("admin.newsletter.processBatch")}
+                              </Button>
+                            )}
                             <Button
                               type="button"
                               variant="ghost"
@@ -678,6 +897,22 @@ export default function AdminNewsletter() {
                               {t("admin.newsletter.viewSends")}
                             </Button>
                           </div>
+                          {c.send_mode === "staggered" && (
+                            <p className="mt-1 text-left text-xs text-muted-foreground sm:text-right">
+                              {c.status === "sending"
+                                ? t("admin.newsletter.staggeredProgress", {
+                                    sent: c.sent_count,
+                                    total: c.recipient_count,
+                                    daily: c.daily_limit ?? "—",
+                                    next: c.next_batch_at
+                                      ? format(new Date(c.next_batch_at), "dd MMM HH:mm")
+                                      : "—",
+                                  })
+                                : t("admin.newsletter.staggeredDone", {
+                                    daily: c.daily_limit ?? "—",
+                                  })}
+                            </p>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -693,7 +928,7 @@ export default function AdminNewsletter() {
               if (!open) setPreviewCampaign(null);
             }}
           >
-            <DialogContent className="flex max-h-[90vh] max-w-3xl flex-col gap-4 overflow-hidden">
+            <DialogContent className="flex max-h-[90dvh] w-[calc(100%-1.5rem)] max-w-3xl flex-col gap-4 overflow-hidden sm:w-full">
               <DialogHeader>
                 <DialogTitle>{t("admin.newsletter.previewTitle")}</DialogTitle>
                 <DialogDescription>
@@ -709,7 +944,7 @@ export default function AdminNewsletter() {
                     title={t("admin.newsletter.previewTitle")}
                     sandbox=""
                     srcDoc={`<!DOCTYPE html><html><head><meta charset="utf-8" /><base target="_blank" /><style>body{margin:16px;font-family:system-ui,sans-serif;color:#111;line-height:1.5;}img{max-width:100%;height:auto;}</style></head><body>${previewCampaign.html_body}</body></html>`}
-                    className="h-[60vh] w-full border-0 bg-white"
+                    className="h-[50dvh] w-full border-0 bg-white sm:h-[60vh]"
                   />
                 ) : (
                   <p className="p-6 text-sm text-muted-foreground">

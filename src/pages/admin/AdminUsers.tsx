@@ -293,19 +293,20 @@ export default function AdminUsers() {
   ];
 
   return (
-    <article className="space-y-6">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <article className="min-w-0 space-y-5 sm:space-y-6">
+      <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-primary">
             {t("admin.users.title")}
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm text-muted-foreground sm:text-base">
             {t("admin.users.subtitle")}
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap">
           <Button
             variant="outline"
+            className="w-full sm:w-auto"
             onClick={handleExportCsv}
             disabled={loading || exporting || users.length === 0}
           >
@@ -314,7 +315,7 @@ export default function AdminUsers() {
           </Button>
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button className="w-full sm:w-auto">
                 <UserPlus className="mr-2 h-4 w-4" />
                 {t("admin.users.create")}
               </Button>
@@ -430,7 +431,7 @@ export default function AdminUsers() {
         />
       </div>
 
-      <Card>
+      <Card className="min-w-0 overflow-hidden">
         <CardContent className="p-0">
           {loading ? (
             <div className="flex justify-center py-12">
@@ -441,10 +442,10 @@ export default function AdminUsers() {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t("admin.users.name")}</TableHead>
-                  <TableHead>{t("admin.users.accountType")}</TableHead>
-                  <TableHead>{t("admin.users.visibility")}</TableHead>
-                  <TableHead>{t("admin.users.role")}</TableHead>
-                  <TableHead>{t("admin.users.createdAt")}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t("admin.users.accountType")}</TableHead>
+                  <TableHead className="hidden lg:table-cell">{t("admin.users.visibility")}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t("admin.users.role")}</TableHead>
+                  <TableHead className="hidden xl:table-cell">{t("admin.users.createdAt")}</TableHead>
                   <TableHead>{t("admin.users.actions")}</TableHead>
                 </TableRow>
               </TableHeader>
@@ -452,14 +453,19 @@ export default function AdminUsers() {
                 {filtered.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell className="font-medium">
-                      {user.full_name || "-"}
+                      <span className="line-clamp-2">{user.full_name || "-"}</span>
+                      <span className="mt-1 block text-xs text-muted-foreground sm:hidden">
+                        {user.role === "admin"
+                          ? t("admin.users.roleAdmin")
+                          : t("admin.users.roleUser")}
+                      </span>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <Badge variant="outline" className="text-xs">
                         {user.account_type ?? "professional"}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden lg:table-cell">
                       {user.is_public === null ? (
                         <span className="text-xs text-muted-foreground">-</span>
                       ) : user.is_public ? (
@@ -472,7 +478,7 @@ export default function AdminUsers() {
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       <div className="flex items-center gap-1">
                         {user.role === "admin" && (
                           <Shield className="h-3.5 w-3.5 text-primary" aria-hidden />
@@ -484,7 +490,7 @@ export default function AdminUsers() {
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
                       {user.created_at
                         ? format(new Date(user.created_at), "dd/MM/yyyy")
                         : "-"}
@@ -496,7 +502,7 @@ export default function AdminUsers() {
                           handleChangeRole(user.id, v)
                         }
                       >
-                        <SelectTrigger className="w-36">
+                        <SelectTrigger className="w-full min-w-[7.5rem] sm:w-36">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>

@@ -685,6 +685,10 @@ export type Database = {
           sent_at: string | null
           created_at: string
           updated_at: string
+          send_mode: string
+          daily_limit: number | null
+          validation_filter: string
+          next_batch_at: string | null
         }
         Insert: {
           id?: string
@@ -699,6 +703,10 @@ export type Database = {
           sent_at?: string | null
           created_at?: string
           updated_at?: string
+          send_mode?: string
+          daily_limit?: number | null
+          validation_filter?: string
+          next_batch_at?: string | null
         }
         Update: {
           id?: string
@@ -713,6 +721,10 @@ export type Database = {
           sent_at?: string | null
           created_at?: string
           updated_at?: string
+          send_mode?: string
+          daily_limit?: number | null
+          validation_filter?: string
+          next_batch_at?: string | null
         }
         Relationships: []
       }

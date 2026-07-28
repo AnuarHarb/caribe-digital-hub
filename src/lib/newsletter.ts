@@ -1,5 +1,56 @@
 import { supabase } from "@/integrations/supabase/client";
 
+export type NewsletterSendMode = "immediate" | "staggered";
+export type NewsletterValidationFilter =
+  | "all_active"
+  | "strict_email"
+  | "has_name"
+  | "exclude_recent_30d";
+
+const STRICT_EMAIL_RE =
+  /^[a-z0-9](?:[a-z0-9._%+-]{0,62}[a-z0-9])?@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
+
+const DISPOSABLE_DOMAINS = new Set([
+  "mailinator.com",
+  "guerrillamail.com",
+  "tempmail.com",
+  "10minutemail.com",
+  "yopmail.com",
+  "trashmail.com",
+  "fakeinbox.com",
+  "temp-mail.org",
+]);
+
+export function isStrictValidEmail(email: string): boolean {
+  const normalized = email.trim().toLowerCase();
+  if (!STRICT_EMAIL_RE.test(normalized)) return false;
+  if (normalized.includes("..")) return false;
+  const [local, domain] = normalized.split("@");
+  if (!local || !domain) return false;
+  if (local.startsWith(".") || local.endsWith(".")) return false;
+  if (DISPOSABLE_DOMAINS.has(domain)) return false;
+  return true;
+}
+
+/** Client-side estimate of recipients for a validation filter (exclude_recent needs server). */
+export function estimateFilteredRecipients(
+  subscribers: Array<{ email: string; name: string | null; status: string }>,
+  filter: NewsletterValidationFilter
+): number {
+  const active = subscribers.filter((s) => s.status === "active");
+  switch (filter) {
+    case "has_name":
+      return active.filter((s) => !!s.name?.trim()).length;
+    case "strict_email":
+      return active.filter((s) => isStrictValidEmail(s.email)).length;
+    case "exclude_recent_30d":
+      // Exact count is applied server-side; show active as upper bound.
+      return active.length;
+    default:
+      return active.length;
+  }
+}
+
 export async function subscribeToNewsletter(
   email: string,
   options?: { name?: string; source?: string }
@@ -27,6 +78,9 @@ export async function sendNewsletter(payload: {
   subject: string;
   htmlBody: string;
   testEmail?: string;
+  sendMode?: NewsletterSendMode;
+  dailyLimit?: number;
+  validationFilter?: NewsletterValidationFilter;
 }) {
   const { data, error } = await supabase.functions.invoke("newsletter-send", {
     body: payload,
@@ -47,7 +101,41 @@ export async function sendNewsletter(payload: {
     recipientCount?: number;
     sentCount?: number;
     failedCount?: number;
+    pendingCount?: number;
+    sendMode?: NewsletterSendMode;
+    dailyLimit?: number;
+    nextBatchAt?: string | null;
     resendId?: string;
+  };
+}
+
+export async function processNewsletterBatch(options?: {
+  campaignId?: string;
+  force?: boolean;
+}) {
+  const { data, error } = await supabase.functions.invoke("newsletter-process-batch", {
+    body: options ?? {},
+  });
+
+  if (error) {
+    throw new Error(error.message || "No se pudo procesar el lote");
+  }
+
+  if (data?.error) {
+    throw new Error(data.error);
+  }
+
+  return data as {
+    ok: boolean;
+    processed: number;
+    message?: string;
+    results?: Array<{
+      campaignId: string;
+      sentCount: number;
+      failedCount: number;
+      pendingCount: number;
+      done: boolean;
+    }>;
   };
 }
 

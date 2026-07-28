@@ -1,39 +1,28 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.58.0";
+import {
+  applyValidationFilter,
+  BATCH_SIZE,
+  buildEmailHtml,
+  processPendingSendRows,
+  sendResendBatch,
+  tomorrowUtcIso,
+  type Subscriber,
+  type ValidationFilter,
+} from "../_shared/newsletter.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-cron-secret",
 };
 
-const BATCH_SIZE = 100;
-
-type Subscriber = {
-  id: string;
-  email: string;
-  name: string | null;
-  unsubscribe_token: string;
-};
-
-function buildEmailHtml(
-  htmlBody: string,
-  unsubscribeUrl: string,
-  siteUrl: string
-): string {
-  const withPlaceholder = htmlBody.includes("{{unsubscribe_url}}")
-    ? htmlBody.split("{{unsubscribe_url}}").join(unsubscribeUrl)
-    : htmlBody;
-
-  const footer = `
-<hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0 16px;" />
-<p style="font-size:12px;line-height:1.5;color:#666;">
-  Recibes este correo porque te suscribiste a Costa Digital News.
-  <a href="${unsubscribeUrl}">Darme de baja</a>
-  · <a href="${siteUrl}/noticias">Ver noticias</a>
-</p>`;
-
-  return `${withPlaceholder}${footer}`;
-}
+const VALID_FILTERS = new Set<ValidationFilter>([
+  "all_active",
+  "strict_email",
+  "has_name",
+  "exclude_recent_30d",
+]);
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -116,7 +105,15 @@ serve(async (req) => {
       });
     }
 
-    const { subject, htmlBody, testEmail } = await req.json();
+    const body = await req.json();
+    const {
+      subject,
+      htmlBody,
+      testEmail,
+      sendMode = "immediate",
+      dailyLimit,
+      validationFilter = "all_active",
+    } = body;
 
     if (!subject?.trim() || !htmlBody?.trim()) {
       return new Response(JSON.stringify({ error: "Asunto y contenido son requeridos" }), {
@@ -142,10 +139,10 @@ serve(async (req) => {
         }),
       });
 
-      const body = await res.json();
+      const testBody = await res.json();
       if (!res.ok) {
         return new Response(
-          JSON.stringify({ error: body?.message ?? "Error al enviar prueba con Resend" }),
+          JSON.stringify({ error: testBody?.message ?? "Error al enviar prueba con Resend" }),
           {
             headers: { ...corsHeaders, "Content-Type": "application/json" },
             status: 502,
@@ -153,16 +150,39 @@ serve(async (req) => {
         );
       }
 
-      return new Response(JSON.stringify({ ok: true, test: true, resendId: body.id }), {
+      return new Response(JSON.stringify({ ok: true, test: true, resendId: testBody.id }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 200,
       });
     }
 
+    const mode = sendMode === "staggered" ? "staggered" : "immediate";
+    const filter = (
+      VALID_FILTERS.has(validationFilter) ? validationFilter : "all_active"
+    ) as ValidationFilter;
+
+    let limit: number | null = null;
+    if (mode === "staggered") {
+      const parsed = Number(dailyLimit);
+      if (!Number.isFinite(parsed) || parsed < 1 || parsed > 5000) {
+        return new Response(
+          JSON.stringify({
+            error: "Para envío escalonado indica cuántos correos enviar por día (1–5000).",
+          }),
+          {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          }
+        );
+      }
+      limit = Math.floor(parsed);
+    }
+
     const { data: subscribers, error: subError } = await supabase
       .from("newsletter_subscribers")
       .select("id, email, name, unsubscribe_token")
-      .eq("status", "active");
+      .eq("status", "active")
+      .order("created_at", { ascending: true });
 
     if (subError) {
       console.error("[newsletter-send] subscribers", subError);
@@ -172,12 +192,22 @@ serve(async (req) => {
       });
     }
 
-    const list = (subscribers ?? []) as Subscriber[];
+    let list = await applyValidationFilter(
+      supabase,
+      (subscribers ?? []) as Subscriber[],
+      filter
+    );
+
     if (list.length === 0) {
-      return new Response(JSON.stringify({ error: "No hay suscriptores activos" }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
-      });
+      return new Response(
+        JSON.stringify({
+          error: "No hay suscriptores que cumplan el filtro de validación seleccionado",
+        }),
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 400,
+        }
+      );
     }
 
     const { data: campaign, error: campaignError } = await supabase
@@ -188,6 +218,10 @@ serve(async (req) => {
         status: "sending",
         created_by: user.id,
         recipient_count: list.length,
+        send_mode: mode,
+        daily_limit: limit,
+        validation_filter: filter,
+        next_batch_at: mode === "staggered" ? new Date().toISOString() : null,
       })
       .select("id")
       .single();
@@ -202,95 +236,134 @@ serve(async (req) => {
 
     let sentCount = 0;
     let failedCount = 0;
+    let pendingCount = 0;
 
-    for (let i = 0; i < list.length; i += BATCH_SIZE) {
-      const batch = list.slice(i, i + BATCH_SIZE);
-      const payload = batch.map((sub) => {
-        const unsubscribeUrl = `${siteUrl}/newsletter/baja?token=${sub.unsubscribe_token}`;
-        return {
-          ...resendBase,
-          to: [sub.email],
+    if (mode === "immediate") {
+      for (let i = 0; i < list.length; i += BATCH_SIZE) {
+        const batch = list.slice(i, i + BATCH_SIZE);
+        const result = await sendResendBatch({
+          resendKey,
+          resendBase,
+          supabase,
+          campaignId: campaign.id,
           subject: subject.trim(),
-          html: buildEmailHtml(htmlBody, unsubscribeUrl, siteUrl),
-          headers: {
-            "List-Unsubscribe": `<${unsubscribeUrl}>`,
-          },
-        };
-      });
-
-      const res = await fetch("https://api.resend.com/emails/batch", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${resendKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const body = await res.json();
-
-      if (!res.ok) {
-        failedCount += batch.length;
-        const sendRows = batch.map((sub) => ({
-          campaign_id: campaign.id,
-          subscriber_id: sub.id,
-          email: sub.email,
-          status: "failed" as const,
-          error_message: body?.message ?? "Error de Resend batch",
-        }));
-        await supabase.from("newsletter_sends").insert(sendRows);
-        continue;
+          htmlBody,
+          siteUrl,
+          batch,
+        });
+        sentCount += result.sent;
+        failedCount += result.failed;
       }
 
-      // Resend batch returns { data: [{ id }, ...] } or array of ids depending on API version
-      const results: Array<{ id?: string } | string> = Array.isArray(body)
-        ? body
-        : Array.isArray(body?.data)
-          ? body.data
-          : [];
+      const finalStatus =
+        failedCount === list.length ? "failed" : sentCount > 0 ? "sent" : "failed";
 
-      const sendRows = batch.map((sub, idx) => {
-        const result = results[idx];
-        const resendId =
-          typeof result === "string" ? result : typeof result?.id === "string" ? result.id : null;
+      await supabase
+        .from("newsletter_campaigns")
+        .update({
+          status: finalStatus,
+          sent_count: sentCount,
+          failed_count: failedCount,
+          sent_at: new Date().toISOString(),
+          next_batch_at: null,
+          error_message: failedCount > 0 ? `${failedCount} envío(s) fallaron` : null,
+        })
+        .eq("id", campaign.id);
 
-        if (resendId) {
-          sentCount += 1;
-          return {
-            campaign_id: campaign.id,
-            subscriber_id: sub.id,
-            email: sub.email,
-            resend_id: resendId,
-            status: "sent" as const,
-            sent_at: new Date().toISOString(),
-          };
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          campaignId: campaign.id,
+          recipientCount: list.length,
+          sentCount,
+          failedCount,
+          pendingCount: 0,
+          sendMode: mode,
+        }),
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 200,
         }
-
-        failedCount += 1;
-        return {
-          campaign_id: campaign.id,
-          subscriber_id: sub.id,
-          email: sub.email,
-          status: "failed" as const,
-          error_message: "Sin id de Resend en la respuesta",
-        };
-      });
-
-      await supabase.from("newsletter_sends").insert(sendRows);
+      );
     }
 
-    const finalStatus =
-      failedCount === list.length ? "failed" : sentCount > 0 ? "sent" : "failed";
+    // Staggered: queue all as pending, then send today's batch
+    const pendingRows = list.map((sub) => ({
+      campaign_id: campaign.id,
+      subscriber_id: sub.id,
+      email: sub.email,
+      status: "pending" as const,
+    }));
+
+    for (let i = 0; i < pendingRows.length; i += 500) {
+      const chunk = pendingRows.slice(i, i + 500);
+      const { error: insertErr } = await supabase.from("newsletter_sends").insert(chunk);
+      if (insertErr) {
+        console.error("[newsletter-send] queue pending", insertErr);
+        await supabase
+          .from("newsletter_campaigns")
+          .update({
+            status: "failed",
+            error_message: "No se pudo encolar los destinatarios",
+          })
+          .eq("id", campaign.id);
+        return new Response(JSON.stringify({ error: "No se pudo encolar los destinatarios" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+    }
+
+    const { data: todayPending, error: pendingErr } = await supabase
+      .from("newsletter_sends")
+      .select("id, email, subscriber_id")
+      .eq("campaign_id", campaign.id)
+      .eq("status", "pending")
+      .order("created_at", { ascending: true })
+      .limit(limit!);
+
+    if (pendingErr) {
+      console.error("[newsletter-send] load pending", pendingErr);
+      return new Response(JSON.stringify({ error: "No se pudieron cargar envíos pendientes" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
+      });
+    }
+
+    const tokenBySubscriberId = new Map(list.map((s) => [s.id, s.unsubscribe_token]));
+    const batchResult = await processPendingSendRows({
+      resendKey,
+      resendBase,
+      supabase,
+      campaignId: campaign.id,
+      subject: subject.trim(),
+      htmlBody,
+      siteUrl,
+      pendingRows: todayPending ?? [],
+      tokenBySubscriberId,
+    });
+
+    sentCount = batchResult.sent;
+    failedCount = batchResult.failed;
+
+    const { count: remaining } = await supabase
+      .from("newsletter_sends")
+      .select("id", { count: "exact", head: true })
+      .eq("campaign_id", campaign.id)
+      .eq("status", "pending");
+
+    pendingCount = remaining ?? 0;
+    const done = pendingCount === 0;
 
     await supabase
       .from("newsletter_campaigns")
       .update({
-        status: finalStatus,
+        status: done ? (sentCount > 0 || failedCount < list.length ? "sent" : "failed") : "sending",
         sent_count: sentCount,
         failed_count: failedCount,
-        sent_at: new Date().toISOString(),
-        error_message:
-          failedCount > 0 ? `${failedCount} envío(s) fallaron` : null,
+        sent_at: done ? new Date().toISOString() : null,
+        next_batch_at: done ? null : tomorrowUtcIso(),
+        error_message: failedCount > 0 ? `${failedCount} envío(s) fallaron` : null,
       })
       .eq("id", campaign.id);
 
@@ -301,6 +374,10 @@ serve(async (req) => {
         recipientCount: list.length,
         sentCount,
         failedCount,
+        pendingCount,
+        sendMode: mode,
+        dailyLimit: limit,
+        nextBatchAt: done ? null : tomorrowUtcIso(),
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -309,9 +386,14 @@ serve(async (req) => {
     );
   } catch (err) {
     console.error("[newsletter-send]", err);
-    return new Response(JSON.stringify({ error: "Error interno" }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({
+        error: err instanceof Error ? err.message : "Error interno",
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
+      }
+    );
   }
 });

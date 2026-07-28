@@ -37,31 +37,33 @@ export default function AdminOrganizations() {
   const filtered = filter === "all" ? orgs : orgs.filter((o) => o.profile_type === filter);
 
   return (
-    <article className="space-y-6">
+    <article className="min-w-0 space-y-5 sm:space-y-6">
       <header>
         <h1 className="font-display text-2xl font-bold text-primary">
           {t("admin.organizations.title")}
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-sm text-muted-foreground sm:text-base">
           {t("admin.organizations.subtitle")}
         </p>
       </header>
 
       <Tabs value={filter} onValueChange={(v) => setFilter(v as typeof filter)}>
-        <TabsList>
-          <TabsTrigger value="all">
-            {t("admin.organizations.all")} ({orgs.length})
-          </TabsTrigger>
-          <TabsTrigger value="company">
-            {t("admin.organizations.companies")} ({orgs.filter((o) => o.profile_type === "company").length})
-          </TabsTrigger>
-          <TabsTrigger value="community">
-            {t("admin.organizations.communities")} ({orgs.filter((o) => o.profile_type === "community").length})
-          </TabsTrigger>
-        </TabsList>
+        <div className="-mx-1 overflow-x-auto px-1 pb-1">
+          <TabsList className="w-max">
+            <TabsTrigger value="all">
+              {t("admin.organizations.all")} ({orgs.length})
+            </TabsTrigger>
+            <TabsTrigger value="company">
+              {t("admin.organizations.companies")} ({orgs.filter((o) => o.profile_type === "company").length})
+            </TabsTrigger>
+            <TabsTrigger value="community">
+              {t("admin.organizations.communities")} ({orgs.filter((o) => o.profile_type === "community").length})
+            </TabsTrigger>
+          </TabsList>
+        </div>
       </Tabs>
 
-      <Card>
+      <Card className="min-w-0 overflow-hidden">
         <CardContent className="p-0">
           {isLoading ? (
             <div className="flex justify-center py-12">

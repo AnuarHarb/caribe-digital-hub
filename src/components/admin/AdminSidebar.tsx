@@ -9,6 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
@@ -23,6 +24,7 @@ import logoImage from "@/assets/costa-digital-logo.png";
 
 export function AdminSidebar() {
   const { t } = useTranslation();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   const links = [
     { to: "/admin", label: t("admin.nav.dashboard"), icon: LayoutDashboard, end: true },
@@ -34,7 +36,7 @@ export function AdminSidebar() {
   ];
 
   return (
-    <Sidebar className="!top-14 !h-[calc(100vh-3.5rem)]">
+    <Sidebar className="!top-16 !h-[calc(100vh-4rem)]">
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-3">
           <img
@@ -62,6 +64,9 @@ export function AdminSidebar() {
                     <NavLink
                       to={link.to}
                       end={link.end}
+                      onClick={() => {
+                        if (isMobile) setOpenMobile(false);
+                      }}
                       className={({ isActive }) =>
                         cn(
                           "rounded-lg px-3 py-2.5 transition-colors",

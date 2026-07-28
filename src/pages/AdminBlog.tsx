@@ -465,12 +465,13 @@ export default function AdminBlog() {
 
     return (
       <article className="w-full">
-        <div className="container mx-auto w-full">
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" onClick={handleBackToList} className="gap-2">
+        <div className="mx-auto w-full max-w-6xl pb-24 lg:pb-0">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3 sm:mb-6">
+            <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-3">
+              <Button variant="ghost" size="sm" onClick={handleBackToList} className="gap-2 px-2 sm:px-3">
                 <ArrowLeft className="h-4 w-4" aria-hidden />
-                {t("admin.blog.backToList")}
+                <span className="hidden sm:inline">{t("admin.blog.backToList")}</span>
+                <span className="sm:hidden">{t("common.back")}</span>
               </Button>
               {draftAutoSave.lastSavedAt && (
                 <Badge variant="secondary" className="text-xs font-normal">
@@ -504,7 +505,7 @@ export default function AdminBlog() {
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6 lg:flex-row">
-            <div className="flex-1 space-y-6 lg:max-w-[66%]">
+            <div className="min-w-0 flex-1 space-y-4 sm:space-y-6 lg:max-w-[66%]">
               <div className="space-y-1">
                 <Input
                   value={formData.title}
@@ -543,7 +544,7 @@ export default function AdminBlog() {
               </div>
             </div>
 
-            <aside className="w-full space-y-6 lg:w-[33%] lg:min-w-[280px] lg:sticky lg:top-24 lg:self-start">
+            <aside className="w-full space-y-6 lg:sticky lg:top-36 lg:w-[33%] lg:min-w-[280px] lg:self-start">
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">{editingId ? t("admin.blog.editPost") : t("admin.blog.newPost")}</CardTitle>
@@ -706,7 +707,7 @@ export default function AdminBlog() {
                       onChange={(tags) => setFormData((p) => ({ ...p, tags }))}
                     />
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="hidden flex-col gap-2 lg:flex">
                     <Button type="button" variant="outline" onClick={() => setShowPreview(true)} className="gap-2">
                       <Eye className="h-4 w-4" aria-hidden />
                       {t("admin.blog.preview")}
@@ -722,6 +723,27 @@ export default function AdminBlog() {
               </Card>
             </aside>
           </form>
+
+          <div className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur supports-[backdrop-filter]:bg-background/80 lg:hidden">
+            <div className="mx-auto flex max-w-6xl gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPreview(true)}
+                className="gap-1 px-2"
+                aria-label={t("admin.blog.preview")}
+              >
+                <Eye className="h-4 w-4" aria-hidden />
+              </Button>
+              <Button type="button" variant="outline" size="sm" className="flex-1" onClick={handleSaveDraft}>
+                {t("admin.blog.saveDraft")}
+              </Button>
+              <Button type="button" size="sm" className="flex-1" onClick={handlePublishClick}>
+                {t("admin.blog.publish")}
+              </Button>
+            </div>
+          </div>
 
           <Sheet open={showPreview} onOpenChange={setShowPreview}>
             <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-2xl">
@@ -827,34 +849,36 @@ export default function AdminBlog() {
 
   return (
     <article className="w-full">
-      <div className="container mx-auto w-full">
-        <header className="mb-8">
+      <div className="mx-auto w-full max-w-6xl">
+        <header className="mb-6 sm:mb-8">
           <h1 className="font-display text-2xl font-bold text-foreground md:text-3xl">
             {t("admin.blog.title")}
           </h1>
-          <p className="mt-1 text-muted-foreground">{t("admin.blog.description")}</p>
+          <p className="mt-1 text-sm text-muted-foreground sm:text-base">{t("admin.blog.description")}</p>
         </header>
 
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-1 items-center gap-4">
+        <div className="mb-6 flex flex-col gap-3 sm:gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Input
               placeholder={t("admin.blog.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="max-w-sm"
+              className="w-full sm:max-w-sm"
             />
-            <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as typeof statusFilter)}>
-              <TabsList>
+            <Button onClick={openCreate} className="w-full gap-2 sm:w-auto sm:shrink-0">
+              <Plus className="h-4 w-4" aria-hidden />
+              {t("admin.blog.newPost")}
+            </Button>
+          </div>
+          <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as typeof statusFilter)}>
+            <div className="-mx-1 overflow-x-auto px-1">
+              <TabsList className="w-max">
                 <TabsTrigger value="all">{t("admin.blog.filterAll")}</TabsTrigger>
                 <TabsTrigger value="draft">{t("admin.blog.filterDraft")}</TabsTrigger>
                 <TabsTrigger value="published">{t("admin.blog.filterPublished")}</TabsTrigger>
               </TabsList>
-            </Tabs>
-          </div>
-          <Button onClick={openCreate} className="gap-2 shrink-0">
-            <Plus className="h-4 w-4" aria-hidden />
-            {t("admin.blog.newPost")}
-          </Button>
+            </div>
+          </Tabs>
         </div>
 
         {loading ? (

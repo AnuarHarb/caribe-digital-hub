@@ -49,32 +49,34 @@ export default function AdminJobs() {
   };
 
   return (
-    <article className="space-y-6">
+    <article className="min-w-0 space-y-5 sm:space-y-6">
       <header>
         <h1 className="font-display text-2xl font-bold text-primary">
           {t("admin.jobs.title")}
         </h1>
-        <p className="text-muted-foreground">{t("admin.jobs.subtitle")}</p>
+        <p className="text-sm text-muted-foreground sm:text-base">{t("admin.jobs.subtitle")}</p>
       </header>
 
       <Tabs value={filter} onValueChange={(v) => setFilter(v as JobStatus)}>
-        <TabsList>
-          <TabsTrigger value="all">
-            {t("admin.jobs.all")} ({counts.all})
-          </TabsTrigger>
-          <TabsTrigger value="active">
-            {t("admin.jobs.active")} ({counts.active})
-          </TabsTrigger>
-          <TabsTrigger value="draft">
-            {t("admin.jobs.draft")} ({counts.draft})
-          </TabsTrigger>
-          <TabsTrigger value="closed">
-            {t("admin.jobs.closed")} ({counts.closed})
-          </TabsTrigger>
-        </TabsList>
+        <div className="-mx-1 overflow-x-auto px-1 pb-1">
+          <TabsList className="w-max">
+            <TabsTrigger value="all">
+              {t("admin.jobs.all")} ({counts.all})
+            </TabsTrigger>
+            <TabsTrigger value="active">
+              {t("admin.jobs.active")} ({counts.active})
+            </TabsTrigger>
+            <TabsTrigger value="draft">
+              {t("admin.jobs.draft")} ({counts.draft})
+            </TabsTrigger>
+            <TabsTrigger value="closed">
+              {t("admin.jobs.closed")} ({counts.closed})
+            </TabsTrigger>
+          </TabsList>
+        </div>
       </Tabs>
 
-      <Card>
+      <Card className="min-w-0 overflow-hidden">
         <CardContent className="p-0">
           {isLoading ? (
             <div className="flex justify-center py-12">
@@ -85,11 +87,11 @@ export default function AdminJobs() {
               <TableHeader>
                 <TableRow>
                   <TableHead>{t("admin.jobs.jobTitle")}</TableHead>
-                  <TableHead>{t("admin.jobs.company")}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t("admin.jobs.company")}</TableHead>
                   <TableHead>{t("admin.jobs.status")}</TableHead>
-                  <TableHead>{t("admin.jobs.workMode")}</TableHead>
-                  <TableHead>{t("admin.jobs.location")}</TableHead>
-                  <TableHead>{t("admin.jobs.createdAt")}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t("admin.jobs.workMode")}</TableHead>
+                  <TableHead className="hidden lg:table-cell">{t("admin.jobs.location")}</TableHead>
+                  <TableHead className="hidden xl:table-cell">{t("admin.jobs.createdAt")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -97,8 +99,13 @@ export default function AdminJobs() {
                   const company = job.company_profiles as { company_name?: string } | null;
                   return (
                     <TableRow key={job.id}>
-                      <TableCell className="font-medium">{job.title}</TableCell>
-                      <TableCell className="text-sm">
+                      <TableCell className="font-medium">
+                        <span className="line-clamp-2">{job.title}</span>
+                        <span className="mt-0.5 block text-xs text-muted-foreground sm:hidden">
+                          {company?.company_name ?? "-"}
+                        </span>
+                      </TableCell>
+                      <TableCell className="hidden text-sm sm:table-cell">
                         {company?.company_name ?? "-"}
                       </TableCell>
                       <TableCell>
@@ -109,13 +116,13 @@ export default function AdminJobs() {
                           {t(`admin.jobs.status_${job.status}`)}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-sm">
+                      <TableCell className="hidden text-sm md:table-cell">
                         {job.work_mode
                           ? t(`common.workMode.${job.work_mode}`)
                           : "-"}
                       </TableCell>
-                      <TableCell className="text-sm">{job.location ?? "-"}</TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
+                      <TableCell className="hidden text-sm lg:table-cell">{job.location ?? "-"}</TableCell>
+                      <TableCell className="hidden text-sm text-muted-foreground xl:table-cell">
                         {job.created_at
                           ? format(new Date(job.created_at), "dd/MM/yyyy")
                           : "-"}
