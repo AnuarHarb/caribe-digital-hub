@@ -12,6 +12,54 @@ export type ValidationFilter =
   | "exclude_recent_30d";
 
 export const BATCH_SIZE = 100;
+const PAGE_SIZE = 1000;
+
+/** PostgREST returns at most ~1000 rows per request; page until done. */
+export async function fetchAllActiveSubscribers(
+  // deno-lint-ignore no-explicit-any
+  supabase: any
+): Promise<Subscriber[]> {
+  const all: Subscriber[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const to = from + PAGE_SIZE - 1;
+    const { data, error } = await supabase
+      .from("newsletter_subscribers")
+      .select("id, email, name, unsubscribe_token")
+      .eq("status", "active")
+      .order("created_at", { ascending: true })
+      .range(from, to);
+    if (error) throw error;
+    const page = (data ?? []) as Subscriber[];
+    all.push(...page);
+    if (page.length < PAGE_SIZE) break;
+  }
+  return all;
+}
+
+async function fetchAllRecentSentSubscriberIds(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  sinceIso: string
+): Promise<Set<string>> {
+  const ids = new Set<string>();
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const to = from + PAGE_SIZE - 1;
+    const { data, error } = await supabase
+      .from("newsletter_sends")
+      .select("subscriber_id")
+      .eq("status", "sent")
+      .gte("sent_at", sinceIso)
+      .not("subscriber_id", "is", null)
+      .range(from, to);
+    if (error) throw error;
+    const page = data ?? [];
+    for (const row of page) {
+      if (row.subscriber_id) ids.add(row.subscriber_id);
+    }
+    if (page.length < PAGE_SIZE) break;
+  }
+  return ids;
+}
 
 const STRICT_EMAIL_RE =
   /^[a-z0-9](?:[a-z0-9._%+-]{0,62}[a-z0-9])?@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/i;
@@ -80,24 +128,16 @@ export async function applyValidationFilter(
   if (filter === "exclude_recent_30d") {
     const since = new Date();
     since.setDate(since.getDate() - 30);
-    const { data: recent, error } = await supabase
-      .from("newsletter_sends")
-      .select("subscriber_id")
-      .eq("status", "sent")
-      .gte("sent_at", since.toISOString())
-      .not("subscriber_id", "is", null);
-
-    if (error) {
+    try {
+      const recentIds = await fetchAllRecentSentSubscriberIds(
+        supabase,
+        since.toISOString()
+      );
+      list = list.filter((s) => !recentIds.has(s.id));
+    } catch (error) {
       console.error("[newsletter] exclude_recent_30d", error);
       throw new Error("No se pudo aplicar el filtro de envíos recientes");
     }
-
-    const recentIds = new Set(
-      (recent ?? [])
-        .map((r: { subscriber_id: string | null }) => r.subscriber_id)
-        .filter(Boolean)
-    );
-    list = list.filter((s) => !recentIds.has(s.id));
   }
 
   return list;

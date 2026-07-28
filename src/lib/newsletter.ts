@@ -118,10 +118,49 @@ export type NewsletterUserLink = {
   full_name: string | null;
 };
 
+export type NewsletterSubscriberRow = {
+  id: string;
+  email: string;
+  name: string | null;
+  status: "active" | "unsubscribed";
+  source: string;
+  created_at: string;
+  unsubscribed_at: string | null;
+};
+
+/** PostgREST caps each response at ~1000 rows; page until exhausted. */
+const PAGE_SIZE = 1000;
+
+export async function fetchAllNewsletterSubscribers() {
+  const all: NewsletterSubscriberRow[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const to = from + PAGE_SIZE - 1;
+    const { data, error } = await supabase
+      .from("newsletter_subscribers")
+      .select("id, email, name, status, source, created_at, unsubscribed_at")
+      .order("created_at", { ascending: false })
+      .range(from, to);
+    if (error) throw error;
+    const page = (data ?? []) as NewsletterSubscriberRow[];
+    all.push(...page);
+    if (page.length < PAGE_SIZE) break;
+  }
+  return all;
+}
+
 export async function fetchNewsletterUserLinks() {
-  const { data, error } = await supabase.rpc("admin_list_newsletter_user_links");
-  if (error) throw error;
-  return (data ?? []) as NewsletterUserLink[];
+  const all: NewsletterUserLink[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const to = from + PAGE_SIZE - 1;
+    const { data, error } = await supabase
+      .rpc("admin_list_newsletter_user_links")
+      .range(from, to);
+    if (error) throw error;
+    const page = (data ?? []) as NewsletterUserLink[];
+    all.push(...page);
+    if (page.length < PAGE_SIZE) break;
+  }
+  return all;
 }
 
 export async function processNewsletterBatch(options?: {
@@ -154,15 +193,31 @@ export async function processNewsletterBatch(options?: {
   };
 }
 
+export type ParsedSubscriberCsv = {
+  rows: Array<{ email: string; name?: string }>;
+  /** Valid email rows in the file (including in-file duplicates). */
+  totalValid: number;
+  /** Rows skipped because the email already appeared earlier in the file. */
+  duplicatesInFile: number;
+  /** Rows without a usable email. */
+  invalid: number;
+};
+
 /** Parse a CSV with at least an email column (header optional). */
 export function parseSubscriberCsv(text: string): Array<{ email: string; name?: string }> {
+  return parseSubscriberCsvDetailed(text).rows;
+}
+
+export function parseSubscriberCsvDetailed(text: string): ParsedSubscriberCsv {
   const lines = text
     .replace(/^\uFEFF/, "")
     .split(/\r?\n/)
     .map((l) => l.trim())
     .filter(Boolean);
 
-  if (lines.length === 0) return [];
+  if (lines.length === 0) {
+    return { rows: [], totalValid: 0, duplicatesInFile: 0, invalid: 0 };
+  }
 
   const split = (line: string) => {
     const cells: string[] = [];
@@ -199,19 +254,107 @@ export function parseSubscriberCsv(text: string): Array<{ email: string; name?: 
       ? 1
       : -1;
 
-  const rows = hasHeader ? lines.slice(1) : lines;
+  const sourceLines = hasHeader ? lines.slice(1) : lines;
   const out: Array<{ email: string; name?: string }> = [];
   const seen = new Set<string>();
+  let duplicatesInFile = 0;
+  let invalid = 0;
+  let totalValid = 0;
 
-  for (const line of rows) {
+  for (const line of sourceLines) {
     const cells = split(line);
     const email = (cells[emailIdx] ?? "").trim().toLowerCase();
-    if (!email || !email.includes("@")) continue;
-    if (seen.has(email)) continue;
+    if (!email || !email.includes("@")) {
+      invalid += 1;
+      continue;
+    }
+    totalValid += 1;
+    if (seen.has(email)) {
+      duplicatesInFile += 1;
+      continue;
+    }
     seen.add(email);
     const name = nameIdx >= 0 ? (cells[nameIdx] ?? "").trim() : "";
     out.push(name ? { email, name } : { email });
   }
 
-  return out;
+  return { rows: out, totalValid, duplicatesInFile, invalid };
+}
+
+export async function fetchExistingSubscriberEmails() {
+  const emails = new Set<string>();
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const to = from + PAGE_SIZE - 1;
+    const { data, error } = await supabase
+      .from("newsletter_subscribers")
+      .select("email")
+      .range(from, to);
+    if (error) throw error;
+    const page = data ?? [];
+    for (const row of page) {
+      emails.add(row.email.toLowerCase());
+    }
+    if (page.length < PAGE_SIZE) break;
+  }
+  return emails;
+}
+
+export type ImportSubscribersResult = {
+  added: number;
+  duplicates: number;
+  duplicatesInFile: number;
+  invalid: number;
+};
+
+/** Insert only new emails; never update existing subscribers. */
+export async function importNewsletterSubscribers(
+  rows: Array<{ email: string; name?: string }>,
+  options?: { duplicatesInFile?: number; invalid?: number }
+): Promise<ImportSubscribersResult> {
+  const duplicatesInFile = options?.duplicatesInFile ?? 0;
+  const invalid = options?.invalid ?? 0;
+
+  if (rows.length === 0) {
+    return { added: 0, duplicates: 0, duplicatesInFile, invalid };
+  }
+
+  const existing = await fetchExistingSubscriberEmails();
+  const toInsert: Array<{
+    email: string;
+    name: string | null;
+    source: string;
+    status: "active";
+    unsubscribed_at: null;
+  }> = [];
+  let duplicates = 0;
+
+  for (const row of rows) {
+    const email = row.email.trim().toLowerCase();
+    if (existing.has(email)) {
+      duplicates += 1;
+      continue;
+    }
+    existing.add(email);
+    toInsert.push({
+      email,
+      name: row.name?.trim() || null,
+      source: "import",
+      status: "active",
+      unsubscribed_at: null,
+    });
+  }
+
+  const chunkSize = 200;
+  for (let i = 0; i < toInsert.length; i += chunkSize) {
+    const chunk = toInsert.slice(i, i + chunkSize);
+    const { error } = await supabase.from("newsletter_subscribers").insert(chunk);
+    if (error) throw error;
+  }
+
+  return {
+    added: toInsert.length,
+    duplicates,
+    duplicatesInFile,
+    invalid,
+  };
 }

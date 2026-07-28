@@ -19,8 +19,11 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
   estimateFilteredRecipients,
+  fetchAllNewsletterSubscribers,
+  fetchExistingSubscriberEmails,
   fetchNewsletterUserLinks,
-  parseSubscriberCsv,
+  importNewsletterSubscribers,
+  parseSubscriberCsvDetailed,
   processNewsletterBatch,
   sendNewsletter,
   type NewsletterSendMode,
@@ -121,6 +124,10 @@ export default function AdminNewsletter() {
 
   const [importing, setImporting] = useState(false);
   const [importPreview, setImportPreview] = useState<Array<{ email: string; name?: string }>>([]);
+  const [importMeta, setImportMeta] = useState({
+    duplicatesInFile: 0,
+    invalid: 0,
+  });
 
   const [subject, setSubject] = useState("");
   const [htmlBody, setHtmlBody] = useState(
@@ -142,29 +149,24 @@ export default function AdminNewsletter() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [{ data: subs, error: subErr }, { data: camps, error: campErr }, links] =
-        await Promise.all([
-          supabase
-            .from("newsletter_subscribers")
-            .select("id, email, name, status, source, created_at, unsubscribed_at")
-            .order("created_at", { ascending: false }),
-          supabase
-            .from("newsletter_campaigns")
-            .select(
-              "id, subject, html_body, status, recipient_count, sent_count, failed_count, sent_at, created_at, error_message, send_mode, daily_limit, validation_filter, next_batch_at"
-            )
-            .order("created_at", { ascending: false })
-            .limit(50),
-          fetchNewsletterUserLinks().catch((err) => {
-            console.error(err);
-            return [] as NewsletterUserLink[];
-          }),
-        ]);
+      const [subs, { data: camps, error: campErr }, links] = await Promise.all([
+        fetchAllNewsletterSubscribers(),
+        supabase
+          .from("newsletter_campaigns")
+          .select(
+            "id, subject, html_body, status, recipient_count, sent_count, failed_count, sent_at, created_at, error_message, send_mode, daily_limit, validation_filter, next_batch_at"
+          )
+          .order("created_at", { ascending: false })
+          .limit(50),
+        fetchNewsletterUserLinks().catch((err) => {
+          console.error(err);
+          return [] as NewsletterUserLink[];
+        }),
+      ]);
 
-      if (subErr) throw subErr;
       if (campErr) throw campErr;
 
-      setSubscribers((subs ?? []) as Subscriber[]);
+      setSubscribers(subs as Subscriber[]);
       setCampaigns((camps ?? []) as Campaign[]);
       setUserLinks(links);
     } catch (err) {
@@ -232,17 +234,31 @@ export default function AdminNewsletter() {
     if (!email) return;
     setSaving(true);
     try {
-      const { error } = await supabase.from("newsletter_subscribers").upsert(
-        {
-          email,
-          name: newName.trim() || null,
-          source: "admin",
-          status: "active",
-          unsubscribed_at: null,
-        },
-        { onConflict: "email" }
-      );
-      if (error) throw error;
+      const { data: existing, error: existingError } = await supabase
+        .from("newsletter_subscribers")
+        .select("id")
+        .eq("email", email)
+        .maybeSingle();
+      if (existingError) throw existingError;
+      if (existing) {
+        toast.error(t("admin.newsletter.subscriberDuplicate"));
+        return;
+      }
+
+      const { error } = await supabase.from("newsletter_subscribers").insert({
+        email,
+        name: newName.trim() || null,
+        source: "admin",
+        status: "active",
+        unsubscribed_at: null,
+      });
+      if (error) {
+        if (error.code === "23505") {
+          toast.error(t("admin.newsletter.subscriberDuplicate"));
+          return;
+        }
+        throw error;
+      }
       toast.success(t("admin.newsletter.subscriberAdded"));
       setAddOpen(false);
       setNewEmail("");
@@ -282,36 +298,53 @@ export default function AdminNewsletter() {
   const onCsvSelected = async (file: File | null) => {
     if (!file) return;
     const text = await file.text();
-    const rows = parseSubscriberCsv(text);
-    if (rows.length === 0) {
+    const parsed = parseSubscriberCsvDetailed(text);
+    if (parsed.rows.length === 0) {
       toast.error(t("admin.newsletter.importEmpty"));
       setImportPreview([]);
+      setImportMeta({ duplicatesInFile: 0, invalid: 0 });
       return;
     }
-    setImportPreview(rows);
-    toast.message(t("admin.newsletter.importPreview", { count: rows.length }));
+    setImportPreview(parsed.rows);
+    setImportMeta({
+      duplicatesInFile: parsed.duplicatesInFile,
+      invalid: parsed.invalid,
+    });
+
+    try {
+      const existing = await fetchExistingSubscriberEmails();
+      const alreadyInDb = parsed.rows.filter((r) => existing.has(r.email)).length;
+      const newCount = parsed.rows.length - alreadyInDb;
+      toast.message(
+        t("admin.newsletter.importPreviewDetailed", {
+          unique: parsed.rows.length,
+          newCount,
+          duplicates: alreadyInDb,
+          duplicatesInFile: parsed.duplicatesInFile,
+        })
+      );
+    } catch {
+      toast.message(t("admin.newsletter.importPreview", { count: parsed.rows.length }));
+    }
   };
 
   const confirmImport = async () => {
     if (importPreview.length === 0) return;
     setImporting(true);
     try {
-      const chunkSize = 200;
-      for (let i = 0; i < importPreview.length; i += chunkSize) {
-        const chunk = importPreview.slice(i, i + chunkSize).map((row) => ({
-          email: row.email,
-          name: row.name ?? null,
-          source: "import",
-          status: "active" as const,
-          unsubscribed_at: null,
-        }));
-        const { error } = await supabase
-          .from("newsletter_subscribers")
-          .upsert(chunk, { onConflict: "email" });
-        if (error) throw error;
-      }
-      toast.success(t("admin.newsletter.importSuccess", { count: importPreview.length }));
+      const result = await importNewsletterSubscribers(importPreview, {
+        duplicatesInFile: importMeta.duplicatesInFile,
+        invalid: importMeta.invalid,
+      });
+      toast.success(
+        t("admin.newsletter.importResult", {
+          added: result.added,
+          duplicates: result.duplicates,
+          duplicatesInFile: result.duplicatesInFile,
+        })
+      );
       setImportPreview([]);
+      setImportMeta({ duplicatesInFile: 0, invalid: 0 });
       await loadData();
     } catch (err) {
       console.error(err);
@@ -776,6 +809,11 @@ export default function AdminNewsletter() {
                 <div className="space-y-3">
                   <p className="text-sm text-muted-foreground">
                     {t("admin.newsletter.importPreview", { count: importPreview.length })}
+                    {importMeta.duplicatesInFile > 0
+                      ? ` · ${t("admin.newsletter.importFileDuplicates", {
+                          count: importMeta.duplicatesInFile,
+                        })}`
+                      : ""}
                   </p>
                   <div className="max-h-48 overflow-auto rounded-md border">
                     <Table>

@@ -4,10 +4,10 @@ import {
   applyValidationFilter,
   BATCH_SIZE,
   buildEmailHtml,
+  fetchAllActiveSubscribers,
   processPendingSendRows,
   sendResendBatch,
   tomorrowUtcIso,
-  type Subscriber,
   type ValidationFilter,
 } from "../_shared/newsletter.ts";
 
@@ -178,13 +178,10 @@ serve(async (req) => {
       limit = Math.floor(parsed);
     }
 
-    const { data: subscribers, error: subError } = await supabase
-      .from("newsletter_subscribers")
-      .select("id, email, name, unsubscribe_token")
-      .eq("status", "active")
-      .order("created_at", { ascending: true });
-
-    if (subError) {
+    let subscribers;
+    try {
+      subscribers = await fetchAllActiveSubscribers(supabase);
+    } catch (subError) {
       console.error("[newsletter-send] subscribers", subError);
       return new Response(JSON.stringify({ error: "No se pudieron cargar suscriptores" }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -192,11 +189,7 @@ serve(async (req) => {
       });
     }
 
-    let list = await applyValidationFilter(
-      supabase,
-      (subscribers ?? []) as Subscriber[],
-      filter
-    );
+    let list = await applyValidationFilter(supabase, subscribers, filter);
 
     if (list.length === 0) {
       return new Response(
