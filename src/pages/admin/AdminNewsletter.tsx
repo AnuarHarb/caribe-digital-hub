@@ -12,6 +12,8 @@ import {
   History,
   Loader2,
   Eye,
+  Check,
+  UserCheck,
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -191,6 +193,15 @@ export default function AdminNewsletter() {
   }, [userLinks]);
 
   const registeredSubscriberCount = userLinks.length;
+
+  const subscriberStats = useMemo(() => {
+    const total = subscribers.length;
+    const active = subscribers.filter((s) => s.status === "active").length;
+    const unsubscribed = subscribers.filter((s) => s.status === "unsubscribed").length;
+    const withAccount = userLinks.length;
+    const withoutAccount = Math.max(total - withAccount, 0);
+    return { total, active, unsubscribed, withAccount, withoutAccount };
+  }, [subscribers, userLinks]);
 
   const filteredRecipientCount = useMemo(
     () => estimateFilteredRecipients(subscribers, validationFilter),
@@ -492,6 +503,81 @@ export default function AdminNewsletter() {
         </div>
 
         <TabsContent value="subscribers" className="space-y-4">
+          <section
+            aria-label={t("admin.newsletter.subscriberStatsLabel")}
+            className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {loading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <Card key={i} className="animate-pulse">
+                  <CardContent className="p-4">
+                    <div className="h-3 w-20 rounded bg-muted" />
+                    <div className="mt-2 h-7 w-12 rounded bg-muted" />
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
+                      {t("admin.newsletter.statTotal")}
+                    </CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground/60" aria-hidden />
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold">{subscriberStats.total}</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
+                      {t("admin.newsletter.statActive")}
+                    </CardTitle>
+                    <Mail className="h-4 w-4 text-muted-foreground/60" aria-hidden />
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold">{subscriberStats.active}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {subscriberStats.unsubscribed}{" "}
+                      {t("admin.newsletter.status.unsubscribed").toLowerCase()}
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
+                      {t("admin.newsletter.statWithAccount")}
+                    </CardTitle>
+                    <UserCheck className="h-4 w-4 text-muted-foreground/60" aria-hidden />
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold">{subscriberStats.withAccount}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {subscriberStats.total
+                        ? Math.round(
+                            (subscriberStats.withAccount / subscriberStats.total) * 100
+                          )
+                        : 0}
+                      %
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium text-muted-foreground">
+                      {t("admin.newsletter.statWithoutAccount")}
+                    </CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground/60" aria-hidden />
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-2xl font-bold">{subscriberStats.withoutAccount}</p>
+                  </CardContent>
+                </Card>
+              </>
+            )}
+          </section>
+
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
               <div className="relative w-full flex-1 sm:max-w-sm">
@@ -592,46 +678,55 @@ export default function AdminNewsletter() {
                   <TableBody>
                     {filtered.map((sub) => {
                       const linkedUser = userLinkBySubscriberId.get(sub.id);
+                      const displayName =
+                        linkedUser?.full_name?.trim() ||
+                        sub.name?.trim() ||
+                        t("admin.newsletter.registeredYes");
                       return (
                         <TableRow key={sub.id}>
                           <TableCell className="max-w-[11rem] font-medium sm:max-w-none">
                             <span className="break-all">{sub.email}</span>
-                            {sub.name ? (
-                              <span className="mt-0.5 block text-xs text-muted-foreground sm:hidden">
-                                {sub.name}
-                              </span>
-                            ) : null}
-                            <span className="mt-1 block md:hidden">
+                            <span className="mt-1 block sm:hidden">
                               {linkedUser ? (
-                                <Badge variant="outline" className="text-xs">
-                                  {linkedUser.full_name || t("admin.newsletter.registeredYes")}
-                                </Badge>
-                              ) : (
-                                <span className="text-xs text-muted-foreground">
-                                  {t("admin.newsletter.registeredNo")}
-                                </span>
-                              )}
+                                <Button
+                                  asChild
+                                  variant="link"
+                                  size="sm"
+                                  className="h-auto px-0 py-0 text-xs"
+                                >
+                                  <Link to="/admin/usuarios">{displayName}</Link>
+                                </Button>
+                              ) : sub.name ? (
+                                <span className="text-xs text-muted-foreground">{sub.name}</span>
+                              ) : null}
                             </span>
                           </TableCell>
-                          <TableCell className="hidden sm:table-cell">{sub.name ?? "—"}</TableCell>
+                          <TableCell className="hidden sm:table-cell">
+                            {linkedUser ? (
+                              <Button
+                                asChild
+                                variant="link"
+                                size="sm"
+                                className="h-auto max-w-full truncate px-0 py-0"
+                              >
+                                <Link to="/admin/usuarios" title={linkedUser.email}>
+                                  {displayName}
+                                </Link>
+                              </Button>
+                            ) : (
+                              (sub.name ?? "—")
+                            )}
+                          </TableCell>
                           <TableCell>{statusBadge(sub.status)}</TableCell>
                           <TableCell className="hidden md:table-cell">
                             {linkedUser ? (
-                              <Link
-                                to="/admin/usuarios"
-                                className="inline-flex max-w-full"
-                                title={linkedUser.email}
-                              >
-                                <Badge
-                                  variant="outline"
-                                  className="max-w-full truncate text-xs hover:bg-muted"
-                                >
-                                  {linkedUser.full_name || t("admin.newsletter.registeredYes")}
-                                </Badge>
-                              </Link>
+                              <Check
+                                className="h-4 w-4 text-emerald-600"
+                                aria-label={t("admin.newsletter.registeredYes")}
+                              />
                             ) : (
-                              <span className="text-xs text-muted-foreground">
-                                {t("admin.newsletter.registeredNo")}
+                              <span className="text-xs text-muted-foreground" aria-hidden>
+                                —
                               </span>
                             )}
                           </TableCell>
