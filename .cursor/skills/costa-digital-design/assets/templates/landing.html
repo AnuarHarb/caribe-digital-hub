@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Referencia visual de CAMPAÑA. No es la portada. Las rutas del sitio se implementan en React + i18n. -->
+<title>[Título de la oferta] · Costa Digital, Centro de Innovación del Caribe</title>
+<meta name="description" content="[Qué recibe la persona, para quién, con un dato. 150 caracteres.]">
+<meta property="og:title" content="[Título] · Costa Digital">
+<meta property="og:description" content="[Descripción]">
+<meta property="og:image" content="/og/[pagina].png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../tokens.css">
+<style>
+  /* Plantilla de landing · Costa Digital. Todo valor viene de tokens.css. */
+  *{box-sizing:border-box;margin:0;padding:0}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--aqua);color:var(--navy);padding:var(--sp-75) var(--sp-200);border-radius:var(--r-box);font-family:var(--display);font-weight:700}
+  .skip:focus{left:var(--sp-200)}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 var(--doc-margin)}
+  nav.isla{position:sticky;top:0;z-index:20;display:flex;justify-content:center;padding:var(--sp-300) 0 0}
+  nav.isla .pill{display:flex;align-items:center;gap:var(--sp-300);background:rgba(5,10,48,.85);backdrop-filter:blur(16px);border-radius:var(--r-pill);padding:var(--sp-75) var(--sp-200) var(--sp-75) var(--sp-100)}
+  nav.isla a{color:var(--white);text-decoration:none;font-weight:500;font-size:var(--text-sm)}
+  nav.isla a[aria-current="page"]{color:var(--aqua)}
+  .hero{padding-top:var(--sp-800);padding-bottom:var(--sp-800)}
+  .hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--sp-600);align-items:center}
+  .hero .proof{font-family:var(--mono);font-size:var(--text-xs);letter-spacing:1.5px;text-transform:uppercase;color:var(--hero-dim);margin-top:var(--sp-300)}
+  .hero .visual{border-radius:var(--r-card);overflow:hidden;border:1px solid rgba(255,255,255,.12);aspect-ratio:4/3;background:var(--navy);display:flex;align-items:center;justify-content:center;color:var(--hero-dim);font-size:var(--text-xs)}
+  section{padding:var(--sp-800) 0}
+  section.paper{background:var(--paper)} section.white{background:var(--white)} section.dark{background:var(--navy);color:var(--white)}
+  .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-200);margin-top:var(--sp-400)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-200);margin-top:var(--sp-400)}
+  .steps .card .k{font-family:var(--mono);color:var(--brillante);font-size:var(--text-xs);letter-spacing:1.5px}
+  .faq details{background:var(--white);border:1px solid var(--line);border-radius:var(--r-box);padding:var(--sp-200) var(--sp-300);margin-top:var(--sp-100)}
+  .faq summary{font-family:var(--display);font-weight:700;cursor:pointer;color:var(--navy)}
+  .faq p{margin-top:var(--sp-100);color:var(--muted);font-size:var(--text-sm);line-height:var(--lh-sm)}
+  footer{background:var(--navy);color:var(--hero-dim);padding:var(--sp-500) 0;font-family:var(--mono);font-size:var(--text-xs);letter-spacing:.5px}
+  footer a{color:var(--aqua);text-decoration:none}
+  footer .row{display:flex;justify-content:space-between;gap:var(--sp-200);flex-wrap:wrap}
+  @media(max-width:700px){.wrap{padding:0 var(--doc-margin-mobile)}.hero .grid,.benefits,.steps{grid-template-columns:1fr}.hero{padding-top:var(--sp-600);padding-bottom:var(--sp-600)}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+
+<header class="hero">
+  <nav class="isla" aria-label="Principal"><div class="pill">
+    <svg viewBox="0 0 292.6 292.6" width="28" height="28" aria-hidden="true"><circle cx="146.3" cy="146.3" r="121.9" fill="none" stroke="#86CAC8" stroke-width="12.2"/>
+  <path fill="#86CAC8" fill-rule="evenodd" d="M 227.7 172.3 C 215.8 170.9 207.3 166.3 189.2 151.2 C 176.5 140.5 168.0 136.5 158.0 136.4 C 147.5 136.4 135.4 140.9 111.2 153.9 C 91.3 164.6 83.1 167.8 72.4 168.8 C 62.2 169.8 50.8 166.9 42.7 161.5 C 40.2 159.7 39.9 159.4 39.5 156.5 C 39.1 154.0 39.1 154.0 39.8 153.4 C 40.4 152.9 40.9 152.8 41.9 153.0 C 54.5 155.0 67.7 152.9 83.0 146.4 C 96.6 140.6 106.3 134.3 126.2 118.1 C 146.2 101.9 151.7 98.0 161.8 93.0 C 167.7 90.1 172.3 88.5 177.2 87.5 C 196.2 83.6 215.1 89.3 222.9 101.3 C 225.1 104.7 225.5 105.9 224.5 106.7 C 223.6 107.4 223.0 107.2 221.2 105.8 C 219.3 104.4 215.8 102.6 212.7 101.6 C 208.8 100.3 202.2 100.3 197.9 101.6 C 188.4 104.4 181.9 110.6 180.8 117.9 C 178.8 130.5 191.1 146.5 209.7 155.7 C 222.8 162.2 236.1 164.1 248.6 161.4 C 253.0 160.5 253.5 161.2 252.3 165.7 C 251.8 167.1 250.5 168.1 246.6 169.7 C 240.6 172.1 234.2 173.0 227.7 172.3 Z"/>
+  <path fill="#2E4DB8" fill-rule="evenodd" d="M 80.3 202.7 C 73.4 201.9 68.5 200.7 64.0 198.8 C 56.7 195.5 50.1 190.6 45.5 184.8 C 43.6 182.4 43.3 181.7 44.0 181.0 C 44.7 180.3 45.7 180.6 49.4 182.3 C 53.6 184.3 58.5 186.0 63.2 187.0 C 68.0 188.1 79.5 188.1 84.5 187.0 C 94.2 184.9 102.2 181.5 119.2 172.0 C 151.4 154.1 165.2 153.7 185.6 170.0 C 187.3 171.3 190.0 173.6 191.7 175.0 C 200.5 182.5 206.6 186.2 214.0 188.6 C 219.3 190.3 221.4 190.6 227.1 190.6 C 232.7 190.6 235.2 190.2 241.2 188.2 C 244.8 187.1 245.1 187.0 245.8 187.5 C 247.0 188.3 246.7 189.2 244.4 191.4 C 233.8 201.3 218.5 205.0 202.6 201.6 C 196.4 200.3 190.3 197.8 180.7 192.4 C 170.8 186.9 165.7 184.7 159.3 183.4 C 156.6 182.9 155.3 182.8 151.3 182.9 C 142.9 183.2 136.1 185.3 122.4 191.8 C 107.5 198.8 102.3 200.7 93.7 202.1 C 90.7 202.6 82.5 203.0 80.3 202.7 Z"/></svg>
+    <a href="/">Inicio</a><a href="/programas">Programas</a><a href="/comunidades">Comunidades</a><a href="/noticias" aria-current="page">Costa Digital News</a>
+  </div></nav>
+  <div class="wrap">
+    <div style="margin:var(--sp-500) 0 var(--sp-400) -14px"><svg viewBox="0 0 1120 460" style="width:236px;height:auto" aria-label="Costa Digital · Centro de Innovación">
+  <g transform="translate(90 80.0) scale(1.0253)"><circle cx="146.3" cy="146.3" r="121.9" fill="none" stroke="#86CAC8" stroke-width="12.2"/>
+  <path fill="#86CAC8" fill-rule="evenodd" d="M 227.7 172.3 C 215.8 170.9 207.3 166.3 189.2 151.2 C 176.5 140.5 168.0 136.5 158.0 136.4 C 147.5 136.4 135.4 140.9 111.2 153.9 C 91.3 164.6 83.1 167.8 72.4 168.8 C 62.2 169.8 50.8 166.9 42.7 161.5 C 40.2 159.7 39.9 159.4 39.5 156.5 C 39.1 154.0 39.1 154.0 39.8 153.4 C 40.4 152.9 40.9 152.8 41.9 153.0 C 54.5 155.0 67.7 152.9 83.0 146.4 C 96.6 140.6 106.3 134.3 126.2 118.1 C 146.2 101.9 151.7 98.0 161.8 93.0 C 167.7 90.1 172.3 88.5 177.2 87.5 C 196.2 83.6 215.1 89.3 222.9 101.3 C 225.1 104.7 225.5 105.9 224.5 106.7 C 223.6 107.4 223.0 107.2 221.2 105.8 C 219.3 104.4 215.8 102.6 212.7 101.6 C 208.8 100.3 202.2 100.3 197.9 101.6 C 188.4 104.4 181.9 110.6 180.8 117.9 C 178.8 130.5 191.1 146.5 209.7 155.7 C 222.8 162.2 236.1 164.1 248.6 161.4 C 253.0 160.5 253.5 161.2 252.3 165.7 C 251.8 167.1 250.5 168.1 246.6 169.7 C 240.6 172.1 234.2 173.0 227.7 172.3 Z"/>
+  <path fill="#2E4DB8" fill-rule="evenodd" d="M 80.3 202.7 C 73.4 201.9 68.5 200.7 64.0 198.8 C 56.7 195.5 50.1 190.6 45.5 184.8 C 43.6 182.4 43.3 181.7 44.0 181.0 C 44.7 180.3 45.7 180.6 49.4 182.3 C 53.6 184.3 58.5 186.0 63.2 187.0 C 68.0 188.1 79.5 188.1 84.5 187.0 C 94.2 184.9 102.2 181.5 119.2 172.0 C 151.4 154.1 165.2 153.7 185.6 170.0 C 187.3 171.3 190.0 173.6 191.7 175.0 C 200.5 182.5 206.6 186.2 214.0 188.6 C 219.3 190.3 221.4 190.6 227.1 190.6 C 232.7 190.6 235.2 190.2 241.2 188.2 C 244.8 187.1 245.1 187.0 245.8 187.5 C 247.0 188.3 246.7 189.2 244.4 191.4 C 233.8 201.3 218.5 205.0 202.6 201.6 C 196.4 200.3 190.3 197.8 180.7 192.4 C 170.8 186.9 165.7 184.7 159.3 183.4 C 156.6 182.9 155.3 182.8 151.3 182.9 C 142.9 183.2 136.1 185.3 122.4 191.8 C 107.5 198.8 102.3 200.7 93.7 202.1 C 90.7 202.6 82.5 203.0 80.3 202.7 Z"/></g>
+  <text x="418" y="198" font-family="Bricolage Grotesque, Arial Black, sans-serif" font-weight="800" font-size="124" letter-spacing="-3" fill="#FFFFFF">COSTA</text>
+  <text x="418" y="316" font-family="Bricolage Grotesque, Arial Black, sans-serif" font-weight="800" font-size="124" letter-spacing="-3" fill="#86CAC8">DIGITAL</text>
+  <text x="421" y="372" font-family="Space Mono, Courier New, monospace" font-size="27" letter-spacing="8" fill="#8FA0C8">CENTRO DE INNOVACIÓN</text></svg></div>
+    <div class="grid">
+      <div>
+        <p class="eyebrow">[Eyebrow · qué es esta página]</p>
+        <h1 style="margin-top:var(--sp-100)">[Resultado para el público, <em>con una frase en aqua.</em>]</h1>
+        <p style="margin-top:var(--sp-200)">[Subtítulo: qué es, para quién, con un dato concreto. Una o dos frases.]</p>
+        <p style="margin-top:var(--sp-400)"><a class="btn btn-primary" href="https://wa.me/573103900986?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20%5Bpagina%5D">Escribir por WhatsApp</a></p>
+        <p class="proof">3 años generando impacto · +400 graduados · +5.000 personas impactadas</p>
+      </div>
+      <div class="visual" role="img" aria-label="[Descripción de la foto real de la sede]">[foto real de la sede]</div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="paper">
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">[Problema → solución]</p>
+        <h2 style="margin-top:var(--sp-75)">[El problema tal como lo vive la persona, y lo que cambia en la casa]</h2>
+        <p class="muted" style="margin-top:var(--sp-100);max-width:var(--measure)">[Una o dos frases.]</p>
+      </div>
+      <div class="benefits">
+        <div class="card reveal"><p><b>[Beneficio 1 en negrita.]</b> [Prueba o detalle concreto.]</p></div>
+        <div class="card reveal"><p><b>[Beneficio 2.]</b> [Prueba.]</p></div>
+        <div class="card reveal"><p><b>[Beneficio 3.]</b> [Prueba.]</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap">
+      <p class="tagline" data-accent-last="3">[Mínimo dos líneas en la voz de la casa. La sección de tagline es obligatoria y activa palabra por palabra.]</p>
+    </div>
+  </section>
+
+  <section class="white">
+    <div class="wrap">
+      <div class="reveal"><p class="eyebrow">Cómo funciona</p><h2 style="margin-top:var(--sp-75)">[Tres pasos, sin sorpresas]</h2></div>
+      <div class="steps">
+        <div class="card reveal"><span class="k">01</span><h3 style="font-size:var(--text-lg);margin:var(--sp-75) 0">[Paso 1]</h3><p class="muted">[Qué pasa]</p></div>
+        <div class="card reveal"><span class="k">02</span><h3 style="font-size:var(--text-lg);margin:var(--sp-75) 0">[Paso 2]</h3><p class="muted">[Qué pasa]</p></div>
+        <div class="card reveal"><span class="k">03</span><h3 style="font-size:var(--text-lg);margin:var(--sp-75) 0">[Paso 3]</h3><p class="muted">[Qué pasa]</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="paper">
+    <div class="wrap">
+      <div class="reveal"><p class="eyebrow">Lo que dice la gente</p><h2 style="margin-top:var(--sp-75)">[Prueba social con nombre y contexto real]</h2></div>
+      <div class="card reveal" style="margin-top:var(--sp-400);max-width:var(--measure)"><p>"[Testimonio real, con permiso.]"</p><p class="muted" style="margin-top:var(--sp-100)">[Nombre], [qué hace], [relación con la casa]</p></div>
+    </div>
+  </section>
+
+  <section class="white faq">
+    <div class="wrap">
+      <div class="reveal"><p class="eyebrow">Preguntas frecuentes</p><h2 style="margin-top:var(--sp-75)">[Las dudas antes de decidir]</h2></div>
+      <div style="margin-top:var(--sp-300);max-width:var(--measure)">
+        <details class="reveal"><summary>[Pregunta 1, tal como la haría la persona]</summary><p>[Respuesta directa.]</p></details>
+        <details class="reveal"><summary>[Pregunta 2]</summary><p>[Respuesta.]</p></details>
+        <details class="reveal"><summary>[Pregunta 3]</summary><p>[Respuesta.]</p></details>
+        <details class="reveal"><summary>[Pregunta 4]</summary><p>[Respuesta.]</p></details>
+        <details class="reveal"><summary>[Pregunta 5]</summary><p>[Respuesta.]</p></details>
+        <details class="reveal"><summary>[Pregunta 6]</summary><p>[Respuesta.]</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark">
+    <div class="wrap reveal">
+      <p class="eyebrow" style="color:var(--aqua)">[Reversión de riesgo: diagnóstico gratis · primer día gratis · pausa]</p>
+      <h2 style="color:var(--white);margin-top:var(--sp-75)">[Mismo CTA que arriba, dicho como invitación]</h2>
+      <p style="margin-top:var(--sp-300)"><a class="btn btn-primary" href="https://wa.me/573103900986?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20%5Bpagina%5D">Escribir por WhatsApp</a></p>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap row">
+  <span>Costa Digital · Centro de Innovación del Caribe · Fundación Código Abierto (ESAL)</span>
+  <span><a href="/terminos">Términos</a> · <a href="/aviso-de-privacidad">Privacidad</a> · Barranquilla, Cartagena, Santa Marta</span>
+</div></footer>
+
+<script>
+  // Reveal por scroll con IntersectionObserver (nunca un listener de scroll sin throttle).
+  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Tagline: cada palabra se activa una a una en orden de lectura. data-accent-last = cuántas palabras finales van en aqua (una frase corta, no más del 20% del texto).
+  document.querySelectorAll('.tagline').forEach(t => {
+    const words = t.textContent.trim().split(/\s+/);
+    const last = parseInt(t.dataset.accentLast ?? '0', 10);
+    const from = last > 0 ? words.length - last : -1;
+    t.innerHTML = words.map((w, i) => `<span class="w${i >= from && from >= 0 ? ' accent' : ''}">${w}</span>`).join(' ');
+    const spans = [...t.querySelectorAll('.w')];
+    const tio = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { spans.forEach((s, i) => setTimeout(() => s.classList.add('on'), i * 60)); tio.disconnect(); } });
+    }, { threshold: 0.5 });
+    tio.observe(t);
+  });
+</script>
+</body>
+</html>
