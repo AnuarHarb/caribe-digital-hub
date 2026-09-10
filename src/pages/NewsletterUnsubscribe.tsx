@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { SEOHead } from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
+import { MareaLogo } from "@/components/MareaLogo";
 import { supabase } from "@/integrations/supabase/client";
 
 type Status = "loading" | "success" | "already" | "error";
@@ -38,12 +39,12 @@ export default function NewsletterUnsubscribe() {
 
         if (data?.alreadyUnsubscribed) {
           setStatus("already");
-          setMessage("Ya estabas dado de baja de Costa Digital News.");
+          setMessage("Ya estabas dado de baja de La Marea.");
           return;
         }
 
         setStatus("success");
-        setMessage("Listo. Ya no recibirás Costa Digital News en este correo.");
+        setMessage("Listo. Ya no recibirás La Marea en este correo.");
       } catch {
         if (!cancelled) {
           setStatus("error");
@@ -67,8 +68,8 @@ export default function NewsletterUnsubscribe() {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead
-        title="Darse de baja | Costa Digital News"
-        description="Cancelar suscripción a Costa Digital News."
+        title="Darse de baja | La Marea"
+        description="Cancelar suscripción a La Marea."
         canonical="/newsletter/baja"
         noindex
       />
@@ -89,7 +90,10 @@ export default function NewsletterUnsubscribe() {
         </h1>
         <p className="mt-3 text-muted-foreground">{message}</p>
         <Button asChild className="mt-8">
-          <Link to="/noticias">Volver a Costa Digital News</Link>
+          <Link to="/noticias" className="inline-flex items-center gap-2" aria-label="Volver a La Marea">
+            Volver a
+            <MareaLogo className="h-6" />
+          </Link>
         </Button>
       </main>
       <Footer />

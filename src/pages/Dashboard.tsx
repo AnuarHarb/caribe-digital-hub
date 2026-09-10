@@ -15,6 +15,8 @@ import { calculateProfileCompletion } from "@/lib/profileCompletion";
 import { PendingInvitations } from "@/components/company/PendingInvitations";
 import { CreateCompanyDialog } from "@/components/company/CreateCompanyDialog";
 import { CredentialCard } from "@/components/credential/CredentialCard";
+import { MembershipCard } from "@/components/dashboard/MembershipCard";
+import { useMembership } from "@/hooks/useMembership";
 
 function getInitials(name: string | null | undefined): string {
   if (!name?.trim()) return "?";
@@ -30,6 +32,7 @@ export default function Dashboard() {
   const { activeCompany, companies } = useActiveCompany();
   const { applications } = useMyApplications();
   const { jobs } = useCompanyJobs();
+  const { data: membership } = useMembership();
   const [createCompanyOpen, setCreateCompanyOpen] = useState(false);
 
   const { percentage } =
@@ -71,6 +74,8 @@ export default function Dashboard() {
               name={profile?.full_name || ""}
               avatarUrl={profile?.avatar_url}
               userId={user?.id || ""}
+              plan={membership?.plan}
+              creyenteNumber={membership?.creyente_number}
               compact
             />
             <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-accent hover:underline">
@@ -78,6 +83,10 @@ export default function Dashboard() {
               {t("credential.viewCredential")}
             </p>
           </Link>
+        </section>
+
+        <section>
+          <MembershipCard />
         </section>
 
         <section>
@@ -314,6 +323,8 @@ export default function Dashboard() {
             name={profile?.full_name || ""}
             avatarUrl={profile?.avatar_url}
             userId={user?.id || ""}
+            plan={membership?.plan}
+            creyenteNumber={membership?.creyente_number}
             compact
           />
           <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-accent hover:underline">
@@ -324,6 +335,8 @@ export default function Dashboard() {
         </div>
         </div>
       </section>
+
+      <MembershipCard />
 
       {!professionalProfile && (
         <Card className="border-accent/30">

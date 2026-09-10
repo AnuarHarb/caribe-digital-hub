@@ -1,0 +1,325 @@
+{
+  "descriptor": "Costa Digital · Centro de Innovación del Caribe",
+  "hero": {
+    "eyebrow": "Portafolio de servicios · 2026",
+    "title": "Bienvenido al mundo tech.",
+    "titleEmphasis": "mundo tech",
+    "lede": "Un techo, muchos motores. En la sede de Costa Digital se aprende, se construye software, se imprime en 3D, se reúne la comunidad, se cuenta lo que pasa en el Caribe tech y se toma buen café.",
+    "stat1": "construyendo ecosistema",
+    "stat2": "estudiantes graduados",
+    "stat3": "personas impactadas en eventos",
+    "ctaMemberships": "Ver membresías",
+    "ctaWhatsApp": "Escribir por WhatsApp",
+    "ctaCreateAccount": "Crear cuenta gratis"
+  },
+  "services": {
+    "eyebrow": "La casa tech del Caribe",
+    "title": "Todo lo que puedes encontrar aquí",
+    "subtitle": "Formación, software, Lab Maker, biblioteca, cowork, café, patio, swag y noticias tech del Caribe.",
+    "tabs": "Lo que hay en la casa",
+    "from": "desde",
+    "free": "gratis",
+    "negotiable": "a negociar",
+    "noCost": "sin costo",
+    "pay": "Pagar",
+    "quote": "Cotizar por WhatsApp",
+    "viewAll": "Ver todos los servicios",
+    "membresia": {
+      "title": "Membresía Costa Digital",
+      "space": "Toda la casa",
+      "description": "Pides la llave y vienes cuando quieras. Café, Jueves de Cowork, masterclass, Lab Maker, biblioteca. Los primeros 60 son Creyentes: pin numerado, nombre en el muro y un regalo de Cursor para meterle a la IA.",
+      "launch": "Lanzamiento",
+      "items": {
+        "miembro": { "name": "Miembro", "note": "Café ilimitado · eventos prioritarios · 10% en Tech Centre" },
+        "residente": { "name": "Residente · 20 cupos", "note": "Cowork con silla · 6 h sala de juntas · casillero" },
+        "planAnual": { "name": "Plan anual", "note": "12 meses al precio de 10" }
+      }
+    },
+    "formacion": {
+      "title": "Formación tech · Tech Centre",
+      "space": "Salones 1 y 2",
+      "description": "Llegas con ganas de entrar a tech y sales con algo hecho. Ocho semanas, máximo 12 personas, Producto o Datos, y un demo day donde presentas lo tuyo. Aprendes al lado de gente que ya construye en el Caribe.",
+      "items": {
+        "modulo8": { "name": "Módulo de 8 semanas", "note": "64 h · reserva $100.000 · hasta 3 cuotas" },
+        "moduloAvanzado": { "name": "Módulo avanzado", "note": "Agentes de IA o Machine Learning" },
+        "rutaCompleta": { "name": "Ruta completa", "note": "3 módulos, ~6 meses · 10% entre módulos" },
+        "tallerCorporativoIa": { "name": "Taller corporativo de IA", "note": "8 h, hasta 15 personas" },
+        "bootcampCorporativo": { "name": "Bootcamp corporativo", "note": "4 medias jornadas" },
+        "reservaCupo": { "name": "Reserva de cupo", "note": "Se descuenta del módulo" }
+      }
+    },
+    "software": {
+      "title": "Software y agentes de IA",
+      "space": "Laboratorio de innovación",
+      "description": "Traes el lío de tu empresa: procesos a mano, nada conectado. Nos sentamos, vemos qué sí vale automatizar y después construimos la plataforma o el agente. Por fases, para no gastar en lo que no toca.",
+      "items": {
+        "diagnostico": { "name": "Diagnóstico · 45 min", "note": "Qué se puede automatizar y qué no" },
+        "plataforma": { "name": "Plataforma a la medida", "note": "" },
+        "agenteIa": { "name": "Agente de IA", "note": "Sobre la plataforma" },
+        "soporte": { "name": "Soporte y evolución", "note": "Mensual anticipado" }
+      }
+    },
+    "asesorias": {
+      "title": "Asesorías y sesiones",
+      "space": "Sala de juntas",
+      "description": "Vienes con una pregunta que no cabe en un Google. Dos horas para aterrizar qué puede hacer la IA por ti, y qué no. Si ya estás construyendo, una hora de mentoría: código, decisiones, el siguiente paso.",
+      "items": {
+        "sesionEstrategica": { "name": "Sesión estratégica de IA · 2 h", "note": "Informe de oportunidades" },
+        "mentoria1h": { "name": "Mentoría técnica 1:1", "note": "Por hora" },
+        "bonoMentoria": { "name": "Bono de mentoría", "note": "4 horas prepagadas" }
+      }
+    },
+    "biblioteca": {
+      "title": "Biblioteca",
+      "space": "Sala de lectura",
+      "description": "Te sientas, abres un libro y el ruido queda atrás. Arduino, Terraform, electrónica, liderazgo, narrativa. Lees aquí. Si eres de la casa, te lo llevas.",
+      "items": {
+        "consulta": { "name": "Consulta en sala", "note": "Abierta cuando la casa está abierta" },
+        "prestamo": { "name": "Préstamo", "note": "Con membresía" }
+      }
+    },
+    "cowork": {
+      "title": "Espacio de cowork",
+      "space": "Sala compartida",
+      "description": "Abres el portátil y ya estás. Wifi, mesas y el café al lado. Los jueves se llena el parche. Un día para probar la casa, o tu silla si ya eres Residente.",
+      "items": {
+        "jueves": { "name": "Jueves de Cowork", "note": "El parche semanal, cuando la casa está abierta" },
+        "coworkDia": { "name": "Cowork día", "note": "Para probar la casa (incluye un café)" },
+        "silla": { "name": "Silla de Residente", "note": "Puesto fijo con el plan Residente" }
+      }
+    },
+    "labMaker": {
+      "title": "Lab Maker",
+      "space": "Cuarto auxiliar",
+      "description": "Llegas con un archivo o con una idea en la cabeza. Sales con una pieza en la mano. Impresión 3D, hora de máquina, o un taller de tres horas para aprender a hacerlo tú.",
+      "items": {
+        "impresion3d": { "name": "Impresión 3D por pieza", "note": "Material incluido, prepago" },
+        "horaMaquina": { "name": "Hora de máquina", "note": "Trae tu material y diseño" },
+        "tallerMaker": { "name": "Taller maker · 3 h", "note": "Introducción a impresión 3D" },
+        "tallerGrupo": { "name": "Taller escolar o corporativo", "note": "Media jornada, grupo cerrado" }
+      }
+    },
+    "espacios": {
+      "title": "Espacios y eventos",
+      "space": "Patio · salones · sala",
+      "description": "Quieres armar una noche, un taller, una junta. El patio aguanta 60 entre semana y más de 100 el viernes. Tech Nights nació aquí. Tú pones la gente; la casa pone el techo.",
+      "items": {
+        "patioSemana": { "name": "Patio nocturno entre semana", "note": "Hasta 60 personas" },
+        "patioViernes": { "name": "Patio viernes o corporativo", "note": "100+ personas, sonido básico" },
+        "salonMediaJornada": { "name": "Salón media jornada · 4 h", "note": "Hasta 14 personas" },
+        "salonJornadaCompleta": { "name": "Salón jornada completa", "note": "" },
+        "salaJuntasHora": { "name": "Sala de juntas · por hora", "note": "8 personas" }
+      }
+    },
+    "laMarea": {
+      "title": "Noticias tech del Caribe",
+      "space": "El medio de la casa",
+      "tagline": "Lo que mueve la vaina tech en el Caribe.",
+      "description": "Tienes una historia tech del Caribe que merece verse. Cobertura, reportaje o el perfil de quien se formó y ya trabaja. Lo patrocinado se marca. Lo demás es periodismo de la casa.",
+      "items": {
+        "coberturaEvento": { "name": "Cobertura de evento", "note": "Nota, fotos y redes" },
+        "reportaje": { "name": "Reportaje de empresa", "note": "Contenido patrocinado, marcado" },
+        "patrocinioBoletin": { "name": "Patrocinio del boletín", "note": "Marca en cabecera + mención" },
+        "perfilesComunidad": { "name": "Perfiles de egresados", "note": "Parte de la misión" }
+      }
+    },
+    "cafe404": {
+      "title": "404 Café",
+      "space": "Área B · terraza",
+      "tagline": "Una cafetería que sostiene la sede.",
+      "description": "Un espacio para conectar, leer sobre tecnología y hacer cowork. Una casa tech: un lugar chévere para tomar algo rico y sentirte en casa.",
+      "items": {
+        "menuDia": { "name": "Menú del día", "note": "" },
+        "bono10": { "name": "Bono 10 comidas", "note": "Vigencia 60 días" },
+        "bono20": { "name": "Bono 20 comidas", "note": "Vigencia 90 días" }
+      }
+    },
+    "swag": {
+      "title": "SWAG de aliados",
+      "description": "Sales del evento con la casa puesta. Gorras, pines, stickers de quien sostiene el parche. Tu marca puede estar en esa mesa, al lado de la gente que ya viene.",
+      "items": {
+        "mesa": { "name": "Merch en la casa", "note": "Gorras, pines y stickers en eventos" },
+        "kit": { "name": "Kit de aliado", "note": "Tu marca en la mesa, a la medida" }
+      }
+    },
+    "patrocinios": {
+      "title": "Patrocinios y alianzas",
+      "space": "Toda la sede",
+      "description": "Tu marca no quiere un banner de un día. Quiere nombre en un espacio, becas de formación, quedarse donde la gente aprende. Donación ESAL con beneficio Art. 257 E.T.",
+      "items": {
+        "aliadoFormacion": { "name": "Aliado de formación", "note": "Beca 2 rutas completas + marca" },
+        "namingAuditorio": { "name": "Naming del auditorio", "note": "Proyecto a la medida" }
+      }
+    },
+    "spaces": {
+      "todaLaCasa": "Toda la casa",
+      "salones": "Salones 1 y 2",
+      "laboratorio": "Laboratorio",
+      "salaJuntas": "Sala de juntas",
+      "cuartoAuxiliar": "Cuarto auxiliar",
+      "patioSalones": "Patio · salones",
+      "medio": "El medio",
+      "areaB": "Área B · terraza",
+      "biblioteca": "Sala de lectura",
+      "cowork": "Sala compartida"
+    },
+    "footnote": "Los espacios y membresías se activan con prepago. Software se dimensiona por fases. Cotización por WhatsApp en menos de 24 h."
+  },
+  "membership": {
+    "eyebrow": "Membresía",
+    "title": "El club de la casa",
+    "subtitle": "Café ilimitado, eventos prioritarios, Lab Maker y más. Los primeros 60 son Creyentes.",
+    "creyentes": "Creyentes",
+    "creyentesRemaining": "Quedan {{count}} de {{max}} Creyentes",
+    "creyentesLead": "Los primeros 60. No es un plan más. Es quien creyó cuando la casa empezaba.",
+    "creyentesGifts": [
+      {
+        "title": "Pin numerado",
+        "why": "Edición especial. Solo 60. Ponerlo es decir que crees en el Caribe como epicentro tech."
+      },
+      {
+        "title": "Nombre en el muro",
+        "why": "Vamos a crear un muro para decorar la sede. Ahí van los nombres de los 60 Creyentes."
+      },
+      {
+        "title": "US$20 en Cursor",
+        "why": "Un regalo de la casa para que le metas a la inteligencia artificial."
+      }
+    ],
+    "plans": {
+      "miembro": {
+        "name": "Miembro",
+        "price": "$70.000",
+        "normalPrice": "$100.000",
+        "period": "/ mes",
+        "benefits": [
+          "Café ilimitado en barra",
+          "Acceso prioritario a eventos",
+          "Precio especial en eventos pagos",
+          "Masterclass virtual mensual",
+          "Lab Maker y biblioteca",
+          "10% en formación Tech Centre"
+        ]
+      },
+      "residente": {
+        "name": "Residente",
+        "price": "$250.000",
+        "normalPrice": "$350.000",
+        "period": "/ mes",
+        "slots": "20 cupos",
+        "benefits": [
+          "Todo lo del plan Miembro",
+          "Cowork con silla garantizada",
+          "6 h de sala de juntas/mes",
+          "Casillero y recepción de paquetes",
+          "Entrada gratis a eventos desde mes 3",
+          "Kit de bienvenida y swag trimestral"
+        ]
+      },
+      "anual": {
+        "name": "Plan anual",
+        "description": "12 meses al precio de 10, cualquier plan.",
+        "cta": "Elegir plan anual"
+      },
+      "coworkDia": {
+        "name": "Cowork día",
+        "price": "$25.000",
+        "description": "Prueba la casa. Incluye un café."
+      }
+    },
+    "benefitsTable": {
+      "title": "Comparar planes",
+      "feature": "Beneficio",
+      "miembro": "Miembro",
+      "residente": "Residente"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "q1": { "q": "¿Qué son los Creyentes?", "a": "Los primeros 60 miembros. Pin numerado, nombre en el muro y US$20 en Cursor para meterle a la IA." },
+      "q2": { "q": "¿Hay cobro recurrente automático?", "a": "No en esta versión. Pagas 1 o 12 meses por adelantado. Te avisaremos antes de vencer." },
+      "q3": { "q": "¿Quién factura?", "a": "Membresías y formación: Fundación Código Abierto (ESAL). Software B2B: Ciudad Inmersiva SAS." },
+      "q4": { "q": "¿Puedo probar antes?", "a": "Sí: Cowork día por $25.000 incluye un café." }
+    },
+    "agreements": {
+      "title": "Acuerdos de la casa",
+      "items": [
+        "Respeto mutuo en espacios compartidos",
+        "Contenido patrocinado siempre marcado",
+        "Prepago para reservas de espacio",
+        "Renovación manual — te avisamos por correo"
+      ]
+    },
+    "wall": {
+      "title": "Muro de Creyentes",
+      "empty": "Sé de los primeros en aparecer aquí.",
+      "consent": "Al pagar puedes autorizar mostrar tu nombre en el muro público."
+    },
+    "ctaPay": "Pagar ahora",
+    "ctaAnnual": "Pagar plan anual"
+  },
+  "legal": {
+    "eyebrow": "Anexo · claridad legal",
+    "title": "Una marca, dos cajas",
+    "subtitle": "Todo bajo la marca Costa Digital. La factura sale según la naturaleza del servicio.",
+    "fca": {
+      "services": "Membresías, formación, talleres, lab maker, eventos, espacios, café, La Marea, patrocinios",
+      "entity": "Fundación Código Abierto (ESAL)",
+      "why": "Actividad meritoria. El excedente vuelve a sede, programas y becas."
+    },
+    "ci": {
+      "services": "Software a la medida, agentes de IA, consultoría B2B, soporte",
+      "entity": "Ciudad Inmersiva SAS",
+      "why": "Servicio comercial a precio de mercado. Aliado estratégico del centro."
+    }
+  },
+  "cafe404": {
+    "title": "404 Café",
+    "tagline": "Una cafetería que sostiene la sede.",
+    "description": "Un espacio para conectar, leer sobre tecnología y hacer cowork. Una casa tech: un lugar chévere para tomar algo rico y sentirte en casa.",
+    "credit": "Este café lo impulsa Cristian Lugo. Es barista y bartender profesional, y fundador del",
+    "school": "Instituto del Cóctel",
+    "creditEnd": " en Barranquilla.",
+    "ctaBonos": "Comprar bonos",
+    "ctaVisit": "Visitar la sede"
+  },
+  "cta": {
+    "title": "La casa está abierta.",
+    "emphasis": "Empieza por un café.",
+    "subtitle": "Diagnóstico gratis · visitas guiadas · Barranquilla",
+    "whatsapp": "WhatsApp",
+    "createAccount": "Crear cuenta gratis"
+  },
+  "checkout": {
+    "processing": "Preparando pago…",
+    "loginRequired": "Inicia sesión o deja tu correo para continuar",
+    "emailPlaceholder": "tu@email.com",
+    "continue": "Continuar al pago",
+    "error": "No se pudo iniciar el pago. Intenta de nuevo.",
+    "consentWall": "Mostrar mi nombre en el muro de Creyentes (opcional)"
+  },
+  "payment": {
+    "title": "Resultado del pago",
+    "pending": "Pago en proceso",
+    "approved": "¡Pago aprobado!",
+    "declined": "Pago no completado",
+    "reference": "Referencia",
+    "nextSteps": "Próximos pasos",
+    "welcomeWhatsApp": "Escríbenos por WhatsApp para activar tu membresía",
+    "backHome": "Volver al inicio",
+    "viewMembership": "Ver mi membresía"
+  },
+  "dashboard": {
+    "membership": {
+      "title": "Mi membresía",
+      "none": "Aún no tienes membresía activa.",
+      "plan": "Plan",
+      "expires": "Vence",
+      "creyente": "Creyente",
+      "cta": "Ver membresías"
+    }
+  },
+  "nav": {
+    "servicios": "Servicios",
+    "membresias": "Membresías"
+  }
+}

@@ -98,7 +98,7 @@ export function buildEmailHtml(
   const footer = `
 <hr style="border:none;border-top:1px solid #e5e5e5;margin:32px 0 16px;" />
 <p style="font-size:12px;line-height:1.5;color:#666;">
-  Recibes este correo porque te suscribiste a Costa Digital News.
+  Recibes este correo porque te suscribiste a La Marea.
   <a href="${unsubscribeUrl}">Darme de baja</a>
   · <a href="${siteUrl}/noticias">Ver noticias</a>
 </p>`;

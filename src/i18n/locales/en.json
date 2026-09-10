@@ -4,8 +4,8 @@
   },
   "ribbon": {
     "badge": "Season",
-    "text": "It's TechCaribe Fest 2026 season · August 8\u20139, Barranquilla",
-    "textShort": "TechCaribe Fest 2026 · August 8\u20139",
+    "text": "It's TechCaribe Fest 2026 season · August 8–9, Barranquilla",
+    "textShort": "TechCaribe Fest 2026 · August 8–9",
     "cta": "Get tickets",
     "dismiss": "Dismiss announcement"
   },
@@ -13,11 +13,14 @@
     "jobs": "Opportunities",
     "talent": "Talent",
     "blog": "News",
-    "marea": "Costa Digital News",
+    "marea": "La Marea",
     "dashboard": "Dashboard",
     "settings": "Settings",
     "admin": "Admin",
     "login": "Login",
+    "signup": "Create account",
+    "servicios": "Services",
+    "membresias": "Memberships",
     "logout": "Logout",
     "talentNetwork": "Talent Network",
     "events": "Events",
@@ -29,7 +32,8 @@
     "proyectos": "Projects",
     "aliados": "Partners",
     "equipo": "Team",
-    "sede": "Location"
+    "sede": "Location",
+    "manifiesto": "Manifesto"
   },
   "talentNetwork": {
     "subtitle": "Find job offers and connect with Caribbean tech talent.",
@@ -57,120 +61,63 @@
     }
   },
   "manifesto": {
-    "preamble": {
-      "title": "PREAMBLE",
-      "content": [
-        "We are the Caribbean Order that chooses technology to transform realities.",
-        "We don't wait for the future: we build it from here."
-      ]
-    },
-    "principles": {
-      "title": "I. FOUNDATIONAL PRINCIPLES",
-      "items": [
-        "Identity before imitation.",
-        "Community before ego.",
-        "Education before opinion.",
-        "Action before excuse.",
-        "Measurable impact before noise.",
-        "Ethics before shortcuts.",
-        "Caribbean before borders."
-      ]
-    },
-    "mission": {
-      "title": "II. CENTRAL MISSION",
-      "content": [
-        "Turn the Caribbean into Colombia's new tech epicenter:"
-      ],
-      "items": [
-        "training world-class talent,",
-        "creating high-impact startups,",
-        "attracting investment and decent jobs,",
-        "exporting innovation with Caribbean seal."
-      ]
-    },
-    "practice": {
-      "title": "III. PRACTICE PRECEPTS",
-      "items": [
-        "Sharing knowledge is law: document, open, teach.",
-        "Collaboration is the way: those who add up win.",
-        "Rigor distinguishes us: we measure, iterate, improve.",
-        "Diversity is advantage: more perspectives = better solutions.",
-        "Culture is the engine: we create technology with Caribbean flavor.",
-        "Coherence is power: what we say, we do."
-      ]
-    },
-    "mastery": {
-      "title": "IV. CRAFT MASTERY",
-      "items": [
-        "Learn continuously.",
-        "Build real products.",
-        "Show work without fear.",
-        "Seek hard and honest feedback.",
-        "Raise the standard with every delivery."
-      ]
-    },
-    "leadership": {
-      "title": "V. LEADERSHIP (FROM LEADER TO VOLUNTEER)",
-      "items": [
-        "Serve first, command later.",
-        "Give credit in public; correct in private.",
-        "Delegate with clarity; demand with respect.",
-        "Care for the common brand over personal shine.",
-        "Train someone who can replace you."
-      ]
-    },
-    "rules": {
-      "title": "VI. HOUSE RULES",
-      "items": [
-        "Every event has purpose, metrics, and published learning.",
-        "No sponsorship is negotiated without common mandate.",
-        "The calendar is sacred: coordination before broadcast.",
-        "The Costa Digital brand is used with honor or not used."
-      ]
-    },
-    "prohibited": {
-      "title": "VII. PROHIBITED CONDUCT",
-      "items": [
-        "✗ Protagonism that detracts from the community.",
-        "✗ Promises without delivery.",
-        "✗ Appropriating others' work.",
-        "✗ Breaking one's word.",
-        "✗ Shortcuts that compromise ethics or security."
-      ]
-    },
-    "pact": {
-      "title": "VIII. PACT WITH THE CITIES",
-      "content": [
-        "Barranquilla, Cartagena, Santa Marta and the entire Caribbean:",
-        "we bring knowledge, opportunities and networks;",
-        "we return with trained talent and living projects."
-      ]
-    },
-    "oath": {
-      "title": "IX. MEMBER'S OATH",
-      "content": [
-        "\"From the Caribbean and for the world,",
-        "I swear to learn, build and share.",
-        "I swear to honor ethics, community and excellence.",
-        "I swear to turn our Caribbean into a technology epicenter.\""
-      ]
-    },
-    "callAndResponse": {
-      "title": "X. CALL AND RESPONSE",
-      "subtitle": "(to open events)",
-      "content": [
-        "— \"Where is the future built from?\"",
-        "— \"From the Caribbean!\"",
-        "— \"What is our code?\"",
-        "— \"Identity, community, impact!\""
-      ]
-    }
+    "eyebrow": "Epicentro Tech",
+    "heading": "The manifesto",
+    "sections": [
+      {
+        "title": "1. The diagnosis",
+        "paragraphs": [
+          "For too long the Latin American tech map was drawn around Bogotá, Medellín, São Paulo, Buenos Aires and Mexico City. The Colombian Caribbean, with its talent, its universities, its open culture and its port-city position, was left as rhythm, sea and plantain fields, not as code, capital or frontier innovation. That reading does not hold for lack of people, but for a historical absence of ecosystem infrastructure: sustained communities, current education, patient capital and a public narrative.",
+          "The result was a paradox: talent that trains and leaves; companies that could be born here and scale with their own identity; and an internal story that treated innovation as something that “happens in other capitals”. Recent facts —Barranqui-IA, Costa Digital, Caribe Ventures, alliances with Google and the Atlántico Governor’s Office, the accumulated institutional press— contradict that reading. The map is being redrawn."
+        ]
+      },
+      {
+        "title": "2. The fundamentals",
+        "paragraphs": [
+          "The moment is technical and cultural at once. Agentic AI changed the balance between talent and product: fewer people build more, and less capital goes further. You no longer need the density of a megacity to produce global companies, but you do need a community that connects learning, opportunity and trust.",
+          "The Colombian Caribbean has universities, competitive costs, a strong cultural identity, a tech diaspora ready to come back, and a political moment aligned with the TIC Secretariat, City Hall and multilateral partners. It is also a port city: a way out to Central America, the insular Caribbean and the United States."
+        ]
+      },
+      {
+        "title": "3. The thesis: Epicentro Tech",
+        "paragraphs": [
+          "Epicentro Tech is not Silicon Valley, and it is not a copy of Medellín. It is the explicit bet that Barranquilla and the Caribbean region be recognized as a first-order Latin American tech node: with its character, its companies, its events, its talent and its own way of relating to the world.",
+          "In practice, Epicentro Tech means designing education, innovation, capital and community at the same time, so a founder’s cycle is possible without unnecessary friction: learn, build, connect, fund and scale while staying anchored to the territory."
+        ]
+      },
+      {
+        "title": "4. Costa Digital and its four capacities",
+        "paragraphs": [
+          "Costa Digital is the innovation and technology transformation center of the Colombian Caribbean. It lives in Casa Tech, one of the 39 heritage houses of El Prado, in Barranquilla, and is operated by Fundación Código Abierto. Under one roof it articulates:"
+        ],
+        "items": [
+          "Education · Tech Centre. Trains professionals to market standards with experiential methods; AI Engineer as the anchor track, and AI as a daily tool.",
+          "Innovation · Ciudad Inmersiva. Applied AI lab; its AI Sprint program delivers a trained agent in three weeks.",
+          "Capital · Caribe Ventures. A Delaware-structured pre-seed fund with proprietary dealflow across +3,000 active people.",
+          "Community. The center’s circulatory system: GDG Barranquilla, Tech Nights, Cursor Meetup, TechCaribe Fest and Barranqui-IA."
+        ]
+      },
+      {
+        "title": "5. The next wave: why Barranquilla, why now",
+        "paragraphs": [
+          "Behind software there is a deeper wave: robotics and physical AI. The generation of models we train today will give birth to the generation of machines that come next. The question is from which territory they will be assembled and programmed. The Colombian Caribbean has an asset few Latin American cities can match: industrial DNA. Barranquilla was Colombia’s industrial capital and still holds logistics infrastructure, technical knowledge and a producer’s vocation.",
+          "The long thesis is deliberate: today we invest in the software and AI generation that will give birth to Latin American robotics. Why the Caribbean: because it has a port, technical talent, competitive costs and a strong cultural brand. Why now: because the agentic-AI window opens possibilities that did not exist a decade ago, and because there is political and institutional alignment to scale."
+        ]
+      },
+      {
+        "title": "6. The call",
+        "paragraphs": [
+          "This manifesto convenes distinct and complementary profiles. If you are a founder: there is a thesis and aligned capital to build from here with AI. If you are an LP or investor: there is dealflow, international structure and an explicit regional thesis. If you are diaspora: there are roles, a physical house, community and reasons to come back. If you are young talent: there is training, mentorship and living communities. If you are a company or government: there is a serious territorial counterpart for adoption and regional dynamization programs.",
+          "The Caribbean does not need more scattered goodwill. It needs articulation. Costa Digital is that articulation. And Casa Tech is where the next chapter of the Latin American map begins, physically."
+        ]
+      }
+    ]
   },
   "auth": {
     "login": "Login",
     "signup": "Sign up",
     "loginDescription": "Enter your credentials to continue",
-    "signupDescription": "Create your account to join the talent network",
+    "signupDescription": "Your profile on the talent network, events, Pulso newsletter, and community access. Free to join.",
     "email": "Email",
     "password": "Password",
     "fullName": "Full name",
@@ -739,7 +686,7 @@
     },
     "blog": {
       "title": "Blog management",
-      "description": "Create and edit Costa Digital News articles",
+      "description": "Create and edit La Marea articles",
       "newPost": "New article",
       "editPost": "Edit article",
       "titleLabel": "Title",
@@ -785,7 +732,7 @@
       "pilar": "Pillar",
       "formato": "Format",
       "featured": "Cover story",
-      "featuredHint": "When on, this note is the Costa Digital News cover. Only one can be featured.",
+      "featuredHint": "When on, this note is the La Marea cover. Only one can be featured.",
       "featuredBadge": "Cover",
       "setFeatured": "Set as cover",
       "featuredSet": "This note is now the cover story",
@@ -834,7 +781,7 @@
     },
     "newsletter": {
       "title": "Newsletter",
-      "subtitle": "Costa Digital News subscribers and sends via Resend",
+      "subtitle": "La Marea subscribers and sends via Resend",
       "tabs": {
         "subscribers": "Subscribers",
         "import": "Import",
@@ -985,8 +932,11 @@
     }
   },
   "blog": {
-    "title": "Costa Digital News",
-    "backToBlog": "Back to blog",
+    "title": "La Marea",
+    "contarTitle": "Want to tell what's happening?",
+    "contarText": "Or join as a reporter of the tech world? Write us.",
+    "contarCta": "Write us",
+    "backToBlog": "Back to La Marea",
     "publishedOn": "Published on",
     "by": "by",
     "tags": "Tags",
@@ -1184,31 +1134,26 @@
   },
   "landing": {
     "hero": {
-      "title": "Caribe Epicentro Tech",
-      "subtitle": "Costa Digital is the innovation center that brings together education, community, innovation and capital so that global-impact technology is built from the Colombian Caribbean.",
-      "ctaJoin": "Join the community",
-      "ctaDiscover": "Discover what's happening",
+      "title": "Welcome to the tech world.",
+      "subtitle": "One roof, many engines. At Costa Digital you learn, build software, meet the community and drink great coffee.",
+      "ctaJoin": "Create free account",
+      "ctaDiscover": "View memberships",
       "ctaExploreCommunities": "Explore communities",
-      "ctaExplore": "Explore the ecosystem",
+      "ctaExplore": "View services",
       "stats": [
         {
-          "value": "3",
-          "label": "years generating impact"
-        },
-        {
-          "value": "+120",
-          "label": "projects created in hackathons"
+          "value": "3 years",
+          "label": "building ecosystem"
         },
         {
           "value": "+400",
           "label": "graduated students"
         },
         {
-          "value": "+5000",
-          "label": "people impacted"
+          "value": "+5,000",
+          "label": "people reached"
         }
       ],
-      "eyebrow": "Innovation & Tech Transformation Center of the Caribbean",
       "operatedBy": "Operated by Fundación Código Abierto"
     },
     "techCentre": {
@@ -1223,10 +1168,9 @@
       ]
     },
     "news": {
-      "title": "Costa Digital News",
-      "subtitle": "Stories, news and what's happening in the Caribbean tech ecosystem",
+      "title": "La Marea",
       "readMore": "Read more",
-      "viewAll": "See all news",
+      "viewAll": "See all",
       "empty": "No news published yet",
       "emptyInvite": "Come back soon for stories from the ecosystem"
     },
@@ -1245,7 +1189,7 @@
       "legal": "Legal"
     },
     "community": {
-      "title": "Tech Communities",
+      "title": "Events and tech communities",
       "subtitle": "The communities driving the Caribbean tech ecosystem.",
       "gdg": {
         "name": "GDG Barranquilla",
@@ -1270,7 +1214,7 @@
       "joinWhatsApp": "Join group",
       "noCommunities": "Active ecosystem communities will appear here soon.",
       "eventsHeading": "Flagship events",
-      "communitiesHeading": "Tech communities",
+      "communitiesHeading": "Communities with recurring events at the tech house",
       "eventsTitle": "Featured Events",
       "events": {
         "barranquiIA": "Barranqui-IA",
@@ -1315,17 +1259,18 @@
       "subtitle": "Institutions, companies and partners —including the public sector— that back the Caribbean tech movement."
     },
     "pillars": {
-      "eyebrow": "Our model",
-      "title": "Four pillars, one mission",
-      "subtitle": "Costa Digital integrates education, community, innovation and capital. Each pillar has a partner institution covering one stage of the cycle: from training talent to the capital that scales startups to the world.",
-      "hint": "Tap each pillar to learn more",
-      "cta": "Explore the full ecosystem"
+      "eyebrow": "The mission",
+      "title": "Turn the Caribbean into Colombia's tech epicenter",
+      "subtitle": "An epicenter is where things happen and cross. A place that attracts. To turn the region into one, it needs an ecosystem that holds it up, and that is why from the Costa Digital Innovation Center we drive four pillars.",
+      "cta": "Read the manifesto"
     },
     "pillarTags": {
       "education": "Pillar 01 · Education",
-      "community": "Pillar 02 · Community",
-      "innovation": "Pillar 03 · Innovation",
-      "capital": "Pillar 04 · Capital"
+      "community": "Pillar 02 · Community and events",
+      "employment": "Pillar 03 · Innovation and employment",
+      "innovation": "Pillar 03 · Innovation and employment",
+      "entrepreneurship": "Pillar 04 · Entrepreneurship, startups and capital",
+      "capital": "Pillar 04 · Entrepreneurship, startups and capital"
     },
     "impact": {
       "title": "Impact already felt across the region",
@@ -1415,7 +1360,7 @@
       "modificationsTitle": "Modifications",
       "modificationsText": "Costa Digital reserves the right to modify these Terms and Conditions at any time. Changes will be notified through the platform. Continued use of the platform after publication of changes constitutes acceptance thereof.",
       "contactTitle": "Contact",
-      "contactText": "For questions about these terms, contact us at contacto@costadigital.org"
+      "contactText": "For questions about these terms, contact us at contacto@codigoabierto.tech"
     },
     "privacy": {
       "collectionTitle": "Information We Collect",
@@ -1448,7 +1393,78 @@
       "changesTitle": "Changes to this Notice",
       "changesText": "We may update this Privacy Notice periodically. We will notify you of significant changes through the platform or by email.",
       "contactTitle": "Contact",
-      "contactText": "To exercise your rights or make privacy inquiries, write to us at contacto@costadigital.org"
+      "contactText": "To exercise your rights or make privacy inquiries, write to us at contacto@codigoabierto.tech"
     }
+  },
+  "team": {
+    "eyebrow": "The team",
+    "title": "Who is behind the movement",
+    "photoAlt": "Grace Torres and Anuar Harb, cofounders of Costa Digital",
+    "grace": {
+      "name": "Grace Torres",
+      "role": "Cofounder · CEO · General director of the Innovation Center",
+      "bio": "A lawyer specialized in administrative law, and a singer with her solo project Grace. She has spent three years as operations director and is now CEO of Fundación Código Abierto. She is also an entrepreneur."
+    },
+    "anuar": {
+      "name": "Anuar Harb",
+      "role": "Cofounder · CTO",
+      "bio": "He has spent ten years in technology. Born in Mexico, he arrived here by the turns of life. Once he understood the difference between a chuzo and a salchipapa, he felt barranquillero. With his vision and his craziness he is building ecosystem through Tech Centre, Ciudad Inmersiva, Caribe Ventures and Fundación Código Abierto."
+    }
+  },
+  "why": {
+    "eyebrow": "The cause",
+    "title": "Why we do this",
+    "operatedBy": "This innovation center is operated by Fundación Código Abierto.",
+    "lead": "Technology is the industry of opportunity. We do it from the Caribbean so the people who train here can stay to build and leave something behind.",
+    "talent": {
+      "title": "So talent does not have to leave",
+      "text": "For years the story was train and migrate. We want the people who learn in the house to work, found and scale without leaving the region."
+    },
+    "house": {
+      "title": "Because a house was missing",
+      "text": "Community, education, capital and a public story. Without that, the map gets drawn in other cities. Costa Digital is that articulation, under one roof in El Prado."
+    },
+    "lives": {
+      "title": "Because it changes real lives",
+      "text": "Every scholarship, Tech Night and program moves someone concrete. More than 100 people trained with us now work in technology."
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "What people usually ask when they arrive at the house.",
+    "items": [
+      {
+        "q": "What is Costa Digital?",
+        "a": "The innovation and technology transformation center of the Colombian Caribbean. It lives in Casa Tech, in El Prado (Barranquilla), and is operated by Fundación Código Abierto. Under one roof it articulates education (Tech Centre), innovation (Ciudad Inmersiva), capital (Caribe Ventures) and community."
+      },
+      {
+        "q": "What is Epicentro Tech?",
+        "a": "The bet that Barranquilla and the Caribbean become a first-order Latin American tech node, with its own character and way of relating to the world. It is not a replica of Medellín or Silicon Valley. It means being able to learn, build, connect, fund and scale without leaving the territory."
+      },
+      {
+        "q": "Who runs the house?",
+        "a": "Fundación Código Abierto, a nonprofit. Grace Torres is cofounder, CEO and general director of the Innovation Center. Anuar Harb is cofounder and CTO. Ciudad Inmersiva is the software and applied-AI lab."
+      },
+      {
+        "q": "Where is it? Can I come without a membership?",
+        "a": "Cra. 50 #72-126, El Prado, Barranquilla. It is one of the neighborhood’s 39 heritage houses. 404 Café is open without a membership: you can read, cowork or have a drink. Thursdays fill up. Write us on WhatsApp (+57 318 752 9000) or come by."
+      },
+      {
+        "q": "What is 404 Café?",
+        "a": "A cafeteria that sustains the house. A place to connect, read about tech and feel at home. It is run by Cristian Lugo, a professional barista and bartender, founder of Instituto del Cóctel in Barranquilla."
+      },
+      {
+        "q": "What events happen at the house?",
+        "a": "Tech Nights on the third Saturday of each month, Barranqui-IA, TechCaribe Fest, GDG Barranquilla, Cursor Meetup and Thursday Cowork. Community is the center’s circulatory system."
+      },
+      {
+        "q": "How do I join?",
+        "a": "You can create an account, ask for a membership (the first 60 are Believers), study at Tech Centre, come to the café or write on WhatsApp. If you are a founder or investor, there is a thesis and capital at Caribe Ventures. If you are a company or government, there is a territorial counterpart for programs."
+      },
+      {
+        "q": "Who is behind this?",
+        "a": "Grace Torres and Anuar Harb, cofounders. Grace is a lawyer specialized in administrative law, an entrepreneur and CEO of Fundación Código Abierto. Anuar has spent ten years in technology, was born in Mexico and feels barranquillero: he builds ecosystem through Tech Centre, Ciudad Inmersiva, Caribe Ventures and Fundación Código Abierto."
+      }
+    ]
   }
 }

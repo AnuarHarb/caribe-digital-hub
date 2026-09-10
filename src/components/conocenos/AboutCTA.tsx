@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { CONTACT_EMAIL } from "@/content/portafolio";
+import { useAuth } from "@/hooks/useAuth";
 
 /** CTA final único de la página «Sobre nosotros» (consolida los CTA dispersos). */
 export function AboutCTA() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const showSignup = !isLoading && !isAuthenticated;
+
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4 text-center">
@@ -14,11 +19,13 @@ export function AboutCTA() {
           para ti en el movimiento.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Button asChild size="lg">
-            <Link to="/auth">Únete a la comunidad</Link>
-          </Button>
+          {showSignup && (
+            <Button asChild size="lg">
+              <Link to="/auth">Únete a la comunidad</Link>
+            </Button>
+          )}
           <Button asChild size="lg" variant="outline">
-            <a href="mailto:hola@costadigital.org">Sé aliado o escríbenos</a>
+            <a href={`mailto:${CONTACT_EMAIL}`}>Sé aliado o escríbenos</a>
           </Button>
         </div>
       </div>

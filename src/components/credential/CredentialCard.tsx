@@ -8,10 +8,12 @@ interface CredentialCardProps {
   avatarUrl?: string | null;
   userId: string;
   memberSince?: string;
+  plan?: string | null;
+  creyenteNumber?: number | null;
   compact?: boolean;
 }
 
-export function CredentialCard({ name, avatarUrl, userId, memberSince, compact }: CredentialCardProps) {
+export function CredentialCard({ name, avatarUrl, userId, memberSince, plan, creyenteNumber, compact }: CredentialCardProps) {
   const { t } = useTranslation();
   const isMobile = useIsMobile();
 
@@ -74,7 +76,8 @@ export function CredentialCard({ name, avatarUrl, userId, memberSince, compact }
             </span>
           </div>
           <span className="rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/70">
-            Miembro
+            {plan ?? "Miembro"}
+            {creyenteNumber ? ` · #${creyenteNumber}` : ""}
           </span>
         </header>
 

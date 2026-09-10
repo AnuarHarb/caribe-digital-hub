@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
-import logoImage from "@/assets/costa-digital-logo.png";
-import { TechCaribeRibbon } from "@/components/TechCaribeRibbon";
-import { Menu, ChevronDown, LayoutDashboard, Settings, LogOut, Newspaper, CreditCard } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
+import { MareaLogo } from "@/components/MareaLogo";
+import { List, CaretDown, SquaresFour, Gear, SignOut, CreditCard } from "@phosphor-icons/react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth, useProfile } from "@/hooks/useAuth";
@@ -32,7 +32,7 @@ function getInitials(name: string | null | undefined): string {
 export function Navbar() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
   const { profile } = useProfile();
   const [isAdmin, setIsAdmin] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -84,13 +84,13 @@ export function Navbar() {
           <span className="hidden sm:inline truncate max-w-[120px]">
             {profile?.full_name || user?.email || t("nav.dashboard")}
           </span>
-          <ChevronDown className="h-4 w-4 shrink-0 opacity-50" aria-hidden />
+          <CaretDown className="h-4 w-4 shrink-0 opacity-50" aria-hidden />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem asChild>
           <Link to="/dashboard" onClick={onItemClick} className="flex items-center gap-2 cursor-pointer">
-            <LayoutDashboard className="h-4 w-4" />
+            <SquaresFour className="h-4 w-4" />
             {t("nav.dashboard")}
           </Link>
         </DropdownMenuItem>
@@ -107,7 +107,7 @@ export function Navbar() {
               onClick={onItemClick}
               className="flex items-center gap-2 cursor-pointer"
             >
-              <Settings className="h-4 w-4" />
+              <Gear className="h-4 w-4" />
               {t("nav.admin")}
             </Link>
           </DropdownMenuItem>
@@ -120,7 +120,7 @@ export function Navbar() {
           }}
           className="flex items-center gap-2 cursor-pointer text-destructive focus:text-destructive"
         >
-          <LogOut className="h-4 w-4" />
+          <SignOut className="h-4 w-4" />
           {t("nav.logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -130,6 +130,8 @@ export function Navbar() {
   const closeMobile = () => setMobileMenuOpen(false);
 
   const EVENTS_URL = "https://www.codigoabierto.tech/eventos";
+  const publicNav = [{ to: "/conocenos", label: t("nav.nosotros") }];
+
   const navGroups = [
     {
       label: t("nav.ecosistema"),
@@ -145,6 +147,7 @@ export function Navbar() {
       label: t("nav.nosotros"),
       items: [
         { to: "/conocenos", label: t("nav.about") },
+        { to: "/conocenos#manifiesto", label: t("nav.manifiesto") },
         { to: "/conocenos#equipo", label: t("nav.equipo") },
         { to: "/conocenos#proyectos", label: t("nav.proyectos") },
         { to: "/conocenos#sede", label: t("nav.sede") },
@@ -156,77 +159,43 @@ export function Navbar() {
   const NavLinks = () =>
     isMobile ? (
       <>
-        {navGroups.filter(g => !g.hidden).map((group) => (
-          <div key={group.label} className="w-full">
-            <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              {group.label}
-            </p>
-            {group.items.map((item) => (
-              <Link key={item.to} to={item.to} onClick={closeMobile} className="block w-full">
-                <Button variant="ghost" className="w-full justify-start">
-                  {item.label}
-                </Button>
-              </Link>
-            ))}
-          </div>
+        <Link
+          to="/noticias"
+          onClick={closeMobile}
+          aria-label={t("nav.marea")}
+          className="flex w-full justify-start px-3 py-2"
+        >
+          <MareaLogo className="h-8" />
+        </Link>
+        {publicNav.map((item) => (
+          <Link key={item.to} to={item.to} onClick={closeMobile} className="block w-full">
+            <Button variant="ghost" className="w-full justify-start">
+              {item.label}
+            </Button>
+          </Link>
         ))}
         <div className="my-2 border-t border-border" aria-hidden />
-        <a href={EVENTS_URL} target="_blank" rel="noopener noreferrer" onClick={closeMobile} className="block w-full">
-          <Button variant="ghost" className="w-full justify-start">
-            {t("nav.events")}
-          </Button>
-        </a>
-        <Link to="/noticias" onClick={closeMobile} className="block w-full">
-          <Button variant="ghost" className="w-full justify-start">
-            {t("nav.marea")}
-          </Button>
-        </Link>
-        <Link to="/conocenos" onClick={closeMobile} className="block w-full">
-          <Button variant="ghost" className="w-full justify-start">
-            {t("nav.nosotros")}
-          </Button>
-        </Link>
         {mobileAuthSection}
       </>
     ) : (
       <>
-        {navGroups.filter(g => !g.hidden).map((group) => (
-          <DropdownMenu key={group.label}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="gap-1">
-                {group.label}
-                <ChevronDown className="h-4 w-4 opacity-50" aria-hidden />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-48">
-              {group.items.map((item) => (
-                <DropdownMenuItem key={item.to} asChild>
-                  <Link to={item.to} className="cursor-pointer">
-                    {item.label}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <Link to="/noticias" aria-label={t("nav.marea")} className="inline-flex items-center px-2 hover:opacity-90">
+          <MareaLogo className="h-8" />
+        </Link>
+        {publicNav.map((item) => (
+          <Link key={item.to} to={item.to}>
+            <Button variant="ghost">{item.label}</Button>
+          </Link>
         ))}
-        <a href={EVENTS_URL} target="_blank" rel="noopener noreferrer">
-          <Button variant="ghost">{t("nav.events")}</Button>
-        </a>
-        <Link to="/noticias">
-          <Button variant="ghost">{t("nav.marea")}</Button>
-        </Link>
-        <Link to="/conocenos">
-          <Button variant="ghost">{t("nav.nosotros")}</Button>
-        </Link>
         {desktopAuthSection}
       </>
     );
 
   const desktopAuthSection = user ? (
     <UserMenu onItemClick={closeMobile} />
-  ) : (
-    <Link to={authUrl}>
-      <Button variant="default">{t("nav.login")}</Button>
+  ) : authLoading ? null : (
+    <Link to="/auth/signup">
+      <Button variant="default">{t("nav.signup")}</Button>
     </Link>
   );
 
@@ -235,20 +204,20 @@ export function Navbar() {
       <div className="my-3 border-t border-border" aria-hidden />
       <Link to="/dashboard" onClick={closeMobile} className="block w-full">
         <Button variant="ghost" className="gap-2 justify-start w-full">
-          <LayoutDashboard className="h-4 w-4" />
+          <SquaresFour className="h-4 w-4" aria-hidden />
           {t("nav.dashboard")}
         </Button>
       </Link>
       <Link to="/dashboard/credencial" onClick={closeMobile} className="block w-full">
         <Button variant="ghost" className="gap-2 justify-start w-full">
-          <CreditCard className="h-4 w-4" />
+          <CreditCard className="h-4 w-4" aria-hidden />
           {t("dashboard.credential")}
         </Button>
       </Link>
       {isAdmin && (
         <Link to="/admin" onClick={closeMobile} className="block w-full">
           <Button variant="ghost" className="gap-2 justify-start w-full">
-            <Settings className="h-4 w-4" />
+            <Gear className="h-4 w-4" aria-hidden />
             {t("nav.admin")}
           </Button>
         </Link>
@@ -261,11 +230,11 @@ export function Navbar() {
           handleLogout();
         }}
       >
-        <LogOut className="h-4 w-4" />
+        <SignOut className="h-4 w-4" aria-hidden />
         {t("nav.logout")}
       </Button>
     </>
-  ) : (
+  ) : authLoading ? null : (
     <Link to={authUrl} onClick={closeMobile} className="block w-full">
       <Button variant="default" className="w-full">{t("nav.login")}</Button>
     </Link>
@@ -273,13 +242,10 @@ export function Navbar() {
 
   return (
     <>
-    <nav className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <img src={logoImage} alt="Costa Digital" className="h-8 w-8" />
-          <span className="font-display text-xl font-bold text-primary">
-            COSTA DIGITAL
-          </span>
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <nav className="container mx-auto flex h-16 items-center justify-between px-4" aria-label="Principal">
+        <Link to="/" className="flex shrink-0 items-center hover:opacity-90 transition-opacity">
+          <BrandLogo />
         </Link>
 
         {!isMobile ? (
@@ -295,8 +261,8 @@ export function Navbar() {
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle menu</span>
+                  <List className="h-5 w-5" aria-hidden />
+                  <span className="sr-only">Abrir menú</span>
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-64">
@@ -307,9 +273,9 @@ export function Navbar() {
             </Sheet>
           </div>
         )}
-      </div>
-    </nav>
-    <TechCaribeRibbon />
+      </nav>
+    </header>
+    <div className="h-16" aria-hidden />
     </>
   );
 }

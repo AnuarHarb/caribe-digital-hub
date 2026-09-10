@@ -4,13 +4,12 @@ export interface Pillar {
   title: string;
   subtitle: string;
   institution: string;
-  logo: string;
-  logoAlt: string;
   color: "blue" | "green" | "purple" | "orange";
   description: string;
   fullDescription: string;
   features?: string[];
-  website?: string;
+  link?: string;
+  linkLabel?: string;
 }
 
 export const pillars: Pillar[] = [
@@ -18,111 +17,107 @@ export const pillars: Pillar[] = [
     id: "educacion",
     number: "01",
     title: "Educación",
-    subtitle: "que te conecta con el futuro",
+    subtitle: "de cero a la industria",
     institution: "Tech Centre",
-    logo: "/logos/techcentre-horizontal.webp",
-    logoAlt: "Tech Centre",
     color: "blue",
     description:
-      "La educación especializada es la base fundamental de todo ecosistema tecnológico sólido. A través de programas prácticos formamos a los profesionales que impulsarán la transformación digital del Caribe.",
+      "Llegas de cero y sales con algo hecho. Rutas de Producto y Datos, ocho semanas, máximo 12 personas y un demo day. El diagnóstico gratis te dice por dónde empezar.",
     fullDescription:
-      "La educación especializada es la base fundamental de todo ecosistema tecnológico sólido. Sin talento capacitado, ningún ecosistema puede crecer ni sostenerse. A través de programas prácticos y actualizados, formamos a los profesionales que impulsarán la transformación digital del Caribe, garantizando que la región cuente con el capital humano necesario para competir en el mercado global.",
+      "Dos rutas presenciales — Producto y Datos — con módulos de 8 semanas, grupos de máximo 12 personas y un proyecto real en demo day. El diagnóstico gratuito te ubica donde debes empezar.",
     features: [
-      "Presencialidad y mentores expertos",
-      "Preparación para el mundo laboral",
-      "Metodología práctica y contextual",
+      "Rutas Producto y Datos",
+      "Presencial, 8 h/semana",
+      "Demo day con proyecto real",
     ],
-    website: "https://techcentre.co",
+    link: "/programas",
+    linkLabel: "Ver formación",
   },
   {
     id: "comunidad",
     number: "02",
-    title: "Comunidad",
-    subtitle: "que impulsa el cambio",
+    title: "Comunidad y eventos",
+    subtitle: "que se apoya y se refiere",
     institution: "Fundación Código Abierto",
-    logo: "/logos/fca-black.png",
-    logoAlt: "Fundación Código Abierto",
     color: "green",
     description:
-      "Un ecosistema tech fuerte requiere de conexiones y colaboración entre todos sus actores. La comunidad es el tejido que une a desarrolladores, empresas, universidades y gobierno.",
+      "Tech Nights el tercer sábado, Barranqui-IA, TechCaribe Fest y Jueves de Cowork. Membresías y comunidades que se encuentran en la casa y se apoyan.",
     fullDescription:
-      "Un ecosistema tech fuerte requiere de conexiones y colaboración entre todos sus actores. La comunidad es el tejido que une a desarrolladores, empresas, universidades y gobierno, creando sinergias que multiplican el impacto. Fundación Código Abierto —operadora de Costa Digital— articula estos esfuerzos y promueve la adopción social de la tecnología para construir un movimiento colectivo hacia la transformación tecnológica del Caribe.",
+      "Tech Nights, Barranqui-IA, TechCaribe Fest, Jueves de Cowork y comunidades ancla desde Supabase. La casa es el punto de encuentro del ecosistema tech del Caribe.",
     features: [
-      "Conecta con mentores y aliados",
-      "Participa en eventos y talleres",
-      "Únete a iniciativas de innovación",
+      "Membresías Miembro y Residente",
+      "Eventos abiertos y cerrados",
+      "Red de talento y comunidades",
     ],
-    website: "https://www.codigoabierto.tech",
+    link: "/comunidades",
+    linkLabel: "Explorar comunidad",
   },
   {
-    id: "innovacion",
+    id: "empleo",
     number: "03",
-    title: "Innovación",
-    subtitle: "que transforma realidades",
+    title: "Innovación y empleo",
+    subtitle: "talento con oportunidades reales",
     institution: "Ciudad Inmersiva",
-    logo: "/logos/ciudad-inmersiva.png",
-    logoAlt: "Ciudad Inmersiva",
     color: "purple",
     description:
-      "La innovación es el motor que convierte el conocimiento en valor real. Transformamos ideas en soluciones que resuelven problemas reales de empresas y emprendedores.",
+      "Quien se forma aquí encuentra trabajo. La red de talento conecta egresados con empresas del Caribe. Perfiles, ofertas y convocatorias en un solo lugar.",
     fullDescription:
-      "La innovación es el motor que convierte el conocimiento en valor real. Un ecosistema tech sin capacidad de innovación se queda en teoría. A través de nuestro laboratorio, transformamos ideas en soluciones concretas que resuelven problemas reales de empresas y emprendedores, demostrando que el Caribe no solo puede adoptar tecnología, sino crearla y exportarla.",
+      "La red de talento de Costa Digital conecta profesionales formados en la casa con empresas del Caribe. Perfiles, empleos y convocatorias en un solo lugar.",
     features: [
-      "Laboratorio de innovación aplicada",
-      "IA, software y tecnologías emergentes",
-      "Equipos locales de alto nivel técnico",
+      "Directorio de talento tech",
+      "Ofertas laborales del ecosistema",
+      "Perfiles de egresados Tech Centre",
     ],
-    website: "https://ciudadinmersiva.com",
+    link: "/talento",
+    linkLabel: "Ver red de talento",
   },
   {
-    id: "capital",
+    id: "emprendimiento",
     number: "04",
-    title: "Capital",
-    subtitle: "que acelera el crecimiento",
+    title: "Emprendimiento, startups y capital",
+    subtitle: "ideas que se vuelven empresa",
     institution: "Caribe Ventures",
-    logo: "/logos/caribe-ventures-black.png",
-    logoAlt: "Caribe Ventures",
     color: "orange",
     description:
-      "El capital es el combustible que permite que las ideas escalen y generen impacto. Sin acceso a financiamiento, incluso las mejores startups no pueden alcanzar su potencial.",
+      "De la idea al producto. Software, agentes de IA, Lab Maker y mentoría. Caribe Ventures acompaña a quien está armando empresa en la región.",
     fullDescription:
-      "El capital es el combustible que permite que las ideas escalen y generen impacto. Sin acceso a financiamiento, incluso las mejores startups y proyectos tecnológicos no pueden alcanzar su potencial. Caribe Ventures cierra este círculo esencial del ecosistema, conectando el talento y la innovación con los recursos necesarios para crecer, escalar y competir a nivel nacional e internacional.",
+      "Software a la medida, agentes de IA, Lab Maker y mentoría técnica. Por fases, sin plantillas, con entregas contra hitos. El laboratorio convierte ideas del Caribe en productos.",
     features: [
-      "Venture studio y fondo pre-seed",
-      "Mentoría y acompañamiento a fundadores",
-      "Capital para escalar desde el Caribe al mundo",
+      "Software y agentes de IA",
+      "Lab Maker · impresión 3D",
+      "Mentoría y sesiones estratégicas",
     ],
-    website: "https://caribe.ventures",
+    link: "/servicios#software",
+    linkLabel: "Ver servicios",
   },
 ];
 
 export const colorClasses = {
   blue: {
-    bg: "bg-blue-500",
-    light: "bg-blue-50",
-    border: "border-blue-500",
-    text: "text-blue-600",
-    ring: "ring-blue-500",
+    bg: "bg-brillante",
+    light: "bg-paper",
+    border: "border-brillante",
+    text: "text-brillante",
+    ring: "ring-brillante",
   },
   green: {
-    bg: "bg-green-500",
-    light: "bg-green-50",
-    border: "border-green-500",
-    text: "text-green-600",
-    ring: "ring-green-500",
+    bg: "bg-aqua",
+    light: "bg-paper",
+    border: "border-aqua",
+    text: "text-aqua",
+    ring: "ring-aqua",
   },
   purple: {
-    bg: "bg-purple-500",
-    light: "bg-purple-50",
-    border: "border-purple-500",
-    text: "text-purple-600",
-    ring: "ring-purple-500",
+    bg: "bg-azul",
+    light: "bg-paper",
+    border: "border-azul",
+    text: "text-azul",
+    ring: "ring-azul",
   },
   orange: {
-    bg: "bg-orange-500",
-    light: "bg-orange-50",
-    border: "border-orange-500",
-    text: "text-orange-600",
-    ring: "ring-orange-500",
+    bg: "bg-brillante",
+    light: "bg-paper",
+    border: "border-brillante/60",
+    text: "text-brillante",
+    ring: "ring-brillante",
   },
 } as const;

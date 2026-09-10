@@ -159,7 +159,7 @@ export default function AdminNewsletter() {
 
   const [subject, setSubject] = useState("");
   const [htmlBody, setHtmlBody] = useState(
-    `<h1>Costa Digital News</h1>\n<p>Hola,</p>\n<p>Este es El Pulso de esta semana.</p>\n<p>— Equipo Costa Digital</p>`
+    `<h1>La Marea</h1>\n<p>Hola,</p>\n<p>Este es El Pulso de esta semana.</p>\n<p>— Equipo Costa Digital</p>`
   );
   const [testEmail, setTestEmail] = useState("");
   const [sending, setSending] = useState(false);

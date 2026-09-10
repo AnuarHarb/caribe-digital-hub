@@ -1,10 +1,13 @@
+import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { SEOHead } from "@/components/SEOHead";
 import { Footer } from "@/components/landing/Footer";
 import { Button } from "@/components/ui/button";
+import { CONTACT_EMAIL } from "@/content/portafolio";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useCommunities } from "@/hooks/useCommunities";
+import { useAuth } from "@/hooks/useAuth";
 import type { CommunityProfile } from "@/hooks/useCommunities";
 import { Users, MessageCircle, ExternalLink, MapPin } from "lucide-react";
 
@@ -30,7 +33,7 @@ function PillarBadge() {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
       <span className="h-2 w-2 rounded-full bg-green-500" />
-      Pilar 02 · Comunidad
+      Pilar 02 · Comunidad y eventos
     </span>
   );
 }
@@ -153,9 +156,11 @@ function SkeletonCard() {
 
 export default function Comunidades() {
   const { data: communities = [], isLoading } = useCommunities();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const showSignup = !authLoading && !isAuthenticated;
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background">
+    <div className="min-h-screen bg-background">
       <SEOHead
         title="Comunidades Tech del Caribe | Costa Digital"
         description="Conoce las comunidades tech del Caribe colombiano: desarrolladores, diseñadores, founders y entusiastas que se reúnen, comparten y construyen juntos. Pilar de Comunidad de Costa Digital, impulsado por Fundación Código Abierto."
@@ -185,7 +190,7 @@ export default function Comunidades() {
               </p>
               <div className="mt-8">
                 <Button asChild size="lg" className="rounded-full">
-                  <a href="mailto:hola@costadigital.org">Suma tu comunidad</a>
+                  <a href={`mailto:${CONTACT_EMAIL}`}>Suma tu comunidad</a>
                 </Button>
               </div>
             </div>
@@ -254,9 +259,17 @@ export default function Comunidades() {
                 Conecta tu comunidad con el ecosistema de Costa Digital y llega a
                 más talento, founders y aliados del Caribe colombiano.
               </p>
-              <div className="mt-8">
-                <Button asChild size="lg" className="rounded-full">
-                  <a href="mailto:hola@costadigital.org">Hablemos</a>
+              <div className="mt-8 flex flex-wrap justify-center gap-4">
+                {showSignup && (
+                  <Button asChild size="lg">
+                    <Link to="/auth/signup">Crear cuenta gratis</Link>
+                  </Button>
+                )}
+                <Button asChild size="lg" variant="outline">
+                  <Link to="/membresias">Ver membresías</Link>
+                </Button>
+                <Button asChild size="lg" variant="ghost">
+                  <a href={`mailto:${CONTACT_EMAIL}`}>Hablemos</a>
                 </Button>
               </div>
             </div>

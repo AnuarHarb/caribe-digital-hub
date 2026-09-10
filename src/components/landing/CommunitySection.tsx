@@ -1,10 +1,12 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, MessageCircle, ExternalLink, MapPin } from "lucide-react";
+import { Users, ChatCircle, ArrowSquareOut, MapPin } from "@phosphor-icons/react";
 import { useCommunities } from "@/hooks/useCommunities";
 import type { CommunityProfile } from "@/hooks/useCommunities";
 import { PillarBadge } from "@/components/landing/PillarBadge";
+import { useAuth } from "@/hooks/useAuth";
 
 const FEATURED_EVENTS = [
   { logo: "/logos/tech-nights.png", url: "https://www.codigoabierto.tech/eventos", name: "Tech Nights", description: "3er sábado de cada mes" },
@@ -64,7 +66,7 @@ function CommunityCard({ community }: { community: CommunityProfile }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <MessageCircle className="h-4 w-4" aria-hidden />
+                <ChatCircle className="h-4 w-4" aria-hidden />
                 WhatsApp
               </a>
             </Button>
@@ -81,7 +83,7 @@ function CommunityCard({ community }: { community: CommunityProfile }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                <ArrowSquareOut className="h-3.5 w-3.5" aria-hidden />
                 Web
               </a>
             </Button>
@@ -94,7 +96,9 @@ function CommunityCard({ community }: { community: CommunityProfile }) {
 
 export function CommunitySection() {
   const { t } = useTranslation();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { data: communities = [], isLoading } = useCommunities();
+  const showSignup = !authLoading && !isAuthenticated;
 
   const hasDynamic = communities.length > 0;
 
@@ -110,7 +114,7 @@ export function CommunitySection() {
         </div>
         <h2
           id="community-heading"
-          className="mt-4 text-center font-display text-3xl font-bold text-primary md:text-4xl"
+          className="mt-4 text-balance text-center font-display text-3xl font-bold text-primary md:text-4xl"
         >
           {t("landing.community.title")}
         </h2>
@@ -164,7 +168,7 @@ export function CommunitySection() {
         </div>
 
         {/* Comunidades tech */}
-        <h3 className="mt-16 text-center font-display text-xl font-bold text-primary md:text-2xl">
+        <h3 className="mt-16 text-balance text-center font-display text-xl font-bold text-primary md:text-2xl">
           {t("landing.community.communitiesHeading")}
         </h3>
 
@@ -198,6 +202,19 @@ export function CommunitySection() {
             {t("landing.community.noCommunities")}
           </p>
         )}
+
+        <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          {showSignup && (
+            <Link to="/auth/signup">
+              <Button size="lg">{t("portafolio.hero.ctaCreateAccount")}</Button>
+            </Link>
+          )}
+          <Link to="/membresias">
+            <Button size="lg" variant="outline">
+              {t("portafolio.hero.ctaMemberships")}
+            </Button>
+          </Link>
+        </div>
       </div>
     </section>
   );

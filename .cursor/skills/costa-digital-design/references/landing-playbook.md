@@ -6,7 +6,7 @@ La **portada** (`src/pages/Landing.tsx`) no es una landing de campaña. No le ap
 
 ## 1. Qué es una landing de campaña
 
-**Una oferta → un público → una acción.** Acciones habituales en esta casa: unirse (`/auth`), escribir por WhatsApp, agendar visita, reservar cupo, hacerse Miembro o Residente, pedir diagnóstico, ser aliado (`hola@costadigital.org`).
+**Una oferta → un público → una acción.** Acciones habituales en esta casa: unirse (`/auth`), escribir por WhatsApp, agendar visita, reservar cupo, hacerse Miembro o Residente, pedir diagnóstico, ser aliado (`contacto@codigoabierto.tech`).
 
 ## 2. Intake
 

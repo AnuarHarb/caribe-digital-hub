@@ -1,0 +1,325 @@
+{
+  "descriptor": "Costa Digital · Caribbean Innovation Center",
+  "hero": {
+    "eyebrow": "Services portfolio · 2026",
+    "title": "Welcome to the tech world.",
+    "titleEmphasis": "tech world",
+    "lede": "One roof, many engines. At Costa Digital you learn, build software, 3D print, meet the community, follow Caribbean tech stories, and drink great coffee.",
+    "stat1": "building the ecosystem",
+    "stat2": "graduated students",
+    "stat3": "people reached at events",
+    "ctaMemberships": "View memberships",
+    "ctaWhatsApp": "Message on WhatsApp",
+    "ctaCreateAccount": "Create free account"
+  },
+  "services": {
+    "eyebrow": "The Caribbean tech house",
+    "title": "Everything you can find here",
+    "subtitle": "Training, software, Lab Maker, library, cowork, coffee, the patio, swag and Caribbean tech news.",
+    "tabs": "What's in the house",
+    "from": "from",
+    "free": "free",
+    "negotiable": "negotiable",
+    "noCost": "no charge",
+    "pay": "Pay",
+    "quote": "Quote via WhatsApp",
+    "viewAll": "View all services",
+    "membresia": {
+      "title": "Costa Digital Membership",
+      "space": "Whole house",
+      "description": "You ask for the key and come when you want. Coffee, Thursday Cowork, masterclass, Lab Maker, library. The first 60 are Believers: numbered pin, name on the wall and Cursor credit to get into AI.",
+      "launch": "Launch",
+      "items": {
+        "miembro": { "name": "Member", "note": "Unlimited coffee · priority events · 10% off Tech Centre" },
+        "residente": { "name": "Resident · 20 spots", "note": "Cowork with desk · 6 h meeting room · locker" },
+        "planAnual": { "name": "Annual plan", "note": "12 months for the price of 10" }
+      }
+    },
+    "formacion": {
+      "title": "Tech training · Tech Centre",
+      "space": "Rooms 1 & 2",
+      "description": "You show up ready to get into tech and leave with something built. Eight weeks, max 12 people, Product or Data, and a demo day where you show your work. You learn next to people already shipping in the Caribbean.",
+      "items": {
+        "modulo8": { "name": "8-week module", "note": "64 h · $100k hold · up to 3 installments" },
+        "moduloAvanzado": { "name": "Advanced module", "note": "AI Agents or Machine Learning" },
+        "rutaCompleta": { "name": "Full track", "note": "~6 months · 10% between modules" },
+        "tallerCorporativoIa": { "name": "Corporate AI workshop", "note": "8 h, up to 15 people" },
+        "bootcampCorporativo": { "name": "Corporate bootcamp", "note": "4 half-days" },
+        "reservaCupo": { "name": "Spot reservation", "note": "Applied to module fee" }
+      }
+    },
+    "software": {
+      "title": "Software & AI agents",
+      "space": "Innovation lab",
+      "description": "You bring the mess: manual processes, nothing connected. We sit down, see what is worth automating, then build the platform or the agent. In phases, so you don't spend on what shouldn't be built.",
+      "items": {
+        "diagnostico": { "name": "Diagnosis · 45 min", "note": "What can and can't be automated" },
+        "plataforma": { "name": "Custom platform", "note": "" },
+        "agenteIa": { "name": "AI agent", "note": "On your platform" },
+        "soporte": { "name": "Support & evolution", "note": "Monthly prepaid" }
+      }
+    },
+    "asesorias": {
+      "title": "Advisory & sessions",
+      "space": "Meeting room",
+      "description": "You come with a question Google can't hold. Two hours to land what AI can do for you, and what it can't. If you're already building, an hour of mentoring: code, decisions, the next step.",
+      "items": {
+        "sesionEstrategica": { "name": "AI strategy session · 2 h", "note": "Opportunity report" },
+        "mentoria1h": { "name": "1:1 technical mentoring", "note": "Per hour" },
+        "bonoMentoria": { "name": "Mentoring bundle", "note": "4 prepaid hours" }
+      }
+    },
+    "biblioteca": {
+      "title": "Library",
+      "space": "Reading room",
+      "description": "You sit down, open a book, and the noise falls away. Arduino, Terraform, electronics, leadership, fiction. Read here. If you belong to the house, take it home.",
+      "items": {
+        "consulta": { "name": "Read on site", "note": "Open when the house is open" },
+        "prestamo": { "name": "Borrow", "note": "With membership" }
+      }
+    },
+    "cowork": {
+      "title": "Cowork space",
+      "space": "Shared room",
+      "description": "You open the laptop and you're in. Wifi, desks and coffee next door. Thursdays the crew fills the house. A day to try it, or your chair if you're already a Resident.",
+      "items": {
+        "jueves": { "name": "Thursday Cowork", "note": "The weekly session, when the house is open" },
+        "coworkDia": { "name": "Cowork day pass", "note": "Try the house (includes one coffee)" },
+        "silla": { "name": "Resident desk", "note": "A reserved seat with the Resident plan" }
+      }
+    },
+    "labMaker": {
+      "title": "Lab Maker",
+      "space": "Auxiliary room",
+      "description": "You arrive with a file or an idea in your head. You leave with a piece in your hand. 3D printing, machine hours, or a three-hour workshop so you can make the next one yourself.",
+      "items": {
+        "impresion3d": { "name": "3D print per piece", "note": "Material included, prepaid" },
+        "horaMaquina": { "name": "Machine hour", "note": "Bring your material and design" },
+        "tallerMaker": { "name": "Maker workshop · 3 h", "note": "Intro to 3D printing" },
+        "tallerGrupo": { "name": "School or corporate workshop", "note": "Half-day, closed group" }
+      }
+    },
+    "espacios": {
+      "title": "Spaces & events",
+      "space": "Patio · rooms · meeting room",
+      "description": "You want to throw a night, a workshop, a board meeting. The patio holds 60 on a weeknight and more than 100 on Friday. Tech Nights started here. You bring the people; the house brings the roof.",
+      "items": {
+        "patioSemana": { "name": "Weeknight patio", "note": "Up to 60 people" },
+        "patioViernes": { "name": "Friday or corporate patio", "note": "100+ people, basic sound" },
+        "salonMediaJornada": { "name": "Room half-day · 4 h", "note": "Up to 14 people" },
+        "salonJornadaCompleta": { "name": "Room full day", "note": "" },
+        "salaJuntasHora": { "name": "Meeting room · per hour", "note": "8 people" }
+      }
+    },
+    "laMarea": {
+      "title": "Caribbean tech news",
+      "space": "House media",
+      "tagline": "What moves Caribbean tech.",
+      "description": "You have a Caribbean tech story that deserves to be seen. Coverage, a feature, or the profile of someone who trained here and now works. Sponsored pieces are labeled. The rest is reporting from the house.",
+      "items": {
+        "coberturaEvento": { "name": "Event coverage", "note": "Story, photos and social" },
+        "reportaje": { "name": "Company feature", "note": "Sponsored, labeled" },
+        "patrocinioBoletin": { "name": "Newsletter sponsorship", "note": "Header brand + mention" },
+        "perfilesComunidad": { "name": "Graduate profiles", "note": "Part of the mission" }
+      }
+    },
+    "cafe404": {
+      "title": "404 Café",
+      "space": "Area B · terrace",
+      "tagline": "A cafeteria that sustains the house.",
+      "description": "A place to connect, read about tech and cowork. A tech house: somewhere good to drink something nice and feel at home.",
+      "items": {
+        "menuDia": { "name": "Daily menu", "note": "" },
+        "bono10": { "name": "10-meal bundle", "note": "Valid 60 days" },
+        "bono20": { "name": "20-meal bundle", "note": "Valid 90 days" }
+      }
+    },
+    "swag": {
+      "title": "Ally swag",
+      "description": "You leave the event wearing the house. Caps, pins, stickers from the people who keep the crew going. Your brand can sit on that table, next to the people who already show up.",
+      "items": {
+        "mesa": { "name": "Merch in the house", "note": "Caps, pins and stickers at events" },
+        "kit": { "name": "Ally kit", "note": "Your brand on the table, made to fit" }
+      }
+    },
+    "patrocinios": {
+      "title": "Sponsorships & partnerships",
+      "space": "Whole house",
+      "description": "Your brand doesn't want a one-day banner. It wants a name on a space, training scholarships, to stay where people learn. ESAL donation with Art. 257 E.T. benefit.",
+      "items": {
+        "aliadoFormacion": { "name": "Training partner", "note": "2 full-track scholarships + brand" },
+        "namingAuditorio": { "name": "Auditorium naming", "note": "Custom project" }
+      }
+    },
+    "spaces": {
+      "todaLaCasa": "Whole house",
+      "salones": "Rooms 1 & 2",
+      "laboratorio": "Innovation lab",
+      "salaJuntas": "Meeting room",
+      "cuartoAuxiliar": "Auxiliary room",
+      "patioSalones": "Patio · rooms",
+      "medio": "House media",
+      "areaB": "Area B · terrace",
+      "biblioteca": "Reading room",
+      "cowork": "Shared room"
+    },
+    "footnote": "Spaces and memberships require prepayment. Software is scoped in phases. WhatsApp quote within 24 h."
+  },
+  "membership": {
+    "eyebrow": "Membership",
+    "title": "The house club",
+    "subtitle": "Unlimited coffee, priority events, Lab Maker and more. First 60 are Believers.",
+    "creyentes": "Believers",
+    "creyentesRemaining": "{{count}} of {{max}} Believer spots left",
+    "creyentesLead": "The first 60. Not another plan. The ones who believed when the house was starting.",
+    "creyentesGifts": [
+      {
+        "title": "Numbered pin",
+        "why": "Special edition. Only 60. Wearing it says you believe in the Caribbean as a tech epicenter."
+      },
+      {
+        "title": "Name on the wall",
+        "why": "We are building a wall to decorate the house. The names of the 60 Believers go there."
+      },
+      {
+        "title": "US$20 in Cursor",
+        "why": "A gift from the house so you can get into artificial intelligence."
+      }
+    ],
+    "plans": {
+      "miembro": {
+        "name": "Member",
+        "price": "$70,000",
+        "normalPrice": "$100,000",
+        "period": "/ month",
+        "benefits": [
+          "Unlimited bar coffee",
+          "Priority event access",
+          "Special pricing on paid events",
+          "Monthly virtual masterclass",
+          "Lab Maker and library",
+          "10% off Tech Centre training"
+        ]
+      },
+      "residente": {
+        "name": "Resident",
+        "price": "$250,000",
+        "normalPrice": "$350,000",
+        "period": "/ month",
+        "slots": "20 spots",
+        "benefits": [
+          "Everything in Member",
+          "Cowork with guaranteed desk",
+          "6 h meeting room/month",
+          "Locker and package reception",
+          "Free paid events from month 3",
+          "Welcome kit and quarterly swag"
+        ]
+      },
+      "anual": {
+        "name": "Annual plan",
+        "description": "12 months for the price of 10, any plan.",
+        "cta": "Choose annual plan"
+      },
+      "coworkDia": {
+        "name": "Cowork day pass",
+        "price": "$25,000",
+        "description": "Try the house. Includes one coffee."
+      }
+    },
+    "benefitsTable": {
+      "title": "Compare plans",
+      "feature": "Benefit",
+      "miembro": "Member",
+      "residente": "Resident"
+    },
+    "faq": {
+      "title": "FAQ",
+      "q1": { "q": "What are Believers?", "a": "The first 60 members. Numbered pin, name on the wall, and US$20 in Cursor to get into AI." },
+      "q2": { "q": "Is there auto-recurring billing?", "a": "Not in v1. You prepay 1 or 12 months. We'll email before expiry." },
+      "q3": { "q": "Who invoices?", "a": "Memberships and training: Fundación Código Abierto (ESAL). B2B software: Ciudad Inmersiva SAS." },
+      "q4": { "q": "Can I try first?", "a": "Yes: Cowork day pass for $25,000 includes one coffee." }
+    },
+    "agreements": {
+      "title": "House agreements",
+      "items": [
+        "Mutual respect in shared spaces",
+        "Sponsored content always labeled",
+        "Prepayment for space bookings",
+        "Manual renewal — we'll email you"
+      ]
+    },
+    "wall": {
+      "title": "Believers wall",
+      "empty": "Be among the first to appear here.",
+      "consent": "At checkout you can opt in to show your name on the public wall."
+    },
+    "ctaPay": "Pay now",
+    "ctaAnnual": "Pay annual plan"
+  },
+  "legal": {
+    "eyebrow": "Legal annex",
+    "title": "One brand, two entities",
+    "subtitle": "Everything under Costa Digital. Invoicing depends on service type.",
+    "fca": {
+      "services": "Memberships, training, workshops, lab maker, events, spaces, café, La Marea, sponsorships",
+      "entity": "Fundación Código Abierto (ESAL)",
+      "why": "Meritorious activity. Surplus returns to hub, programs and scholarships."
+    },
+    "ci": {
+      "services": "Custom software, AI agents, B2B consulting, support",
+      "entity": "Ciudad Inmersiva SAS",
+      "why": "Commercial service at market rates. Strategic partner of the center."
+    }
+  },
+  "cafe404": {
+    "title": "404 Café",
+    "tagline": "A cafeteria that sustains the house.",
+    "description": "A place to connect, read about tech and cowork. A tech house: somewhere good to drink something nice and feel at home.",
+    "credit": "This café is run by Cristian Lugo. He's a professional barista and bartender, and founder of",
+    "school": "Instituto del Cóctel",
+    "creditEnd": " in Barranquilla.",
+    "ctaBonos": "Buy meal bundles",
+    "ctaVisit": "Visit the hub"
+  },
+  "cta": {
+    "title": "The house is open.",
+    "emphasis": "Start with a coffee.",
+    "subtitle": "Free diagnosis · guided tours · Barranquilla",
+    "whatsapp": "WhatsApp",
+    "createAccount": "Create free account"
+  },
+  "checkout": {
+    "processing": "Preparing payment…",
+    "loginRequired": "Sign in or enter your email to continue",
+    "emailPlaceholder": "you@email.com",
+    "continue": "Continue to payment",
+    "error": "Could not start payment. Try again.",
+    "consentWall": "Show my name on the Believers wall (optional)"
+  },
+  "payment": {
+    "title": "Payment result",
+    "pending": "Payment processing",
+    "approved": "Payment approved!",
+    "declined": "Payment not completed",
+    "reference": "Reference",
+    "nextSteps": "Next steps",
+    "welcomeWhatsApp": "Message us on WhatsApp to activate your membership",
+    "backHome": "Back to home",
+    "viewMembership": "View my membership"
+  },
+  "dashboard": {
+    "membership": {
+      "title": "My membership",
+      "none": "You don't have an active membership yet.",
+      "plan": "Plan",
+      "expires": "Expires",
+      "creyente": "Believer",
+      "cta": "View memberships"
+    }
+  },
+  "nav": {
+    "servicios": "Services",
+    "membresias": "Memberships"
+  }
+}

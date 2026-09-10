@@ -119,7 +119,7 @@ Palabra corta; voz activa; cero sinergia, disruptivo, stakeholders, hub. **"Ecos
 
 La **portada** (`/`) es un hub. No le impongas una sola acción de campaña.
 
-Una **landing de campaña** sigue `references/landing-playbook.md` y se implementa en React + i18n. Acción habitual: WhatsApp, visita, cupo, membresía, `hola@costadigital.org`.
+Una **landing de campaña** sigue `references/landing-playbook.md` y se implementa en React + i18n. Acción habitual: WhatsApp, visita, cupo, membresía, `contacto@codigoabierto.tech`.
 
 Cifras: 3 años · +120 proyectos en hackatones · +400 graduados · +5.000 personas impactadas. Si falta: `[cifra por confirmar]`.
 

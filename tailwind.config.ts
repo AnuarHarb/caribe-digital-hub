@@ -14,10 +14,18 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        sans: ['Instrument Sans', 'system-ui', 'sans-serif'],
+        display: ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+        mono: ['Space Mono', 'Courier New', 'monospace'],
       },
       colors: {
+        navy: "#050A30",
+        aqua: "#86CAC8",
+        brillante: "#2E4DB8",
+        azul: "#183090",
+        paper: "#EEF3FB",
+        ink: "#0A0F2C",
+        line: "#D6DFF0",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

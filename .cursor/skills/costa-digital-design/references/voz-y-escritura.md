@@ -55,7 +55,7 @@ Un post de Instagram va en comunidad. Una propuesta a una fundación va en insti
 **Así sí:** Formamos gente en el Caribe y la conectamos con empresas que la necesitan. Todo pasa en la sede y en el ecosistema.
 
 **Así no:** Contáctanos para más información sobre nuestros servicios.
-**Así sí:** Únete a la comunidad, o escríbenos a hola@costadigital.org.
+**Así sí:** Únete a la comunidad, o escríbenos a contacto@codigoabierto.tech.
 
 **Así no:** ¡Bienvenido a bordo! Estamos súper emocionados 🚀
 **Así sí:** Ya eres de la casa. Nos vemos el jueves en la Tech Night.
@@ -72,7 +72,7 @@ Un post de Instagram va en comunidad. Una propuesta a una fundación va en insti
 ## Datos fijos (no inventar)
 
 - Sede: Prado, Barranquilla. Región: Barranquilla, Cartagena, Santa Marta.
-- WhatsApp: +57 310 390 0986. Correo: hola@costadigital.org. Web: costadigital.org.
+- WhatsApp: +57 318 752 9000. Correo: contacto@codigoabierto.tech. Web: costadigital.org.
 - Operada por Fundación Código Abierto (ESAL). Ciudad Inmersiva SAS aparece como laboratorio de innovación / software.
 - Cifras de portada: 3 años generando impacto · +120 proyectos en hackatones · +400 estudiantes graduados · +5.000 personas impactadas. Otras: +100 personas formadas trabajando en tech · Barranqui-IA +650 participantes en 3 años · Tech Nights el tercer sábado · Jueves de Cowork.
 - Eventos: Barranqui-IA, TechCaribe Fest, Tech Nights.

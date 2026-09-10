@@ -2,12 +2,14 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft } from "lucide-react";
 import { useProfile } from "@/hooks/useAuth";
+import { useMembership } from "@/hooks/useMembership";
 import { CredentialCard } from "@/components/credential/CredentialCard";
 import { Button } from "@/components/ui/button";
 
 export default function CredentialPage() {
   const { t } = useTranslation();
   const { profile, user } = useProfile();
+  const { data: membership } = useMembership();
 
   return (
     <section className="flex min-h-[70vh] flex-col items-center justify-center gap-6 px-4 py-6 md:gap-8 md:py-8">
@@ -20,6 +22,8 @@ export default function CredentialPage() {
         avatarUrl={profile?.avatar_url}
         userId={user?.id || ""}
         memberSince={user?.created_at}
+        plan={membership?.plan}
+        creyenteNumber={membership?.creyente_number}
       />
 
       <p className="max-w-sm text-center text-sm text-muted-foreground">

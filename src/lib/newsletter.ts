@@ -75,8 +75,9 @@ export async function subscribeToNewsletter(
 }
 
 export async function sendNewsletter(payload: {
-  subject: string;
-  htmlBody: string;
+  campaignId?: string;
+  subject?: string;
+  htmlBody?: string;
   testEmail?: string;
   sendMode?: NewsletterSendMode;
   dailyLimit?: number;

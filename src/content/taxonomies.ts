@@ -187,7 +187,7 @@ export function isFormatoId(value: string | null | undefined): value is FormatoI
 
 /** Marca editorial de la sección (cabezote «Costa Digital News»). */
 export const MAREA = {
-  nombre: "Costa Digital News",
-  descriptor: "Lo que mueve la vaina tech en el Caribe.",
-  grito: "Mantente al día.",
+  nombre: "La Marea",
+  descriptor: "El medio tech del Caribe",
+  grito: "Contamos lo que mueve la vaina",
 } as const;

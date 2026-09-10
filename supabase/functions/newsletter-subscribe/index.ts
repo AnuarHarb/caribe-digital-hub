@@ -103,8 +103,8 @@ serve(async (req) => {
             from: fromEmail,
             ...(replyTo ? { reply_to: replyTo } : {}),
             to: [normalizedEmail],
-            subject: "Bienvenido a Costa Digital News",
-            html: `<p>¡Listo! Ya formas parte de <strong>Costa Digital News</strong>.</p>
+            subject: "Bienvenido a La Marea",
+            html: `<p>¡Listo! Ya formas parte de <strong>La Marea</strong>.</p>
 <p>Te llegará El Pulso con lo que mueve la vaina tech en el Caribe.</p>
 <p>— Anuar de TechCaribe</p>
 ${

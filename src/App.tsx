@@ -1,10 +1,14 @@
+import type { ReactNode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
+import Membresias from "./pages/Membresias";
+import Servicios from "./pages/Servicios";
+import PagoResultado from "./pages/PagoResultado";
 import Landing from "./pages/Landing";
 import Conocenos from "./pages/Conocenos";
 import Programas from "./pages/Programas";
@@ -52,6 +56,20 @@ import { GoogleAnalytics } from "./components/GoogleAnalytics";
 
 const queryClient = new QueryClient();
 
+function AppTheme({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation();
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      forcedTheme={pathname === "/" ? "light" : undefined}
+    >
+      {children}
+    </ThemeProvider>
+  );
+}
+
 // Costa Digital News unifica el blog: /blog redirige a /noticias conservando el slug.
 const BlogSlugRedirect = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -60,14 +78,17 @@ const BlogSlugRedirect = () => {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+    <BrowserRouter>
+      <AppTheme>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
           <GoogleAnalytics />
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/membresias" element={<Membresias />} />
+            <Route path="/servicios" element={<Servicios />} />
+            <Route path="/pago/resultado" element={<PagoResultado />} />
             <Route path="/conocenos" element={<Conocenos />} />
             <Route path="/programas" element={<Programas />} />
             <Route path="/comunidades" element={<Comunidades />} />
@@ -91,7 +112,7 @@ const App = () => (
             <Route path="/noticias" element={<Noticias />} />
             <Route path="/noticias/:slug" element={<NoticiaDetalle />} />
             <Route path="/perfil/:slug" element={<PublicProfile />} />
-            <Route path="/para-empresas" element={<Navigate to="/aliados" replace />} />
+            <Route path="/para-empresas" element={<Navigate to="/servicios#software" replace />} />
             <Route path="/terminos" element={<TermsAndConditions />} />
             <Route path="/aviso-de-privacidad" element={<PrivacyPolicy />} />
             <Route path="/newsletter/baja" element={<NewsletterUnsubscribe />} />
@@ -148,9 +169,9 @@ const App = () => (
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
+        </TooltipProvider>
+      </AppTheme>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 

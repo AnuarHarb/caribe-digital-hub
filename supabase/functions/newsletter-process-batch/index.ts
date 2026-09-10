@@ -72,30 +72,32 @@ serve(async (req) => {
       }
 
       const token = authHeader.replace("Bearer ", "");
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser(token);
+      if (token !== supabaseServiceRoleKey) {
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser(token);
 
-      if (userError || !user) {
-        return new Response(JSON.stringify({ error: "No autorizado" }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-          status: 401,
-        });
-      }
+        if (userError || !user) {
+          return new Response(JSON.stringify({ error: "No autorizado" }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 401,
+          });
+        }
 
-      const { data: roleData } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", user.id)
-        .eq("role", "admin")
-        .maybeSingle();
+        const { data: roleData } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
+          .maybeSingle();
 
-      if (!roleData) {
-        return new Response(JSON.stringify({ error: "Sin permisos de administrador" }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-          status: 403,
-        });
+        if (!roleData) {
+          return new Response(JSON.stringify({ error: "Sin permisos de administrador" }), {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 403,
+          });
+        }
       }
     }
 

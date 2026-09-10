@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "@phosphor-icons/react";
 import type { Note } from "@/content/noticias";
 import { formatFecha } from "@/content/noticias/format";
-import { FAMILIAS, MAREA } from "@/content/taxonomies";
+import { FAMILIAS } from "@/content/taxonomies";
+import { MareaLogo } from "@/components/MareaLogo";
 import { toYouTubeEmbed } from "@/lib/youtube";
 import { FamilyBadge } from "@/components/noticias/FamilyBadge";
 import { PillarBadge } from "@/components/noticias/PillarBadge";
@@ -24,10 +25,12 @@ export function ArticleDetail({ note }: ArticleDetailProps) {
     <>
       <Link
         to="/noticias"
+        aria-label="Volver a La Marea"
         className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
-        Volver a {MAREA.nombre}
+        Volver a
+        <MareaLogo className="h-6" />
       </Link>
 
       <article>

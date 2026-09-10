@@ -79,41 +79,92 @@ serve(async (req) => {
     }
 
     const token = authHeader.replace("Bearer ", "");
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser(token);
+    const isService = token === supabaseServiceRoleKey;
+    let user: { id: string } | null = null;
 
-    if (userError || !user) {
-      return new Response(JSON.stringify({ error: "No autorizado" }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 401,
-      });
-    }
+    if (!isService) {
+      const {
+        data: { user: authed },
+        error: userError,
+      } = await supabase.auth.getUser(token);
 
-    const { data: roleData } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "admin")
-      .maybeSingle();
+      if (userError || !authed) {
+        return new Response(JSON.stringify({ error: "No autorizado" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 401,
+        });
+      }
 
-    if (!roleData) {
-      return new Response(JSON.stringify({ error: "Sin permisos de administrador" }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 403,
-      });
+      const { data: roleData } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", authed.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      if (!roleData) {
+        return new Response(JSON.stringify({ error: "Sin permisos de administrador" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 403,
+        });
+      }
+      user = authed;
     }
 
     const body = await req.json();
-    const {
-      subject,
-      htmlBody,
-      testEmail,
-      sendMode = "immediate",
-      dailyLimit,
-      validationFilter = "all_active",
-    } = body;
+    const campaignId =
+      typeof body.campaignId === "string" && body.campaignId.trim()
+        ? body.campaignId.trim()
+        : "";
+    const testEmail = body.testEmail;
+    let subject = body.subject;
+    let htmlBody = body.htmlBody;
+    let sendMode = body.sendMode;
+    let dailyLimit = body.dailyLimit;
+    let validationFilter = body.validationFilter;
+    let existing: {
+      id: string;
+      status: string;
+      subject: string;
+      html_body: string;
+      send_mode: string | null;
+      daily_limit: number | null;
+      validation_filter: string | null;
+    } | null = null;
+
+    if (campaignId) {
+      const { data, error } = await supabase
+        .from("newsletter_campaigns")
+        .select("id, status, subject, html_body, send_mode, daily_limit, validation_filter")
+        .eq("id", campaignId)
+        .maybeSingle();
+      if (error || !data) {
+        return new Response(JSON.stringify({ error: "Campaña no encontrada" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 404,
+        });
+      }
+      if (data.status !== "draft" && data.status !== "failed") {
+        return new Response(
+          JSON.stringify({
+            error: "Solo se mandan borradores o campañas fallidas. Las enviadas son historial.",
+          }),
+          {
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+            status: 400,
+          }
+        );
+      }
+      existing = data;
+      if (!subject?.trim()) subject = data.subject;
+      if (!htmlBody?.trim()) htmlBody = data.html_body;
+      if (sendMode == null) sendMode = data.send_mode;
+      if (dailyLimit == null) dailyLimit = data.daily_limit;
+      if (validationFilter == null) validationFilter = data.validation_filter;
+    }
+
+    sendMode = sendMode ?? "immediate";
+    validationFilter = validationFilter ?? "all_active";
 
     if (!subject?.trim() || !htmlBody?.trim()) {
       return new Response(JSON.stringify({ error: "Asunto y contenido son requeridos" }), {
@@ -203,28 +254,66 @@ serve(async (req) => {
       );
     }
 
-    const { data: campaign, error: campaignError } = await supabase
-      .from("newsletter_campaigns")
-      .insert({
-        subject: subject.trim(),
-        html_body: htmlBody,
-        status: "sending",
-        created_by: user.id,
-        recipient_count: list.length,
-        send_mode: mode,
-        daily_limit: limit,
-        validation_filter: filter,
-        next_batch_at: mode === "staggered" ? new Date().toISOString() : null,
-      })
-      .select("id")
-      .single();
+    const campaignFields = {
+      subject: subject.trim(),
+      html_body: htmlBody,
+      status: "sending" as const,
+      recipient_count: list.length,
+      send_mode: mode,
+      daily_limit: limit,
+      validation_filter: filter,
+      next_batch_at: mode === "staggered" ? new Date().toISOString() : null,
+      error_message: null,
+      sent_count: 0,
+      failed_count: 0,
+      sent_at: null,
+    };
 
-    if (campaignError || !campaign) {
-      console.error("[newsletter-send] campaign", campaignError);
-      return new Response(JSON.stringify({ error: "No se pudo crear la campaña" }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500,
-      });
+    let campaign: { id: string };
+    if (existing) {
+      const { error: clearErr } = await supabase
+        .from("newsletter_sends")
+        .delete()
+        .eq("campaign_id", existing.id);
+      if (clearErr) {
+        console.error("[newsletter-send] clear sends", clearErr);
+        return new Response(JSON.stringify({ error: "No se pudo rearmar la campaña" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+      const { data: updated, error: campaignError } = await supabase
+        .from("newsletter_campaigns")
+        .update(campaignFields)
+        .eq("id", existing.id)
+        .select("id")
+        .single();
+      if (campaignError || !updated) {
+        console.error("[newsletter-send] campaign update", campaignError);
+        return new Response(JSON.stringify({ error: "No se pudo actualizar la campaña" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+      campaign = updated;
+    } else {
+      const { data: created, error: campaignError } = await supabase
+        .from("newsletter_campaigns")
+        .insert({
+          ...campaignFields,
+          created_by: user?.id ?? null,
+        })
+        .select("id")
+        .single();
+
+      if (campaignError || !created) {
+        console.error("[newsletter-send] campaign", campaignError);
+        return new Response(JSON.stringify({ error: "No se pudo crear la campaña" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 500,
+        });
+      }
+      campaign = created;
     }
 
     let sentCount = 0;

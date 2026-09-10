@@ -5,7 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BlogCard, type BlogPostCardData } from "@/components/blog/BlogCard";
-import { Newspaper } from "lucide-react";
+import { Newspaper } from "@phosphor-icons/react";
+import { MareaLogo } from "@/components/MareaLogo";
 
 export function CostaDigitalNews() {
   const { t } = useTranslation();
@@ -51,19 +52,16 @@ export function CostaDigitalNews() {
 
   return (
     <section
-      aria-labelledby="costa-digital-news-heading"
+      aria-labelledby="la-marea-heading"
       className="py-14 md:py-20 bg-muted/30"
     >
       <div className="container mx-auto px-4">
-        <h2
-          id="costa-digital-news-heading"
-          className="text-center font-display text-3xl font-bold text-primary md:text-4xl"
-        >
-          {t("landing.news.title")}
-        </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
-          {t("landing.news.subtitle")}
-        </p>
+        <header className="text-center">
+          <h2 id="la-marea-heading" className="flex justify-center">
+            <MareaLogo className="h-20 md:h-24" />
+            <span className="sr-only">La Marea</span>
+          </h2>
+        </header>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
@@ -99,6 +97,7 @@ export function CostaDigitalNews() {
           <Link to="/noticias">
             <Button variant="outline" className="transition-colors">
               {t("landing.news.viewAll")}
+              <MareaLogo className="h-6" />
             </Button>
           </Link>
         </div>

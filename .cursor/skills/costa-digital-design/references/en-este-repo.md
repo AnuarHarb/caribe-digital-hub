@@ -56,7 +56,7 @@ import { ArrowRight } from "@phosphor-icons/react";
 2. Copy en i18n (es + en).
 3. No HTML suelto para rutas. `assets/templates/` es documento o referencia.
 4. No toques `supabase/`, migraciones, RLS ni edge functions por diseño.
-5. Contacto: `hola@costadigital.org` · WhatsApp `+57 310 390 0986`.
+5. Contacto: `contacto@codigoabierto.tech` · WhatsApp `+57 318 752 9000`.
 
 ## Portada vs campaña
 

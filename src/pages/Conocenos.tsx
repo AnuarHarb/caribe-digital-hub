@@ -4,10 +4,9 @@ import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/Navbar";
 import { SEOHead } from "@/components/SEOHead";
 import { Footer } from "@/components/landing/Footer";
-import { ConocenosHero } from "@/components/conocenos/Hero";
-import { ConocenosMission } from "@/components/conocenos/Mission";
+import { ConocenosManifesto } from "@/components/conocenos/Manifesto";
 import { ConocenosTeam } from "@/components/conocenos/Team";
-import { ConocenosImpactProjects } from "@/components/conocenos/ImpactProjects";
+import { ConocenosWhy } from "@/components/conocenos/Why";
 import { ConocenosLocation } from "@/components/conocenos/Location";
 import { ConocenosFAQ } from "@/components/conocenos/FAQ";
 import { AboutCTA } from "@/components/conocenos/AboutCTA";
@@ -15,7 +14,7 @@ import { AboutCTA } from "@/components/conocenos/AboutCTA";
 export default function Conocenos() {
   const { hash } = useLocation();
 
-  // Desplaza a la sección correspondiente (#equipo, #proyectos, #sede, #faq)
+  // Desplaza a la sección correspondiente (#manifiesto, #equipo, #proyectos, #sede, #faq)
   // cuando se llega con un hash, incluido el de las redirecciones legacy.
   useEffect(() => {
     if (!hash) return;
@@ -58,7 +57,7 @@ export default function Conocenos() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background">
+    <div className="min-h-screen bg-background">
       <SEOHead
         title="Sobre nosotros — Costa Digital"
         description="Conoce el movimiento Costa Digital y Fundación Código Abierto: misión, equipo, proyectos e impacto, y nuestra sede en Barranquilla, corazón del ecosistema tech del Caribe."
@@ -80,10 +79,9 @@ export default function Conocenos() {
       </Helmet>
       <Navbar />
       <main>
-        <ConocenosHero />
-        <ConocenosMission />
+        <ConocenosManifesto />
         <ConocenosTeam />
-        <ConocenosImpactProjects />
+        <ConocenosWhy />
         <ConocenosLocation />
         <ConocenosFAQ />
         <AboutCTA />

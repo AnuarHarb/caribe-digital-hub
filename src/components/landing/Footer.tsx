@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Calendar, Map } from "lucide-react";
+import { CalendarBlank, MapTrifold, WhatsappLogo } from "@phosphor-icons/react";
+import { DESCRIPTOR, WHATSAPP } from "@/content/portafolio";
+import { MareaLogo } from "@/components/MareaLogo";
 
 export function Footer() {
   const { t } = useTranslation();
@@ -14,17 +16,19 @@ export function Footer() {
               <p className="text-sm text-muted-foreground">{t("home.footer.copyright")}</p>
               <p className="text-sm text-muted-foreground">{t("home.footer.cities")}</p>
             </div>
+            <p className="text-sm font-medium text-foreground">{DESCRIPTOR}</p>
             <nav
               className="flex max-w-md flex-wrap justify-center gap-x-5 gap-y-2 md:justify-start"
               aria-label={t("nav.ecosistema")}
             >
               {[
+                { to: "/servicios", label: t("nav.servicios") },
+                { to: "/membresias", label: t("nav.membresias") },
                 { to: "/programas", label: t("nav.programas") },
                 { to: "/comunidades", label: t("nav.comunidades") },
                 { to: "/talento", label: t("nav.talentNetwork") },
                 { to: "/aliados", label: t("nav.aliados") },
                 { to: "/conocenos", label: t("nav.nosotros") },
-                { to: "/noticias", label: t("nav.marea") },
               ].map((item) => (
                 <Link
                   key={item.to}
@@ -34,6 +38,9 @@ export function Footer() {
                   {item.label}
                 </Link>
               ))}
+              <Link to="/noticias" aria-label={t("nav.marea")} className="inline-flex items-center hover:opacity-90">
+                <MareaLogo className="h-6" />
+              </Link>
             </nav>
           </div>
           <div className="flex flex-col items-center gap-4">
@@ -63,12 +70,21 @@ export function Footer() {
               aria-label={t("landing.footer.externalLinks")}
             >
               <a
+                href={`https://wa.me/${WHATSAPP}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <WhatsappLogo className="h-4 w-4" weight="fill" aria-hidden />
+                WhatsApp
+              </a>
+              <a
                 href="https://www.codigoabierto.tech/eventos"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
-                <Calendar className="h-4 w-4" aria-hidden />
+                <CalendarBlank className="h-4 w-4" aria-hidden />
                 {t("landing.footer.events")}
               </a>
               <a
@@ -77,7 +93,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
-                <Map className="h-4 w-4" aria-hidden />
+                <MapTrifold className="h-4 w-4" aria-hidden />
                 {t("landing.footer.ecosystemMap")}
               </a>
             </nav>

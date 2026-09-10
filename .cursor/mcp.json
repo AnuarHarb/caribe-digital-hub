@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "la-marea": {
+      "command": "node",
+      "args": ["mcp/marea.mjs"]
+    }
+  }
+}

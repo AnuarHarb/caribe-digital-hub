@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import { CONTACT_EMAIL } from "@/content/portafolio";
 import { GraduationCap, Building2, Rocket, TrendingUp, ArrowRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -20,7 +21,7 @@ const LINKS: AudienceLink[] = [
   { icon: GraduationCap, href: "https://techcentre.co", external: true },
   { icon: Building2, href: "https://ciudadinmersiva.com", external: true },
   { icon: Rocket, href: "/auth" },
-  { icon: TrendingUp, href: "mailto:hola@costadigital.org", external: true },
+  { icon: TrendingUp, href: `mailto:${CONTACT_EMAIL}`, external: true },
 ];
 
 export function Audiences() {
