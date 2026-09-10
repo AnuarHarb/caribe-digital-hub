@@ -50,6 +50,7 @@ export interface Service {
   logo?: string;
   logoDark?: string;
   logoAlt?: string;
+  url?: string;
   items: CatalogItem[];
 }
 
@@ -77,6 +78,7 @@ export const SERVICES: Service[] = [
     logo: "/logos/tech-centre-dark.png",
     logoDark: "/logos/tech-centre-white.png",
     logoAlt: "Tech Centre",
+    url: "https://techcentre.co",
     items: [
       { key: "modulo8", priceCop: 1400000, payable: false },
       { key: "moduloAvanzado", priceCop: 1600000, payable: false },
@@ -93,6 +95,7 @@ export const SERVICES: Service[] = [
     image: "/sede/software.jpg",
     logo: "/logos/ciudad-inmersiva.png",
     logoAlt: "Ciudad Inmersiva",
+    url: "https://ciudadinmersiva.com",
     items: [
       { key: "diagnostico", payable: false },
       { key: "plataforma", priceFrom: true, priceCop: 20000000, payable: false },
@@ -107,6 +110,7 @@ export const SERVICES: Service[] = [
     image: "/sede/asesorias.jpg",
     logo: "/logos/ciudad-inmersiva.png",
     logoAlt: "Ciudad Inmersiva",
+    url: "https://ciudadinmersiva.com",
     items: [
       { key: "sesionEstrategica", priceCop: 400000, payable: false },
       { key: "mentoria1h", priceCop: 90000, payable: false },
@@ -156,6 +160,7 @@ export const SERVICES: Service[] = [
     image: "/sede/espacios.jpg",
     logo: "/logos/tech-nights.png",
     logoAlt: "Tech Nights",
+    url: "https://www.codigoabierto.tech/eventos",
     items: [
       { key: "patioSemana", priceCop: 900000, payable: false },
       { key: "patioViernes", priceCop: 1500000, payable: false },
@@ -211,6 +216,7 @@ export const SERVICES: Service[] = [
     logo: "/logos/fca-black.png",
     logoDark: "/logos/logo-fca.webp",
     logoAlt: "Fundación Código Abierto",
+    url: "https://www.codigoabierto.tech",
     items: [
       { key: "aliadoFormacion", priceCop: 8800000, payable: false },
       { key: "namingAuditorio", payable: false },

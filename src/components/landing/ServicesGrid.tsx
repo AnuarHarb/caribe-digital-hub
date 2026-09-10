@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowRight } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
@@ -77,12 +76,14 @@ function ServiceDetail({
         <p className="mb-4 flex-1 text-pretty text-sm text-muted-foreground">{svc.description}</p>
       )}
       <div className="mt-auto flex flex-wrap justify-center gap-2">
-        <Link to={`/servicios#${service.anchor}`}>
-          <Button size="sm" variant="secondary">
-            {t("portafolio.services.viewAll")}
-            <ArrowRight weight="bold" aria-hidden />
-          </Button>
-        </Link>
+        {service.url && (
+          <a href={service.url} target="_blank" rel="noopener noreferrer">
+            <Button size="sm" variant="secondary">
+              {t("portafolio.services.visitAlly", { name: service.logoAlt })}
+              <ArrowRight weight="bold" aria-hidden />
+            </Button>
+          </a>
+        )}
         <a href={waLink(service.key, locale)} target="_blank" rel="noopener noreferrer">
           <Button size="sm" variant="outline">
             {t("portafolio.services.quote")}

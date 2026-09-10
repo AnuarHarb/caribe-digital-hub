@@ -22,12 +22,7 @@ export function Footer() {
               aria-label={t("nav.ecosistema")}
             >
               {[
-                { to: "/servicios", label: t("nav.servicios") },
                 { to: "/membresias", label: t("nav.membresias") },
-                { to: "/programas", label: t("nav.programas") },
-                { to: "/comunidades", label: t("nav.comunidades") },
-                { to: "/talento", label: t("nav.talentNetwork") },
-                { to: "/aliados", label: t("nav.aliados") },
                 { to: "/conocenos", label: t("nav.nosotros") },
               ].map((item) => (
                 <Link

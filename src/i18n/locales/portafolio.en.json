@@ -22,8 +22,8 @@
     "negotiable": "negotiable",
     "noCost": "no charge",
     "pay": "Pay",
-    "quote": "Quote via WhatsApp",
-    "viewAll": "View all services",
+    "quote": "More info on WhatsApp",
+    "visitAlly": "Go to {{name}}",
     "membresia": {
       "title": "Costa Digital Membership",
       "space": "Whole house",
