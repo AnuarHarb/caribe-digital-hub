@@ -16,6 +16,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+const MEMBERSHIP_PRODUCTS = new Set<ProductKey>([
+  "miembro_mensual",
+  "miembro_anual",
+  "residente_mensual",
+  "residente_anual",
+]);
+
 const PAY_PLANS: { productKey: ProductKey; planKey: "miembro" | "residente"; annual?: boolean }[] = [
   { productKey: "miembro_mensual", planKey: "miembro" },
   { productKey: "miembro_anual", planKey: "miembro", annual: true },
@@ -35,6 +42,23 @@ export function CheckoutButton({
   const { t } = useTranslation();
   const { checkout, loading, error, isAuthenticated } = useCheckout();
   const [email, setEmail] = useState("");
+
+  const pagarUrl = `/membresias/pagar?product=${encodeURIComponent(productKey)}`;
+
+  if (MEMBERSHIP_PRODUCTS.has(productKey)) {
+    if (requireAuth && !isAuthenticated) {
+      return (
+        <Link to={`/auth?redirect=${encodeURIComponent(pagarUrl)}`}>
+          <Button className="w-full">{t("portafolio.checkout.loginToPay")}</Button>
+        </Link>
+      );
+    }
+    return (
+      <Link to={pagarUrl}>
+        <Button className="w-full">{label}</Button>
+      </Link>
+    );
+  }
 
   if (requireAuth && !isAuthenticated) {
     return (

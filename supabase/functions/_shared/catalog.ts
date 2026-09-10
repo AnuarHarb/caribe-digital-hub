@@ -30,6 +30,8 @@ export const PRODUCTS: Record<ProductKey, Product> = {
   bono_cafe_20: { amountCop: 320000, title: "Bono café 20" },
 };
 
+export const CATALOG = PRODUCTS;
+
 export function isValidProductKey(key: string): key is ProductKey {
   return key in PRODUCTS;
 }

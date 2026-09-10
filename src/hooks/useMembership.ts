@@ -8,6 +8,11 @@ export interface Membership {
   starts_at: string;
   ends_at: string;
   creyente_number: number | null;
+  product_key: string | null;
+  wompi_payment_source_id: string | null;
+  renew: boolean;
+  card_last_four: string | null;
+  canceled_at: string | null;
 }
 
 export function useMembership() {
@@ -19,7 +24,9 @@ export function useMembership() {
     queryFn: async (): Promise<Membership | null> => {
       const { data } = await supabase
         .from("memberships")
-        .select("id, plan, starts_at, ends_at, creyente_number")
+        .select(
+          "id, plan, starts_at, ends_at, creyente_number, product_key, wompi_payment_source_id, renew, card_last_four, canceled_at",
+        )
         .eq("user_id", user!.id)
         .gte("ends_at", new Date().toISOString())
         .order("ends_at", { ascending: false })

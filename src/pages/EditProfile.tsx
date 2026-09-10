@@ -11,6 +11,7 @@ import { useActiveCompany } from "@/contexts/ActiveCompanyContext";
 import { CreateCompanyDialog } from "@/components/company/CreateCompanyDialog";
 import { calculateProfileCompletion } from "@/lib/profileCompletion";
 import { Plus } from "lucide-react";
+import { MembershipStatusBlock } from "@/components/dashboard/MembershipStatusBlock";
 
 export default function EditProfile() {
   const { t } = useTranslation();
@@ -63,6 +64,16 @@ export default function EditProfile() {
 
   return (
     <article className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("portafolio.dashboard.membership.title")}</CardTitle>
+          <CardDescription>{t("portafolio.dashboard.membership.subtitle")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <MembershipStatusBlock />
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">

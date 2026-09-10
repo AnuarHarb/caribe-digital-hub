@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from "
 import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
 import Membresias from "./pages/Membresias";
+import MembresiasPagar from "./pages/MembresiasPagar";
 import Servicios from "./pages/Servicios";
 import PagoResultado from "./pages/PagoResultado";
 import Landing from "./pages/Landing";
@@ -87,6 +88,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/membresias" element={<Membresias />} />
+            <Route path="/membresias/pagar" element={<MembresiasPagar />} />
             <Route path="/servicios" element={<Servicios />} />
             <Route path="/pago/resultado" element={<PagoResultado />} />
             <Route path="/conocenos" element={<Conocenos />} />

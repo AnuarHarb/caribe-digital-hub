@@ -17,3 +17,15 @@ verify_jwt = false
 
 [functions.newsletter-unsubscribe]
 verify_jwt = false
+
+[functions.create-order]
+verify_jwt = false
+
+[functions.wompi-webhook]
+verify_jwt = false
+
+[functions.cancel-membership]
+verify_jwt = false
+
+[functions.renew-memberships]
+verify_jwt = false
