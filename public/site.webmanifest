@@ -1,11 +1,11 @@
 {
   "name": "Costa Digital",
   "short_name": "Costa Digital",
-  "description": "Costa Digital — Ecosistema tech del Caribe: tecnología, startups y talento del Caribe colombiano",
+  "description": "Costa Digital · Centro de Innovación del Caribe",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f0f7ff",
-  "theme_color": "#0d2240",
+  "background_color": "#EEF3FB",
+  "theme_color": "#050A30",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

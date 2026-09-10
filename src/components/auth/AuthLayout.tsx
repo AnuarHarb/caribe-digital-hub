@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import logoImage from "@/assets/costa-digital-logo.png";
+import { BrandLogo } from "@/components/BrandLogo";
 
 interface AuthLayoutProps {
   /** Optional tagline shown over the image panel */
@@ -25,14 +25,7 @@ export function AuthLayout({ tagline }: AuthLayoutProps) {
           aria-hidden
         />
         <div className="relative z-10 flex flex-col items-center gap-6 px-10">
-          <img
-            src={logoImage}
-            alt="Costa Digital"
-            className="h-44 w-44 object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]"
-          />
-          <h2 className="text-3xl font-display font-bold text-white tracking-tight">
-            COSTA DIGITAL
-          </h2>
+          <BrandLogo variant="onDark" size="lg" />
           {displayTagline && (
             <p className="text-white/80 text-lg font-display text-center max-w-xs">
               {displayTagline}
@@ -44,12 +37,8 @@ export function AuthLayout({ tagline }: AuthLayoutProps) {
       {/* Right panel: form area */}
       <section className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 bg-background">
         <div className="w-full max-w-md">
-          <div className="flex justify-center lg:hidden mb-8">
-            <img
-              src={logoImage}
-              alt="Costa Digital"
-              className="h-16 w-16 object-contain"
-            />
+          <div className="mb-8 flex justify-center lg:hidden">
+            <BrandLogo />
           </div>
           <Outlet />
         </div>

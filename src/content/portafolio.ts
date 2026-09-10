@@ -60,8 +60,8 @@ export const SERVICES: Service[] = [
     anchor: "membresia",
     featured: true,
     image: "/sede/membresia.jpg",
-    logo: "/logos/Costa_Digital_Logo_horizontal_navy.svg",
-    logoDark: "/logos/Costa_Digital_Logo_horizontal_claro.svg",
+    logo: "/logos/Costa_Digital_Logo_horizontal.png",
+    logoDark: "/logos/Costa_Digital_Logo_horizontal_claro.png",
     logoAlt: "Costa Digital",
     items: [
       { key: "miembro", priceCop: 70000, productKey: "miembro_mensual", payable: true },

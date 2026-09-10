@@ -7,12 +7,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-async function sha256(message: string): Promise<string> {
-  const data = new TextEncoder().encode(message);
-  const hash = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(hash))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+const SITE_URL = Deno.env.get("SITE_URL") ?? "https://costadigital.org";
+
+function wompiHost(privateKey: string) {
+  return privateKey.startsWith("prv_prod") ? "production.wompi.co" : "sandbox.wompi.co";
 }
 
 serve(async (req) => {
@@ -67,10 +65,41 @@ serve(async (req) => {
       });
     }
 
+    const privateKey = Deno.env.get("WOMPI_SECRET_KEY") ?? "";
+    if (!privateKey.startsWith("prv_")) {
+      return new Response(JSON.stringify({ error: "Wompi no configurado" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const reference = `CD-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
-    const integritySecret = Deno.env.get("WOMPI_INTEGRITY_SECRET") ?? "";
-    const signature = await sha256(`${reference}${amountInCents}COP${integritySecret}`);
-    const publicKey = Deno.env.get("WOMPI_PUBLIC_KEY") ?? "";
+    const linkRes = await fetch(`https://${wompiHost(privateKey)}/v1/payment_links`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${privateKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "Membresía Costa Digital",
+        description: product.title,
+        single_use: true,
+        collect_shipping: false,
+        amount_in_cents: amountInCents,
+        currency: "COP",
+        sku: reference,
+        redirect_url: `${SITE_URL}/pago/resultado?reference=${reference}`,
+      }),
+    });
+    const linkJson = await linkRes.json();
+    const linkId = linkJson?.data?.id as string | undefined;
+    if (!linkRes.ok || !linkId) {
+      console.error("[create-order] wompi", linkRes.status, linkJson);
+      return new Response(JSON.stringify({ error: "Wompi rechazó el link de pago" }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
 
     const { error: insertError } = await supabase.from("orders").insert({
       reference,
@@ -80,6 +109,7 @@ serve(async (req) => {
       amount_cop: amountCop,
       status: "pending",
       wall_consent: !!wallConsent,
+      payload: { payment_link_id: linkId },
     });
 
     if (insertError) {
@@ -91,7 +121,7 @@ serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ reference, signature, amountInCents, publicKey }),
+      JSON.stringify({ reference, checkoutUrl: `https://checkout.wompi.co/l/${linkId}` }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {

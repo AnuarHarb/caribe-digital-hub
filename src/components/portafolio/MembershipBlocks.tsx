@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useCheckout } from "@/hooks/useCheckout";
 import { formatCop } from "@/lib/formatPrice";
@@ -28,20 +26,31 @@ const PAY_PLANS: { productKey: ProductKey; planKey: "miembro" | "residente"; ann
 export function CheckoutButton({
   productKey,
   label,
-  showWallConsent,
+  requireAuth = true,
 }: {
   productKey: ProductKey;
   label: string;
-  showWallConsent?: boolean;
+  requireAuth?: boolean;
 }) {
   const { t } = useTranslation();
-  const { checkout, loading, isAuthenticated } = useCheckout();
+  const { checkout, loading, error, isAuthenticated } = useCheckout();
   const [email, setEmail] = useState("");
-  const [wallConsent, setWallConsent] = useState(false);
+
+  if (requireAuth && !isAuthenticated) {
+    return (
+      <Link to={`/auth?redirect=${encodeURIComponent("/membresias")}`}>
+        <Button className="w-full">{t("portafolio.checkout.loginToPay")}</Button>
+      </Link>
+    );
+  }
 
   const handlePay = async () => {
     if (!isAuthenticated && !email) return;
-    await checkout(productKey, { email: email || undefined, wallConsent });
+    try {
+      await checkout(productKey, { email: email || undefined });
+    } catch {
+      /* error already set on the hook */
+    }
   };
 
   return (
@@ -55,21 +64,14 @@ export function CheckoutButton({
           aria-label={t("portafolio.checkout.emailPlaceholder")}
         />
       )}
-      {showWallConsent && (
-        <div className="flex items-start gap-2">
-          <Checkbox
-            id={`wall-${productKey}`}
-            checked={wallConsent}
-            onCheckedChange={(v) => setWallConsent(v === true)}
-          />
-          <Label htmlFor={`wall-${productKey}`} className="text-sm leading-snug text-muted-foreground">
-            {t("portafolio.checkout.consentWall")}
-          </Label>
-        </div>
-      )}
       <Button onClick={handlePay} disabled={loading || (!isAuthenticated && !email)} className="w-full">
         {loading ? t("portafolio.checkout.processing") : label}
       </Button>
+      {error && (
+        <p className="text-center text-sm text-red-600" role="alert">
+          {t("portafolio.checkout.error")}
+        </p>
+      )}
     </div>
   );
 }
@@ -89,26 +91,21 @@ export function CreyentesWall() {
     },
   });
 
+  if (members.length === 0) {
+    return <p className="mt-6 text-sm text-muted-foreground">{t("portafolio.membership.wall.empty")}</p>;
+  }
+
   return (
-    <section id="creyentes" aria-labelledby="wall-heading" className="py-12">
-      <h2 id="wall-heading" className="font-display text-2xl font-bold">
-        {t("portafolio.membership.wall.title")}
-      </h2>
-      {members.length === 0 ? (
-        <p className="mt-4 text-muted-foreground">{t("portafolio.membership.wall.empty")}</p>
-      ) : (
-        <ul className="mt-6 flex flex-wrap gap-3">
-          {members.map((m) => (
-            <li
-              key={m.creyente_number}
-              className="rounded-full border border-line bg-card px-4 py-2 font-mono text-sm"
-            >
-              #{m.creyente_number} · {m.wall_name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
+    <ul className="mt-6 flex flex-wrap gap-3">
+      {members.map((m) => (
+        <li
+          key={m.creyente_number}
+          className="rounded-full border border-line bg-white px-4 py-2 font-mono text-sm"
+        >
+          #{m.creyente_number} · {m.wall_name}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -178,7 +175,6 @@ export function MembershipPlans() {
               <CheckoutButton
                 productKey={monthly.productKey}
                 label={t("portafolio.membership.ctaPay")}
-                showWallConsent
               />
               <CheckoutButton
                 productKey={annual.productKey}
@@ -186,7 +182,6 @@ export function MembershipPlans() {
                   planKey === "miembro" ? 700000 : 2500000,
                   locale
                 )})`}
-                showWallConsent
               />
             </div>
           </article>

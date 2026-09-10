@@ -14,13 +14,19 @@ export default function PagoResultado() {
   const { t, i18n } = useTranslation();
   const locale = i18n.language.startsWith("en") ? "en" : "es";
   const [params] = useSearchParams();
-  const reference = params.get("id") ?? params.get("reference") ?? "";
+  const reference = params.get("reference") ?? "";
+  const transactionId = params.get("id") ?? "";
 
   const { data: order, isLoading } = useQuery({
-    queryKey: ["order", reference],
-    enabled: !!reference,
+    queryKey: ["order", reference, transactionId],
+    enabled: !!reference || !!transactionId,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_order_status", { ref: reference });
+      if (transactionId) {
+        await supabase.functions.invoke("wompi-webhook", { body: { transactionId } });
+      }
+      const { data, error } = await supabase.rpc("get_order_status", {
+        ref: reference || transactionId,
+      });
       if (error) throw error;
       return data?.[0] ?? null;
     },
@@ -39,7 +45,7 @@ export default function PagoResultado() {
       <main className="container mx-auto max-w-lg px-4 py-24 text-center">
         {isLoading ? (
           <p>{t("portafolio.checkout.processing")}</p>
-        ) : !reference || !order ? (
+        ) : !order ? (
           <>
             <p className="text-muted-foreground">{t("portafolio.payment.declined")}</p>
             <Link to="/" className="mt-6 inline-block">

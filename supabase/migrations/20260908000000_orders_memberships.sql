@@ -66,11 +66,20 @@ set search_path = public
 as $$
   select o.reference, o.status, o.product_key, o.amount_cop
   from public.orders o
-  where o.reference = ref
+  where o.reference = ref or o.wompi_transaction_id = ref
   limit 1;
 $$;
 
 grant execute on function public.get_order_status(text) to anon, authenticated;
+
+create or replace function public.user_id_by_email(p_email text)
+returns uuid
+language sql
+security definer
+set search_path = auth
+as $$
+  select id from auth.users where lower(email) = lower(p_email) limit 1;
+$$;
 
 create or replace function public.next_creyente_number()
 returns integer
@@ -88,3 +97,6 @@ begin
   return n;
 end;
 $$;
+
+revoke all on function public.user_id_by_email(text) from public, anon, authenticated;
+revoke all on function public.next_creyente_number() from public, anon, authenticated;

@@ -130,7 +130,10 @@ export function Navbar() {
   const closeMobile = () => setMobileMenuOpen(false);
 
   const EVENTS_URL = "https://www.codigoabierto.tech/eventos";
-  const publicNav = [{ to: "/conocenos", label: t("nav.nosotros") }];
+  const publicNav = [
+    { to: "/membresias", label: t("nav.membresias") },
+    { to: "/conocenos", label: t("nav.nosotros") },
+  ];
 
   const navGroups = [
     {

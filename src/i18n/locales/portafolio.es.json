@@ -166,54 +166,126 @@
     "footnote": "Los espacios y membresías se activan con prepago. Software se dimensiona por fases. Cotización por WhatsApp en menos de 24 h."
   },
   "membership": {
-    "eyebrow": "Membresía",
-    "title": "El club de la casa",
-    "subtitle": "Café ilimitado, eventos prioritarios, Lab Maker y más. Los primeros 60 son Creyentes.",
+    "eyebrow": "Membresía Costa Digital · Cupos limitados",
+    "title": "El club donde se mueve la vaina tech.",
+    "titleLead": "El club donde se mueve",
+    "titleEmphasis": "la vaina tech.",
+    "subtitle": "La casa del talento tech del Caribe: lugar de trabajo, café ilimitado, todos los eventos, la masterclass del mes, la biblioteca, el lab maker y swag que se gana. Y cada peso que entra sostiene la misión y beca estudiantes.",
+    "levelsEyebrow": "Los niveles",
+    "levelsTitle": "Dos formas de ser de la casa",
+    "featuredChip": "El de la casa",
+    "launchNote": "Tu tarifa de lanzamiento se queda contigo: mientras tu membresía siga activa, tu precio no sube. El lanzamiento va hasta el 31 de octubre de 2026 o hasta completar los primeros 60 miembros. Plan anual: paga 10 meses y recibe 12.",
     "creyentes": "Creyentes",
+    "creyentesEyebrow": "Edición única · nunca se repite",
+    "creyentesTitle": "Los 60 Creyentes",
     "creyentesRemaining": "Quedan {{count}} de {{max}} Creyentes",
-    "creyentesLead": "Los primeros 60. No es un plan más. Es quien creyó cuando la casa empezaba.",
+    "creyentesLead": "Los primeros 60 miembros de la historia de la casa (de cualquier plan) son los creyentes: la gente que llegó cuando esto era un patio caliente y una promesa. Eso se agradece para siempre:",
     "creyentesGifts": [
       {
-        "title": "Pin numerado",
-        "why": "Edición especial. Solo 60. Ponerlo es decir que crees en el Caribe como epicentro tech."
+        "k": "El pin",
+        "title": "Numerado. Una sola producción.",
+        "why": "Pin esmaltado Creyente con tu número grabado (#001–#060). Se entrega con tu primer pago. Jamás se reedita, jamás se vende."
       },
       {
-        "title": "Nombre en el muro",
-        "why": "Vamos a crear un muro para decorar la sede. Ahí van los nombres de los 60 Creyentes."
+        "k": "El muro",
+        "title": "Tu nombre en la casa",
+        "why": "Los que creyeron primero quedan en el muro de la sede, permanente. Tu nombre entra al tercer mes activo y no se borra nunca."
       },
       {
-        "title": "US$20 en Cursor",
-        "why": "Un regalo de la casa para que le metas a la inteligencia artificial."
+        "k": "El regalo",
+        "title": "US$20 en créditos de Cursor",
+        "why": "Por nuestra colaboración con SpaceX, cada creyente recibe US$20 en créditos de Cursor para programar con IA. Y tu tarifa de lanzamiento se queda contigo mientras sigas activo."
       }
     ],
+    "onlyEyebrow": "Lo que solo tienen los miembros",
+    "onlyTitle": "Beneficios que crecen con la casa",
+    "onlyItems": [
+      {
+        "k": "Aprender",
+        "title": "La masterclass del mes + la biblioteca",
+        "text": "Cada mes, una masterclass virtual y en vivo con expertos internacionales de la industria (queda grabada en la biblioteca). Además, préstamo de libros de la Biblioteca Costa Digital y material seleccionado que se graba en la casa."
+      },
+      {
+        "k": "Swag",
+        "title": "Se gana siendo de la casa",
+        "text": "Kit al entrar y sorpresas de edición especial cada trimestre: stickers, pines, camisetas y gorras que solo circulan entre miembros."
+      }
+    ],
+    "foodEyebrow": "Para el hambre",
+    "foodTitle": "Bonos de alimentación · Café 404",
+    "foodLead": "Tu membresía incluye el café; la comida va aparte. Con los bonos prepagados, el menú del día te sale más barato y no piensas en pagar cada vez: pides, marcan tu bono y listo.",
+    "foodItems": [
+      { "k": "Individual", "title": "Menú del día", "text": "Almuerza en la casa cuando quieras.", "price": "$20.000" },
+      { "k": "Bono 10", "title": "10 comidas por $180.000", "text": "Sale a $18.000 cada una. Vigencia de 60 días.", "price": "$180.000" },
+      { "k": "Bono 20", "title": "20 comidas por $320.000", "text": "Sale a $16.000 cada una. Vigencia de 90 días.", "price": "$320.000" }
+    ],
+    "howEyebrow": "Cómo funciona",
+    "howTitle": "Así funciona la casa",
+    "howRows": [
+      { "ic": "Espacio", "text": "Los salones alternan entre aulas y cowork. El calendario de disponibilidad se publica cada semana: siempre sabrás qué espacios están libres y en qué horario. El patio y el café son de la comunidad todo el día." },
+      { "ic": "Café", "text": "Tu café es ilimitado en barra (espresso, tinto y cappuccino) para tu consumo en la casa. El resto del menú se paga normal. Las utilidades de Café 404 sostienen la sede y becan estudiantes: cada visita tuya empuja la misión." },
+      { "ic": "Eventos", "text": "Los eventos de comunidad son tuyos: cupo garantizado y entrada prioritaria. Los alquileres privados del patio no hacen parte de la membresía (pero los reservas con tu 10%)." },
+      { "ic": "Entrada", "text": "En tus dos primeras semanas te presentamos a la comunidad y te esperamos en tu primer evento. Aquí nadie queda suelto: ser de la casa empieza el día uno." }
+    ],
+    "tycEyebrow": "Términos y condiciones",
+    "tycTitle": "Los acuerdos de la casa",
+    "tyc": [
+      "Prepago mensual o anual. La membresía se activa con el pago y se renueva por adelantado. Plan anual: 12 meses al precio de 10. Tu tarifa de lanzamiento se mantiene mientras la membresía esté activa; al cancelar, el reingreso es al precio vigente.",
+      "Personal e intransferible. Un titular por membresía.",
+      "Cupos limitados. Residente: 20 cupos. Al llenarse, abre lista de espera con prioridad para plan anual.",
+      "Pausa y cambio de nivel. Puedes pausar hasta 2 meses por año (avisando antes del corte) y subir o bajar de nivel cuando quieras. Preferimos que ajustes a que te vayas.",
+      "Sin reembolsos. Los pagos no son reembolsables. Las pausas conservan tu saldo y tu cupo.",
+      "Café ilimitado (todos los planes): espresso, tinto o cappuccino en barra, para consumo personal en días de visita. Uso razonable; no es transferible ni para llevar a acompañantes.",
+      "Lab Maker: acceso para miembros con inducción previa y reserva de turno; los materiales se pagan aparte o traes los tuyos. Las impresiones por encargo mantienen su tarifa normal.",
+      "Programa Creyentes: exclusivo para los primeros 60 miembros de lanzamiento. El pin numerado se entrega con el primer pago; el nombre entra al muro al tercer mes activo. El estatus sobrevive a las pausas, pero no a la cancelación.",
+      "Descuentos de membresía aplican desde el segundo mes activo y no son acumulables con otras promociones o becas.",
+      "Horarios y calendario. El acceso al cowork (plan Residente) se rige por el calendario semanal publicado. La casa puede reservar espacios para los módulos de formación y eventos, avisando con mínimo 7 días.",
+      "Sala de juntas: horas del mes no acumulables, con reserva previa sujeta a disponibilidad.",
+      "Eventos pagos: el precio especial (Miembro) y la entrada gratuita (Residente, desde el tercer mes) aplican a eventos organizados por la casa, un cupo por miembro y con registro previo.",
+      "Casillero y correspondencia: casillero sujeto a disponibilidad; la casa recibe paquetes en horario de atención y no custodia valores ni perecederos.",
+      "Bonos de alimentación: prepagados, personales, para el menú del día de Café 404. Vigencia de 60 días (bono de 10) o 90 días (bono de 20); las comidas no usadas no se reembolsan ni se extienden.",
+      "Biblioteca física: préstamo de un libro a la vez por hasta 15 días, registrado en recepción. La no devolución suspende el beneficio y se cobra la reposición.",
+      "Convivencia. La casa es un espacio seguro, diverso y de respeto. Si alguien rompe el código de convivencia, la casa puede terminar su membresía.",
+      "Datos. El registro implica aceptar la política de datos de la Fundación Código Abierto (ESAL), entidad que emite la factura de tu membresía."
+    ],
+    "ctaBandTitle": "Hay un puesto para ti.",
+    "ctaBandEmphasis": "Ven a conocer la casa.",
+    "ctaBandSub": "Agenda tu visita · primer día de cowork gratis con tour incluido",
+    "ctaWhatsApp": "Escribir por WhatsApp",
+    "activeBanner": "Ya eres {{plan}}. Tu membresía vence el {{date}}.",
     "plans": {
       "miembro": {
         "name": "Miembro",
+        "who": "Vienes cuando quieras: tu café te espera, los eventos son tuyos y aprendes con la masterclass del mes.",
         "price": "$70.000",
-        "normalPrice": "$100.000",
-        "period": "/ mes",
+        "normalPrice": "Normal $100.000",
+        "period": "/ mes · lanzamiento · prepago",
+        "slots": "Cupos abiertos",
         "benefits": [
-          "Café ilimitado en barra",
-          "Acceso prioritario a eventos",
-          "Precio especial en eventos pagos",
-          "Masterclass virtual mensual",
-          "Lab Maker y biblioteca",
-          "10% en formación Tech Centre"
+          "Café ilimitado en barra: espresso, tinto y cappuccino",
+          "Acceso prioritario a todos los eventos",
+          "Masterclass mensual virtual con expertos de la industria",
+          "Biblioteca Costa Digital: préstamo de libros físicos + material seleccionado grabado en la casa",
+          "10% de descuento en formación de Tech Centre",
+          "Acceso al Lab Maker (impresión 3D y prototipado)",
+          "Precio especial en eventos pagos (Hackatón Barranqui-IA, TechCaribe, tech nights, talleres y más)"
         ]
       },
       "residente": {
         "name": "Residente",
+        "who": "Trabajas aquí los días que quieras: tu casillero, tu café sin límite y la energía de la casa alrededor.",
         "price": "$250.000",
-        "normalPrice": "$350.000",
-        "period": "/ mes",
-        "slots": "20 cupos",
+        "normalPrice": "Normal $350.000",
+        "period": "/ mes · lanzamiento · prepago",
+        "slots": "Máximo 20 miembros",
         "benefits": [
           "Todo lo del plan Miembro",
-          "Cowork con silla garantizada",
-          "6 h de sala de juntas/mes",
-          "Casillero y recepción de paquetes",
-          "Entrada gratis a eventos desde mes 3",
-          "Kit de bienvenida y swag trimestral"
+          "Tu lugar de trabajo en la casa: silla garantizada en el cowork, según el calendario que publicamos cada semana",
+          "6 h de sala de juntas al mes",
+          "Casillero personal + recepción de paquetes y correspondencia",
+          "Kit de bienvenida",
+          "Entrada gratuita a eventos pagos como Hackatón Barranqui-IA, TechCaribe, tech nights y talleres (desde tu 3er mes)",
+          "Swag sorpresa cada trimestre: ediciones que solo circulan entre miembros"
         ]
       },
       "anual": {
@@ -291,6 +363,7 @@
   },
   "checkout": {
     "processing": "Preparando pago…",
+    "loginToPay": "Inicia sesión para pagar",
     "loginRequired": "Inicia sesión o deja tu correo para continuar",
     "emailPlaceholder": "tu@email.com",
     "continue": "Continuar al pago",
@@ -303,8 +376,8 @@
     "approved": "¡Pago aprobado!",
     "declined": "Pago no completado",
     "reference": "Referencia",
-    "nextSteps": "Próximos pasos",
-    "welcomeWhatsApp": "Escríbenos por WhatsApp para activar tu membresía",
+    "nextSteps": "Tu membresía ya está activa. Entra al panel para ver tu plan.",
+    "welcomeWhatsApp": "Escríbenos por WhatsApp si tienes preguntas",
     "backHome": "Volver al inicio",
     "viewMembership": "Ver mi membresía"
   },

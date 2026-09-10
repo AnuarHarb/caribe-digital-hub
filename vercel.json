@@ -20,6 +20,28 @@
       "destination": "/api/og-empleos?slug=:slug"
     },
     {
+      "source": "/noticias/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Applebot|Pinterest|Embedly).*"
+        }
+      ],
+      "destination": "/api/og-noticias?slug=:slug"
+    },
+    {
+      "source": "/blog/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|WhatsApp|LinkedInBot|Slackbot|TelegramBot|Discordbot|Applebot|Pinterest|Embedly).*"
+        }
+      ],
+      "destination": "/api/og-noticias?slug=:slug"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

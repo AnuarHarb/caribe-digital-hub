@@ -41,7 +41,8 @@ export function MembershipTeaser() {
             {t("portafolio.membership.eyebrow")}
           </p>
           <h2 id="membership-teaser-heading" className="mt-3 text-balance font-display text-3xl font-bold md:text-4xl">
-            {t("portafolio.membership.title")}
+            {t("portafolio.membership.titleLead")}{" "}
+            <em className="not-italic text-aqua">{t("portafolio.membership.titleEmphasis")}</em>
           </h2>
           <p className="mt-4 text-pretty text-white/85">{t("portafolio.membership.subtitle")}</p>
         </header>
@@ -51,57 +52,55 @@ export function MembershipTeaser() {
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {plans.map(({ key, icon: Icon, href }) => {
             const isCreyentes = key === "creyentes";
+            const featured = key === "residente";
             const name = isCreyentes
               ? t("portafolio.membership.creyentes")
               : t(`portafolio.membership.plans.${key}.name`);
+            const who = isCreyentes
+              ? t("portafolio.membership.creyentesLead")
+              : t(`portafolio.membership.plans.${key}.who`);
             const price = isCreyentes ? "" : t(`portafolio.membership.plans.${key}.price`);
+            const normalPrice = isCreyentes ? "" : t(`portafolio.membership.plans.${key}.normalPrice`);
             const period = isCreyentes ? "" : t(`portafolio.membership.plans.${key}.period`);
-            const slots = key === "residente" ? t("portafolio.membership.plans.residente.slots") : "";
+            const slots = isCreyentes ? "" : t(`portafolio.membership.plans.${key}.slots`);
             const gifts = isCreyentes
               ? (t("portafolio.membership.creyentesGifts", { returnObjects: true }) as {
+                  k: string;
                   title: string;
-                  why: string;
                 }[])
               : [];
-            const benefits = isCreyentes
-              ? []
-              : (t(`portafolio.membership.plans.${key}.benefits`, { returnObjects: true }) as string[]);
 
             return (
               <li key={key}>
-                <article className="flex h-full flex-col rounded-2xl border border-line bg-card p-6 text-ink">
+                <article
+                  className={`relative flex h-full flex-col rounded-2xl border bg-card p-6 text-ink ${
+                    featured ? "border-2 border-brillante" : "border-line"
+                  }`}
+                >
+                  {featured && (
+                    <p className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-brillante px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-white">
+                      {t("portafolio.membership.featuredChip")}
+                    </p>
+                  )}
                   <Icon className="h-8 w-8 text-brillante" weight="regular" aria-hidden />
                   <h3 className="mt-4 font-display text-xl font-extrabold text-navy">{name}</h3>
-                  {isCreyentes && (
-                    <p className="mt-2 text-pretty text-sm text-muted-foreground">
-                      {t("portafolio.membership.creyentesLead")}
-                    </p>
+                  <p className="mt-2 flex-1 text-pretty text-sm text-muted-foreground">{who}</p>
+                  {normalPrice && (
+                    <p className="mt-3 font-mono text-xs text-muted-foreground line-through">{normalPrice}</p>
                   )}
                   {price && (
-                    <p className="mt-2 font-mono text-2xl text-brillante">
-                      {price}
-                      <span className="text-base text-muted-foreground">{period}</span>
+                    <p className="font-display text-3xl font-extrabold text-brillante">{price}</p>
+                  )}
+                  {period && <p className="font-mono text-[10px] text-muted-foreground">{period}</p>}
+                  {slots && (
+                    <p className="mt-2 self-start rounded-full bg-paper px-3 py-1 font-mono text-[10px] uppercase tracking-wide text-azul">
+                      {slots}
                     </p>
                   )}
-                  {slots && <p className="chip-space mt-2">{slots}</p>}
-                  {isCreyentes ? (
-                    <dl className="mt-4 flex-1 space-y-4">
+                  {isCreyentes && (
+                    <ul className="mt-4 space-y-1 font-mono text-xs uppercase tracking-wide text-brillante">
                       {gifts.map((gift) => (
-                        <div key={gift.title}>
-                          <dt className="font-display font-extrabold text-navy">{gift.title}</dt>
-                          <dd className="mt-1 text-pretty text-sm text-muted-foreground">{gift.why}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  ) : (
-                    <ul className="mt-4 flex-1 space-y-2">
-                      {benefits.map((benefit) => (
-                        <li key={benefit} className="flex gap-2 text-sm text-muted-foreground">
-                          <span className="text-aqua" aria-hidden>
-                            →
-                          </span>
-                          {benefit}
-                        </li>
+                        <li key={gift.k}>{gift.k}</li>
                       ))}
                     </ul>
                   )}

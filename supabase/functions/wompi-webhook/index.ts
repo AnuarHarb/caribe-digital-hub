@@ -29,7 +29,17 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const event = body?.data?.transaction ? body : body?.event ? body : null;
+    let event = body?.data?.transaction ? body : body?.event ? body : null;
+
+    if (!event?.data?.transaction && typeof body.transactionId === "string") {
+      const privateKey = Deno.env.get("WOMPI_SECRET_KEY") ?? "";
+      const host = privateKey.startsWith("prv_prod") ? "production.wompi.co" : "sandbox.wompi.co";
+      const txRes = await fetch(`https://${host}/v1/transactions/${body.transactionId}`, {
+        headers: { Authorization: `Bearer ${privateKey}` },
+      });
+      const txJson = await txRes.json();
+      if (txJson?.data?.id) event = { data: { transaction: txJson.data } };
+    }
 
     if (!event?.data?.transaction) {
       return new Response(JSON.stringify({ ok: true, skipped: true }), {
@@ -40,6 +50,7 @@ serve(async (req) => {
 
     const tx = event.data.transaction;
     const reference = tx.reference as string;
+    const paymentLinkId = typeof tx.payment_link_id === "string" ? tx.payment_link_id : "";
     const transactionId = String(tx.id);
     const status = tx.status as string;
 
@@ -67,11 +78,20 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { data: existing } = await supabase
+    let { data: existing } = await supabase
       .from("orders")
       .select("id, status, product_key, user_id, email, wall_consent")
       .eq("reference", reference)
       .maybeSingle();
+
+    if (!existing && paymentLinkId) {
+      const { data: byLink } = await supabase
+        .from("orders")
+        .select("id, status, product_key, user_id, email, wall_consent")
+        .eq("payload->>payment_link_id", paymentLinkId)
+        .maybeSingle();
+      existing = byLink;
+    }
 
     if (!existing) {
       return new Response(JSON.stringify({ error: "Orden no encontrada" }), {
@@ -94,7 +114,7 @@ serve(async (req) => {
       .update({
         status: orderStatus,
         wompi_transaction_id: transactionId,
-        payload: event,
+        payload: { ...event, payment_link_id: paymentLinkId || undefined },
       })
       .eq("id", existing.id);
 
@@ -118,8 +138,28 @@ serve(async (req) => {
     ends.setMonth(ends.getMonth() + product.months);
 
     let userId = existing.user_id;
+    if (!userId && existing.email) {
+      const { data: found } = await supabase.rpc("user_id_by_email", {
+        p_email: existing.email,
+      });
+      if (found) userId = found;
+    }
 
-    const { data: creyenteNum } = await supabase.rpc("next_creyente_number");
+    let creyenteNum: number | null = null;
+    if (userId) {
+      const { data: prior } = await supabase
+        .from("memberships")
+        .select("creyente_number")
+        .eq("user_id", userId)
+        .not("creyente_number", "is", null)
+        .limit(1)
+        .maybeSingle();
+      creyenteNum = prior?.creyente_number ?? null;
+    }
+    if (creyenteNum == null) {
+      const { data } = await supabase.rpc("next_creyente_number");
+      creyenteNum = data ?? null;
+    }
 
     let wallName: string | null = null;
     if (existing.wall_consent && userId) {
@@ -136,7 +176,7 @@ serve(async (req) => {
       plan: product.membershipPlan,
       starts_at: now.toISOString(),
       ends_at: ends.toISOString(),
-      creyente_number: creyenteNum ?? null,
+      creyente_number: creyenteNum,
       wall_name: wallName,
       order_id: existing.id,
     });

@@ -33,7 +33,8 @@ import { useProfessionalProfile } from "@/hooks/useProfile";
 import { useActiveCompany } from "@/contexts/ActiveCompanyContext";
 import { calculateProfileCompletion } from "@/lib/profileCompletion";
 import { CompanySwitcher } from "@/components/company/CompanySwitcher";
-import logoImage from "@/assets/costa-digital-logo.png";
+
+const MARK = "/logos/Costa_Digital_Isotipo.png";
 
 function getInitials(name: string | null | undefined): string {
   if (!name?.trim()) return "?";
@@ -92,7 +93,7 @@ export function DashboardSidebar() {
             />
           ) : (
             <img
-              src={logoImage}
+              src={MARK}
               alt="Costa Digital"
               className="h-9 w-9 shrink-0 rounded-lg object-contain"
             />

@@ -166,54 +166,126 @@
     "footnote": "Spaces and memberships require prepayment. Software is scoped in phases. WhatsApp quote within 24 h."
   },
   "membership": {
-    "eyebrow": "Membership",
-    "title": "The house club",
-    "subtitle": "Unlimited coffee, priority events, Lab Maker and more. First 60 are Believers.",
+    "eyebrow": "Costa Digital membership · Limited spots",
+    "title": "The club where Caribbean tech moves.",
+    "titleLead": "The club where",
+    "titleEmphasis": "Caribbean tech moves.",
+    "subtitle": "The Caribbean tech house: a place to work, unlimited coffee, every event, the monthly masterclass, the library, the lab maker, and swag you earn. Every peso that comes in funds the mission and scholarships.",
+    "levelsEyebrow": "The tiers",
+    "levelsTitle": "Two ways to belong",
+    "featuredChip": "The house pick",
+    "launchNote": "Your launch rate stays with you: while your membership is active, the price does not go up. Launch runs through 31 October 2026 or until the first 60 members. Annual plan: pay 10 months, get 12.",
     "creyentes": "Believers",
+    "creyentesEyebrow": "One-time edition · never repeated",
+    "creyentesTitle": "The 60 Believers",
     "creyentesRemaining": "{{count}} of {{max}} Believer spots left",
-    "creyentesLead": "The first 60. Not another plan. The ones who believed when the house was starting.",
+    "creyentesLead": "The first 60 members in the history of the house (any plan) are the Believers: the people who showed up when this was a hot patio and a promise. That gets thanked forever:",
     "creyentesGifts": [
       {
-        "title": "Numbered pin",
-        "why": "Special edition. Only 60. Wearing it says you believe in the Caribbean as a tech epicenter."
+        "k": "The pin",
+        "title": "Numbered. One production run.",
+        "why": "Enameled Believer pin with your number (#001–#060). Delivered with your first payment. Never reissued, never sold."
       },
       {
-        "title": "Name on the wall",
-        "why": "We are building a wall to decorate the house. The names of the 60 Believers go there."
+        "k": "The wall",
+        "title": "Your name in the house",
+        "why": "The first believers stay on the house wall, permanently. Your name goes up at month three and is never removed."
       },
       {
-        "title": "US$20 in Cursor",
-        "why": "A gift from the house so you can get into artificial intelligence."
+        "k": "The gift",
+        "title": "US$20 in Cursor credits",
+        "why": "Through our collaboration with SpaceX, every Believer gets US$20 in Cursor credits. And your launch rate stays while you stay active."
       }
     ],
+    "onlyEyebrow": "Members only",
+    "onlyTitle": "Benefits that grow with the house",
+    "onlyItems": [
+      {
+        "k": "Learn",
+        "title": "The monthly masterclass + the library",
+        "text": "Each month, a live virtual masterclass with industry experts (recorded for the library). Plus physical book loans from the Costa Digital library and selected recordings made in the house."
+      },
+      {
+        "k": "Swag",
+        "title": "Earned by belonging",
+        "text": "A welcome kit and special-edition surprises every quarter: stickers, pins, shirts and caps that only circulate among members."
+      }
+    ],
+    "foodEyebrow": "For hunger",
+    "foodTitle": "Meal vouchers · 404 Café",
+    "foodLead": "Membership includes coffee; food is separate. Prepaid vouchers make the daily menu cheaper: you order, they stamp the voucher, done.",
+    "foodItems": [
+      { "k": "Single", "title": "Daily menu", "text": "Lunch at the house whenever you want.", "price": "$20,000" },
+      { "k": "Voucher 10", "title": "10 meals for $180,000", "text": "$18,000 each. Valid 60 days.", "price": "$180,000" },
+      { "k": "Voucher 20", "title": "20 meals for $320,000", "text": "$16,000 each. Valid 90 days.", "price": "$320,000" }
+    ],
+    "howEyebrow": "How it works",
+    "howTitle": "How the house works",
+    "howRows": [
+      { "ic": "Space", "text": "Rooms switch between classrooms and cowork. The availability calendar is published every week. The patio and café stay open to the community all day." },
+      { "ic": "Coffee", "text": "Unlimited bar coffee (espresso, black, cappuccino) for you in the house. The rest of the menu is paid as usual. 404 Café profits keep the house open and fund scholarships." },
+      { "ic": "Events", "text": "Community events are yours: guaranteed seat and priority entry. Private patio rentals are not included (you book them with your 10%)." },
+      { "ic": "Welcome", "text": "In your first two weeks we introduce you to the community and expect you at your first event. Nobody is left loose: belonging starts on day one." }
+    ],
+    "tycEyebrow": "Terms",
+    "tycTitle": "House agreements",
+    "tyc": [
+      "Monthly or annual prepay. Membership activates on payment and renews in advance. Annual: 12 months for the price of 10. Your launch rate holds while active; after canceling, re-entry is at the current price.",
+      "Personal and non-transferable. One holder per membership.",
+      "Limited spots. Resident: 20. When full, a waitlist opens with priority for the annual plan.",
+      "Pause and change of tier. You can pause up to 2 months per year (notice before cutoff) and move up or down anytime.",
+      "No refunds. Pauses keep your balance and your spot.",
+      "Unlimited coffee (all plans): espresso, black or cappuccino at the bar, personal consumption on visit days. Reasonable use; not transferable and not for guests.",
+      "Lab Maker: members with prior induction and a reserved slot; materials are extra or you bring your own.",
+      "Believers program: first 60 launch members. Numbered pin with first payment; name on the wall at month three. Status survives pauses, not cancellation.",
+      "Membership discounts apply from the second active month and do not stack with other promotions.",
+      "Hours and calendar. Resident cowork follows the weekly calendar. The house may reserve rooms for training and events with at least 7 days notice.",
+      "Meeting room: unused hours do not roll over; book ahead, subject to availability.",
+      "Paid events: member special price and resident free entry (from month three) apply to house-organized events, one seat per member, prior registration.",
+      "Locker and mail: locker subject to availability; the house receives packages during hours and does not hold valuables or perishables.",
+      "Meal vouchers: prepaid, personal, 404 Café daily menu. 60 days (10) or 90 days (20); unused meals are not refunded.",
+      "Physical library: one book at a time, up to 15 days, logged at reception. Failure to return suspends the benefit and you pay replacement.",
+      "Community. The house is a safe, diverse, respectful space. Breaking the code can end a membership.",
+      "Data. Registration means accepting Fundación Código Abierto (ESAL) data policy, the entity that invoices your membership."
+    ],
+    "ctaBandTitle": "There is a seat for you.",
+    "ctaBandEmphasis": "Come see the house.",
+    "ctaBandSub": "Book a visit · first cowork day free with a tour",
+    "ctaWhatsApp": "Write on WhatsApp",
+    "activeBanner": "You are a {{plan}}. Your membership ends {{date}}.",
     "plans": {
       "miembro": {
         "name": "Member",
+        "who": "Come whenever you want: your coffee is waiting, events are yours, and you learn with the monthly masterclass.",
         "price": "$70,000",
-        "normalPrice": "$100,000",
-        "period": "/ month",
+        "normalPrice": "Regular $100,000",
+        "period": "/ month · launch · prepaid",
+        "slots": "Open spots",
         "benefits": [
-          "Unlimited bar coffee",
-          "Priority event access",
-          "Special pricing on paid events",
-          "Monthly virtual masterclass",
-          "Lab Maker and library",
-          "10% off Tech Centre training"
+          "Unlimited bar coffee: espresso, black and cappuccino",
+          "Priority access to every event",
+          "Monthly live virtual masterclass with industry experts",
+          "Costa Digital library: physical book loans + selected recordings from the house",
+          "10% off Tech Centre training",
+          "Lab Maker access (3D printing and prototyping)",
+          "Special pricing on paid events (Barranqui-IA, TechCaribe, tech nights, workshops and more)"
         ]
       },
       "residente": {
         "name": "Resident",
+        "who": "Work here on the days you want: your locker, unlimited coffee, and the house around you.",
         "price": "$250,000",
-        "normalPrice": "$350,000",
-        "period": "/ month",
-        "slots": "20 spots",
+        "normalPrice": "Regular $350,000",
+        "period": "/ month · launch · prepaid",
+        "slots": "20 members max",
         "benefits": [
           "Everything in Member",
-          "Cowork with guaranteed desk",
-          "6 h meeting room/month",
-          "Locker and package reception",
-          "Free paid events from month 3",
-          "Welcome kit and quarterly swag"
+          "Your desk in the house: guaranteed cowork seat on the weekly calendar we publish",
+          "6 h meeting room per month",
+          "Personal locker + package and mail reception",
+          "Welcome kit",
+          "Free entry to paid events such as Barranqui-IA, TechCaribe, tech nights and workshops (from month 3)",
+          "Surprise swag every quarter: editions that only circulate among members"
         ]
       },
       "anual": {
@@ -291,6 +363,7 @@
   },
   "checkout": {
     "processing": "Preparing payment…",
+    "loginToPay": "Sign in to pay",
     "loginRequired": "Sign in or enter your email to continue",
     "emailPlaceholder": "you@email.com",
     "continue": "Continue to payment",
@@ -303,8 +376,8 @@
     "approved": "Payment approved!",
     "declined": "Payment not completed",
     "reference": "Reference",
-    "nextSteps": "Next steps",
-    "welcomeWhatsApp": "Message us on WhatsApp to activate your membership",
+    "nextSteps": "Your membership is active. Open the dashboard to see your plan.",
+    "welcomeWhatsApp": "Message us on WhatsApp if you have questions",
     "backHome": "Back to home",
     "viewMembership": "View my membership"
   },

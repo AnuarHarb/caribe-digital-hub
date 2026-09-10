@@ -56,6 +56,8 @@ export function SEOHead({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imageUrl} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       {imageAlt && <meta property="og:image:alt" content={imageAlt} />}
       {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
       {type === "article" && publishedTime && (

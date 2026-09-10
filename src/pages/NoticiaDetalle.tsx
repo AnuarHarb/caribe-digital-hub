@@ -59,7 +59,7 @@ export default function NoticiaDetalle() {
       "@type": "Organization",
       name: "Costa Digital",
       alternateName: "Caribe Tech",
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/og-image.png` },
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/logos/Costa_Digital_Logo_horizontal.png` },
     },
     ...(note.tags.length > 0 ? { keywords: note.tags } : {}),
   };

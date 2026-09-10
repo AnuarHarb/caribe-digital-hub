@@ -16,7 +16,7 @@ export function MembershipCard() {
         <CardTitle>{t("portafolio.dashboard.membership.title")}</CardTitle>
         <CardDescription>
           {membership
-            ? `${t("portafolio.dashboard.membership.plan")}: ${membership.plan}`
+            ? `${t("portafolio.dashboard.membership.plan")}: ${t(`portafolio.membership.plans.${membership.plan}.name`)}`
             : t("portafolio.dashboard.membership.none")}
         </CardDescription>
       </CardHeader>

@@ -39,7 +39,7 @@ export default function Conocenos() {
       name: "Fundación Código Abierto",
       alternateName: "Costa Digital",
       url: "https://costadigital.org",
-      logo: "https://costadigital.org/logos/costa-digital.png",
+      logo: "https://costadigital.org/logos/Costa_Digital_Logo_horizontal.png",
       description:
         "Movimiento que articula comunidades, talento, startups, educación y capital para convertir al Caribe colombiano en el nuevo epicentro tech de Colombia.",
       address: {

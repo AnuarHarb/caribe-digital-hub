@@ -20,7 +20,8 @@ import {
   Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import logoImage from "@/assets/costa-digital-logo.png";
+
+const MARK = "/logos/Costa_Digital_Isotipo.png";
 
 export function AdminSidebar() {
   const { t } = useTranslation();
@@ -40,7 +41,7 @@ export function AdminSidebar() {
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-3">
           <img
-            src={logoImage}
+            src={MARK}
             alt="Costa Digital"
             className="h-9 w-9 shrink-0 rounded-lg object-contain"
           />

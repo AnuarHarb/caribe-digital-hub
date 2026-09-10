@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { QRCodeSVG } from "qrcode.react";
-import logoImage from "@/assets/costa-digital-logo.png";
 import { useIsMobile } from "@/hooks/use-mobile";
+
+const MARK = "/logos/Costa_Digital_Isotipo_claro.png";
 
 interface CredentialCardProps {
   name: string;
@@ -46,7 +47,7 @@ export function CredentialCard({ name, avatarUrl, userId, memberSince, plan, cre
             <p className="truncate text-sm font-semibold">{name}</p>
             <p className="text-xs text-white/60">{t("credential.member")}</p>
           </div>
-          <img src={logoImage} alt="Costa Digital" className="h-7 w-7 shrink-0 rounded" />
+          <img src={MARK} alt="Costa Digital" className="h-7 w-7 shrink-0 rounded" />
         </div>
       </article>
     );
@@ -70,13 +71,15 @@ export function CredentialCard({ name, avatarUrl, userId, memberSince, plan, cre
       <div className="relative flex h-full flex-col justify-between p-6 md:p-5">
         <header className="flex items-center justify-between pb-4">
           <div className="flex items-center gap-2">
-            <img src={logoImage} alt="Costa Digital" className="h-8 w-8 rounded" />
+            <img src={MARK} alt="Costa Digital" className="h-8 w-8 rounded" />
             <span className="text-xs font-semibold uppercase tracking-widest text-white/80">
               Costa Digital
             </span>
           </div>
           <span className="rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white/70">
-            {plan ?? "Miembro"}
+            {plan === "miembro" || plan === "residente"
+              ? t(`portafolio.membership.plans.${plan}.name`)
+              : t("credential.member")}
             {creyenteNumber ? ` · #${creyenteNumber}` : ""}
           </span>
         </header>

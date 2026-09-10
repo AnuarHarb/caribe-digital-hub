@@ -5,9 +5,7 @@ import type { ProductKey } from "@/content/portafolio";
 
 interface CheckoutResult {
   reference: string;
-  signature: string;
-  amountInCents: number;
-  publicKey: string;
+  checkoutUrl: string;
 }
 
 export function useCheckout() {
@@ -33,25 +31,11 @@ export function useCheckout() {
         }
       );
 
-      if (fnError || !data?.reference) {
+      if (fnError || !data?.checkoutUrl) {
         throw new Error(fnError?.message ?? "checkout failed");
       }
 
-      const publicKey =
-        data.publicKey ?? import.meta.env.VITE_WOMPI_PUBLIC_KEY ?? "";
-      const redirectUrl = `${window.location.origin}/pago/resultado`;
-      const url = new URL("https://checkout.wompi.co/p/");
-      url.searchParams.set("public-key", publicKey);
-      url.searchParams.set("currency", "COP");
-      url.searchParams.set("amount-in-cents", String(data.amountInCents));
-      url.searchParams.set("reference", data.reference);
-      url.searchParams.set("signature:integrity", data.signature);
-      url.searchParams.set("redirect-url", redirectUrl);
-      if (options?.email || user?.email) {
-        url.searchParams.set("customer-data:email", options?.email ?? user!.email!);
-      }
-
-      window.location.href = url.toString();
+      window.location.href = data.checkoutUrl;
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error");
       setLoading(false);
