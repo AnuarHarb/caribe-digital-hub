@@ -180,6 +180,7 @@
     "creyentesTitle": "Los 60 Creyentes",
     "creyentesRemaining": "Quedan {{count}} de {{max}} Creyentes",
     "creyentesLead": "Los primeros 60 miembros de la historia de la casa (de cualquier plan) son los creyentes: la gente que llegó cuando esto era un patio caliente y una promesa. Eso se agradece para siempre:",
+    "creyentesPinAlt": "Pin Creyente numerado y su caja de edición especial",
     "creyentesGifts": [
       {
         "k": "El pin",

@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import "@/i18n/config";
 import Membresias from "./pages/Membresias";
@@ -70,6 +70,44 @@ function AppTheme({ children }: { children: ReactNode }) {
   );
 }
 
+function RouteChrome() {
+  const { pathname, hash } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+      if (el) {
+        el.scrollIntoView();
+        return;
+      }
+    }
+    window.scrollTo(0, 0);
+  }, [pathname, hash]);
+
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
+      }
+      const anchor = (event.target as Element | null)?.closest?.("a[href]");
+      if (!(anchor instanceof HTMLAnchorElement)) return;
+      if (anchor.target && anchor.target !== "_self") return;
+      if (anchor.hasAttribute("download")) return;
+      const url = new URL(anchor.href);
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+      event.preventDefault();
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      navigate(`${url.pathname}${url.search}${url.hash}`, { viewTransition: !reduce });
+    };
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, [navigate]);
+
+  return null;
+}
+
 // Costa Digital News unifica el blog: /blog redirige a /noticias conservando el slug.
 const BlogSlugRedirect = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -79,6 +117,7 @@ const BlogSlugRedirect = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
+      <RouteChrome />
       <AppTheme>
         <TooltipProvider>
           <Toaster />

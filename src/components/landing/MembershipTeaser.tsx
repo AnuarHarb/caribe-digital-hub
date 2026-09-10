@@ -9,21 +9,9 @@ export function MembershipTeaser() {
   const { t } = useTranslation();
 
   const plans = [
-    {
-      key: "miembro",
-      icon: Coffee,
-      href: "/membresias#miembro",
-    },
-    {
-      key: "residente",
-      icon: Crown,
-      href: "/membresias#residente",
-    },
-    {
-      key: "creyentes",
-      icon: UsersThree,
-      href: "/membresias#creyentes",
-    },
+    { key: "miembro", icon: Coffee },
+    { key: "residente", icon: Crown },
+    { key: "creyentes", icon: UsersThree },
   ] as const;
 
   return (
@@ -50,7 +38,7 @@ export function MembershipTeaser() {
 
       <div className="container relative z-10 mx-auto -mt-16 px-4 pb-16 md:-mt-24 md:pb-20">
         <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {plans.map(({ key, icon: Icon, href }) => {
+          {plans.map(({ key, icon: Icon }) => {
             const isCreyentes = key === "creyentes";
             const featured = key === "residente";
             const name = isCreyentes
@@ -67,8 +55,12 @@ export function MembershipTeaser() {
               ? (t("portafolio.membership.creyentesGifts", { returnObjects: true }) as {
                   k: string;
                   title: string;
+                  why: string;
                 }[])
               : [];
+            const benefits = isCreyentes
+              ? []
+              : (t(`portafolio.membership.plans.${key}.benefits`, { returnObjects: true }) as string[]);
 
             return (
               <li key={key}>
@@ -84,7 +76,7 @@ export function MembershipTeaser() {
                   )}
                   <Icon className="h-8 w-8 text-brillante" weight="regular" aria-hidden />
                   <h3 className="mt-4 font-display text-xl font-extrabold text-navy">{name}</h3>
-                  <p className="mt-2 flex-1 text-pretty text-sm text-muted-foreground">{who}</p>
+                  <p className="mt-2 text-pretty text-sm text-muted-foreground">{who}</p>
                   {normalPrice && (
                     <p className="mt-3 font-mono text-xs text-muted-foreground line-through">{normalPrice}</p>
                   )}
@@ -97,15 +89,29 @@ export function MembershipTeaser() {
                       {slots}
                     </p>
                   )}
-                  {isCreyentes && (
-                    <ul className="mt-4 space-y-1 font-mono text-xs uppercase tracking-wide text-brillante">
+                  {isCreyentes ? (
+                    <dl className="mt-4 flex-1 space-y-4">
                       {gifts.map((gift) => (
-                        <li key={gift.k}>{gift.k}</li>
+                        <div key={gift.k}>
+                          <dt className="font-display font-extrabold text-navy">{gift.title}</dt>
+                          <dd className="mt-1 text-pretty text-sm text-muted-foreground">{gift.why}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  ) : (
+                    <ul className="mt-4 flex-1 space-y-2">
+                      {benefits.map((benefit) => (
+                        <li key={benefit} className="flex gap-2 text-sm text-muted-foreground">
+                          <span className="text-aqua" aria-hidden>
+                            →
+                          </span>
+                          {benefit}
+                        </li>
                       ))}
                     </ul>
                   )}
                   <Button asChild className="mt-6 w-full">
-                    <Link to={href}>{t("portafolio.hero.ctaMemberships")}</Link>
+                    <Link to="/membresias">{t("portafolio.hero.ctaMemberships")}</Link>
                   </Button>
                 </article>
               </li>

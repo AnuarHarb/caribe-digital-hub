@@ -179,15 +179,24 @@ export default function Membresias() {
             <p className="mt-3 text-pretty text-sm text-muted-foreground">
               {t("portafolio.membership.creyentesLead")}
             </p>
-            <ul className="mt-6 grid gap-3 md:grid-cols-3">
-              {gifts.map((gift) => (
-                <li key={gift.title} className="rounded-2xl bg-navy p-4 text-white">
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-aqua">{gift.k}</p>
-                  <h3 className="mt-2 font-display text-base font-bold">{gift.title}</h3>
-                  <p className="mt-2 text-sm text-white/70">{gift.why}</p>
-                </li>
-              ))}
-            </ul>
+            <div className="mt-6 grid gap-6 md:grid-cols-2 md:items-stretch">
+              <figure className="overflow-hidden rounded-2xl border border-line bg-white">
+                <img
+                  src="/sede/creyentes-pines.jpg"
+                  alt={t("portafolio.membership.creyentesPinAlt")}
+                  className="h-full w-full object-cover"
+                />
+              </figure>
+              <ul className="grid gap-3">
+                {gifts.map((gift) => (
+                  <li key={gift.title} className="rounded-2xl bg-navy p-4 text-white">
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-aqua">{gift.k}</p>
+                    <h3 className="mt-2 font-display text-base font-bold">{gift.title}</h3>
+                    <p className="mt-2 text-sm text-white/70">{gift.why}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <CreyentesWall />
           </section>
 
