@@ -728,6 +728,57 @@ export type Database = {
         }
         Relationships: []
       }
+      memberships: {
+        Row: {
+          id: string
+          user_id: string | null
+          plan: Database["public"]["Enums"]["membership_plan"]
+          starts_at: string
+          ends_at: string
+          creyente_number: number | null
+          wall_name: string | null
+          order_id: string | null
+          created_at: string
+          product_key: string | null
+          wompi_payment_source_id: string | null
+          renew: boolean
+          card_last_four: string | null
+          canceled_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          plan: Database["public"]["Enums"]["membership_plan"]
+          starts_at: string
+          ends_at: string
+          creyente_number?: number | null
+          wall_name?: string | null
+          order_id?: string | null
+          created_at?: string
+          product_key?: string | null
+          wompi_payment_source_id?: string | null
+          renew?: boolean
+          card_last_four?: string | null
+          canceled_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          plan?: Database["public"]["Enums"]["membership_plan"]
+          starts_at?: string
+          ends_at?: string
+          creyente_number?: number | null
+          wall_name?: string | null
+          order_id?: string | null
+          created_at?: string
+          product_key?: string | null
+          wompi_payment_source_id?: string | null
+          renew?: boolean
+          card_last_four?: string | null
+          canceled_at?: string | null
+        }
+        Relationships: []
+      }
       newsletter_sends: {
         Row: {
           id: string
@@ -830,6 +881,7 @@ export type Database = {
       skill_level: "beginner" | "intermediate" | "advanced" | "expert"
       profile_type: "company" | "community"
       work_mode: "remote" | "hybrid" | "onsite"
+      membership_plan: "miembro" | "residente"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -973,6 +1025,7 @@ export const Constants = {
       skill_level: ["beginner", "intermediate", "advanced", "expert"],
       profile_type: ["company", "community"],
       work_mode: ["remote", "hybrid", "onsite"],
+      membership_plan: ["miembro", "residente"],
     },
   },
 } as const

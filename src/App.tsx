@@ -23,6 +23,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminOrganizations from "./pages/admin/AdminOrganizations";
 import AdminJobs from "./pages/admin/AdminJobs";
+import AdminMemberships from "./pages/admin/AdminMemberships";
 import JobDetail from "./pages/JobDetail";
 import TalentNetwork from "./pages/TalentNetwork";
 import PublicProfile from "./pages/PublicProfile";
@@ -189,6 +190,7 @@ const App = () => (
               <Route path="usuarios" element={<AdminUsers />} />
               <Route path="organizaciones" element={<AdminOrganizations />} />
               <Route path="ofertas" element={<AdminJobs />} />
+              <Route path="membresias" element={<AdminMemberships />} />
               <Route
                 path="noticias"
                 element={

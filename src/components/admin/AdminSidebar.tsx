@@ -12,13 +12,14 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
-  LayoutDashboard,
+  SquaresFour,
   Users,
-  Building2,
+  Buildings,
   Briefcase,
+  IdentificationCard,
   Newspaper,
-  Mail,
-} from "lucide-react";
+  EnvelopeSimple,
+} from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 const MARK = "/logos/Costa_Digital_Isotipo.png";
@@ -28,12 +29,13 @@ export function AdminSidebar() {
   const { isMobile, setOpenMobile } = useSidebar();
 
   const links = [
-    { to: "/admin", label: t("admin.nav.dashboard"), icon: LayoutDashboard, end: true },
+    { to: "/admin", label: t("admin.nav.dashboard"), icon: SquaresFour, end: true },
     { to: "/admin/usuarios", label: t("admin.nav.users"), icon: Users, end: false },
-    { to: "/admin/organizaciones", label: t("admin.nav.organizations"), icon: Building2, end: false },
+    { to: "/admin/organizaciones", label: t("admin.nav.organizations"), icon: Buildings, end: false },
     { to: "/admin/ofertas", label: t("admin.nav.jobs"), icon: Briefcase, end: false },
+    { to: "/admin/membresias", label: t("admin.nav.memberships"), icon: IdentificationCard, end: false },
     { to: "/admin/noticias", label: t("admin.nav.news"), icon: Newspaper, end: false },
-    { to: "/admin/newsletter", label: t("admin.nav.newsletter"), icon: Mail, end: false },
+    { to: "/admin/newsletter", label: t("admin.nav.newsletter"), icon: EnvelopeSimple, end: false },
   ];
 
   return (
@@ -77,7 +79,7 @@ export function AdminSidebar() {
                         )
                       }
                     >
-                      <link.icon className="h-5 w-5 shrink-0" aria-hidden />
+                      <link.icon size={20} weight="regular" className="shrink-0" aria-hidden />
                       <span>{link.label}</span>
                     </NavLink>
                   </SidebarMenuButton>
